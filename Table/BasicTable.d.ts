@@ -1,18 +1,31 @@
 import type { MutableRefObject, ReactElement, ReactNode } from 'react';
-import type SvgIcon from '../SvgIcon/SvgIcon';
 import PaginationComponent from './Pagination';
-import type { ClickRowActionEventHandler, FilterEventHandler, Limit, Pagination, SelectEventHandler, SortEventHandler, TableColumn, TableRow } from './TableContext';
-export type { ClickRowActionEventHandler, FilterEventHandler, FilterOptions, Limit, SelectEventHandler, SortEventHandler, SortOptions, TableColumn, TableRow, } from './TableContext';
-export interface TableProps {
+import type { ColumnWidth, Limit, Pagination, SelectEventHandler, TableRow } from './TableContext';
+export interface BasicTableColumn {
+    /**
+     * Unique identifier for the column. Used to match column definitions with row data
+     */
+    key: string;
+    /**
+     * The content to display in the column header
+     */
+    value: ReactNode;
+    /**
+     * The width configuration for the column supporting a percentage value.
+     * If not provided, the column will size automatically based on its content.
+     */
+    width?: ColumnWidth;
+}
+export interface BasicTableProps {
     /**
      * Child components to render within the table's header.
      * Can include `Table.Header` and `Table.Toolbar` components.
      */
     children?: ReactElement | ReactElement[];
     /**
-     * Array of column definitions that specify the table structure, including column keys, labels, sorting, filtering, and visibility
+     * Array of column definitions that specify the table structure, including column keys, labels, and widths
      */
-    columns: TableColumn[];
+    columns: BasicTableColumn[];
     /**
      * Displays table in a denser (compact) layout with reduced padding
      * @default false
@@ -29,14 +42,6 @@ export interface TableProps {
      */
     loading?: boolean;
     /**
-     * Callback function invoked when a column filter option is toggled
-     */
-    onFilterChange?: FilterEventHandler;
-    /**
-     * Callback function invoked when a column is sorted
-     */
-    onSort?: SortEventHandler;
-    /**
      * Callback function invoked when rows are selected or deselected
      */
     onSelect?: SelectEventHandler;
@@ -47,15 +52,6 @@ export interface TableProps {
      * @default 'lengthAware'
      */
     pagination?: Pagination;
-    /**
-     * Array of action items to display in a menu for each row
-     */
-    rowActions?: {
-        enabled?: (row: TableRow) => boolean;
-        label: ReactNode;
-        handler: ClickRowActionEventHandler;
-        startAdornment?: typeof SvgIcon;
-    }[];
     /**
      * Array of row data objects. Each row must have an "id" property and properties matching column keys
      */
@@ -77,18 +73,13 @@ export interface TableProps {
      */
     selectionsRef?: MutableRefObject<string[]>;
     /**
-     * Key used to persist column column visibility and order preferences in local storage.
-     * If provided, the table will save the following information for the columns: whether they are visible or hidden, sorting and filtering info.
-     */
-    storageKey?: string;
-    /**
      * Total number of rows available (for pagination). Defaults to rows.length if not provided
      * @default rows.length
      */
     total?: number;
 }
-declare function Table({ children, columns: initialColumns, dense, limit, loading, onFilterChange, onSelect, onSort, pagination, rowActions, rows, scrollable, selectable, selectionsRef, storageKey, total, }: TableProps): JSX.Element;
-declare namespace Table {
+declare function BasicTable({ children, columns: initialColumns, dense, limit, loading, onSelect, pagination, rows, scrollable, selectable, selectionsRef, total, }: BasicTableProps): JSX.Element;
+declare namespace BasicTable {
     var BulkActions: typeof import("./BulkActions").default;
     var GlobalActions: typeof import("./GlobalActions").default;
     var Header: typeof import("./Header").default;
@@ -97,4 +88,4 @@ declare namespace Table {
     var Title: typeof import("./Title").default;
     var Toolbar: typeof import("./Toolbar").default;
 }
-export default Table;
+export default BasicTable;

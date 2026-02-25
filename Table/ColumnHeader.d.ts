@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from 'react';
 import { Directions } from '../utilities/directions';
-export type ColumnWidth = number;
+import type { ColumnWidth } from './TableContext';
 export declare const getWidthStyle: (width?: ColumnWidth) => {
     width?: string | undefined;
 };

@@ -11256,10 +11256,15 @@ function Switch(_a) {
 var GroupContext = React.createContext(null);
 var useGroup = function () { return React.useContext(GroupContext); };
 function Group$5(_a) {
-    var children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, defaultTab = _a.defaultTab, disabled = _a.disabled, onClick = _a.onClick, _c = _a.orientation, orientation = _c === void 0 ? 'horizontal' : _c, _d = _a.size, size = _d === void 0 ? 'large' : _d, _e = _a.adornmentPosition, adornmentPosition = _e === void 0 ? 'vertical' : _e;
-    var _f = React.useState(defaultTab), selectedTab = _f[0], setSelectedTab = _f[1];
-    return (React__default['default'].createElement("div", { className: clsx__default['default']('flex w-full flex-wrap', orientation === 'vertical' ? 'flex-col' : null), role: "tablist" },
+    var _b = _a.align, align = _b === void 0 ? 'stretch' : _b, children = _a.children, _c = _a.color, color = _c === void 0 ? 'default' : _c, defaultTab = _a.defaultTab, disabled = _a.disabled, onClick = _a.onClick, _d = _a.orientation, orientation = _d === void 0 ? 'horizontal' : _d, _e = _a.size, size = _e === void 0 ? 'large' : _e, _f = _a.adornmentPosition, adornmentPosition = _f === void 0 ? 'vertical' : _f;
+    var _g = React.useState(defaultTab), selectedTab = _g[0], setSelectedTab = _g[1];
+    return (React__default['default'].createElement("div", { className: clsx__default['default']('flex w-full flex-wrap border-b border-solid border-black-10-hex', orientation === 'vertical' ? 'flex-col' : null, align === 'left' && orientation === 'horizontal'
+            ? 'justify-start'
+            : null, align === 'right' && orientation === 'horizontal'
+            ? 'justify-end'
+            : null), role: "tablist" },
         React__default['default'].createElement(GroupContext.Provider, { value: {
+                align: align,
                 color: color,
                 disabled: disabled,
                 onClick: onClick,
@@ -11286,22 +11291,22 @@ var sizes$a = {
 };
 var variants$9 = {
     default: {
-        selected: "border-b-2 border-solid border-black-90 text-black-90 active:bg-black-20 focus:bg-black-10 focus-visible:ring hover:bg-black-10",
-        unselected: "border-b-2 border-solid border-transparent text-black-90 active:bg-black-20 focus:bg-black-5 focus-visible:ring hover:bg-black-5",
+        selected: "border-b-2 border-solid border-black-90 text-black-90 active:bg-black-20 focus:bg-black-10 focus-visible:ring hover:bg-black-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
+        unselected: "border-b-2 border-solid border-transparent text-black-90 active:bg-black-20 focus:bg-black-5 focus-visible:ring hover:bg-black-5 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
     },
     primary: {
-        selected: "border-b-2 border-solid border-primary-main text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10",
-        unselected: "border-b-2 border-solid border-transparent text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10",
+        selected: "border-b-2 border-solid border-primary-main text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
+        unselected: "border-b-2 border-solid border-transparent text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
     },
     secondary: {
-        selected: "border-b-2 border-solid border-secondary-main text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10",
-        unselected: "border-b-2 border-solid border-transparent text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10",
+        selected: "border-b-2 border-solid border-secondary-main text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
+        unselected: "border-b-2 border-solid border-transparent text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
     },
 };
 function Tab(_a) {
     var _b;
     var controls = _a["aria-controls"], children = _a.children, color = _a.color, disabled = _a.disabled, id = _a.id, onClick = _a.onClick, size = _a.size, StartAdornment = _a.startAdornment, value = _a.value;
-    var _c = useGroup(), groupColor = _c.color, groupDisabled = _c.disabled, groupClick = _c.onClick, selectedTab = _c.selectedTab, setSelectedTab = _c.setSelectedTab, groupSize = _c.size, adornmentPosition = _c.adornmentPosition;
+    var _c = useGroup(), groupAlign = _c.align, groupColor = _c.color, groupDisabled = _c.disabled, groupClick = _c.onClick, selectedTab = _c.selectedTab, setSelectedTab = _c.setSelectedTab, groupSize = _c.size, adornmentPosition = _c.adornmentPosition;
     var isDisabled = disabled !== null && disabled !== void 0 ? disabled : groupDisabled;
     var isSelected = selectedTab === value;
     var handleSelectTab = function (event) {
@@ -11310,7 +11315,7 @@ function Tab(_a) {
             onClick ? onClick(event) : groupClick === null || groupClick === void 0 ? void 0 : groupClick(event);
         }
     };
-    return (React__default['default'].createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx__default['default']('flex-grow min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none disabled:border-black-25 disabled:bg-transparent disabled:text-black-25', isSelected
+    return (React__default['default'].createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx__default['default']('min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none disabled:border-b-2 disabled:border-solid disabled:bg-transparent disabled:text-black-25', groupAlign === 'stretch' ? 'flex-grow' : null, isSelected
             ? variants$9[color !== null && color !== void 0 ? color : groupColor].selected
             : variants$9[color !== null && color !== void 0 ? color : groupColor].unselected, sizes$a[size !== null && size !== void 0 ? size : groupSize].root), disabled: isDisabled, id: id, onClick: handleSelectTab, role: "tab", value: value },
         React__default['default'].createElement("div", { className: clsx__default['default']('flex justify-center items-center', adornmentPosition === 'vertical' ? 'flex-col' : '') },
@@ -11327,13 +11332,6 @@ function usePrevious(value) {
     }, [value]);
     return ref.current;
 }
-
-(function (Directions) {
-    Directions[Directions["Left"] = 0] = "Left";
-    Directions[Directions["Right"] = 1] = "Right";
-    Directions[Directions["Ascending"] = 2] = "Ascending";
-    Directions[Directions["Descending"] = 3] = "Descending";
-})(exports.Directions || (exports.Directions = {}));
 
 var ActionTypes$6;
 (function (ActionTypes) {
@@ -11375,501 +11373,20 @@ function useForwardClick(ref, selector) {
     return { handleClick: handleClick, handleKeyDown: handleKeyDown };
 }
 
-var getWidthStyle = function (width) {
-    if (width === undefined || width === null || isNaN(Number(width))) {
-        return {};
-    }
-    return { width: "".concat(width, "%") };
-};
-function ColumnHeader(_a) {
-    var _b;
-    var key = _a["data-key"], _c = _a.dense, dense = _c === void 0 ? false : _c, children = _a.children, sort = _a.sort, _d = _a.sticky, sticky = _d === void 0 ? false : _d, _e = _a.tabIndex, tabIndex = _e === void 0 ? -1 : _e, width = _a.width;
-    var ref = React.useRef(null);
-    var state = useTable()[0];
-    var buttonActions = useForwardClick(ref, 'button');
-    var checkboxActions = useForwardClick(ref, 'input[type="checkbox"]');
-    // @ts-expect-error The type property will exist on any ReactElement that is passed as a child, but will not
-    // exist on any other object. Typescript however, will not obey `hasOwnProperty` checks, so we need to
-    // ignore this error until we can determine a better interface
-    var checkable = children && children.type === Checkbox;
-    var shouldBeSticky = sticky &&
-        (state.columns.unselected.length > 0 ||
-            Number((_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.length) > 0);
-    return (React__default['default'].createElement("th", { "aria-sort": sort === exports.Directions.Ascending
-            ? 'ascending'
-            : sort === exports.Directions.Descending
-                ? 'descending'
-                : undefined, className: clsx__default['default']('px-4 text-left border-b border-r last:border-r-0 focus:outline-none last:px-4.5 last:w-[.1%] bg-black-5-hex', dense ? null : state.dense ? 'py-1.5' : 'py-3', checkable ? 'pl-3.5 pr-1.5' : null, state.selectable ? 'first:w-[.1%] first:border-r-0' : 'first:pl-6', shouldBeSticky
-            ? 'sticky right-0 sticky-column overflow-visible border-black-10-hex hover:bg-black-10-hex focus:bg-black-10-hex active:bg-black-15-hex'
-            : 'border-black-10 hover:bg-black-10-hex focus:bg-black-10-hex active:bg-black-15-hex'), "data-key": key, onClick: checkable ? checkboxActions.handleClick : buttonActions.handleClick, onKeyDown: checkable ? checkboxActions.handleKeyDown : buttonActions.handleKeyDown, ref: ref, 
-        // Can't put into className as it contains a dynamic arbitrary variable that tailwind
-        // can't process.
-        style: getWidthStyle(width), tabIndex: tabIndex }, React.Children.map(children, function (child) {
-        if (React.isValidElement(child)) {
-            // @ts-expect-error The only current use case here is for the Table component where
-            // we nest the `Menu`, `AddColumn` and `Checkbox.Input` components inside of the
-            // `ColumnHeader`. While the `Checkbox.Input` component does not accept a
-            // `focusRef`, the other two do. React will silently discard this prop
-            // when it's not appropriate, but the types required for Typescript
-            // to not complain are completely internal to that file, so we
-            // will be ignoring this error.
-            //
-            // @see file://./Head.tsx
-            return React.cloneElement(child, { focusRef: ref });
-        }
-        return child;
-    })));
-}
-
-var toDate = function (value) {
-    var dateTime = '';
-    if (value instanceof Date) {
-        dateTime = dateFns.format(value, 'PP p');
-    }
-    if (typeof value === 'number') {
-        dateTime = dateFns.format(dateFns.fromUnixTime(value), 'PP p');
-    }
-    return dateTime;
-};
-function Cell(_a) {
-    var _b;
-    var children = _a.children, _c = _a.selected, selected = _c === void 0 ? false : _c, _d = _a.sticky, sticky = _d === void 0 ? false : _d, width = _a.width;
-    var ref = React.useRef(null);
-    var state = useTable()[0];
-    var actions = useForwardClick(ref, 'input[type="checkbox"]');
-    // @ts-expect-error The type property will exist on any ReactElement that is passed as a child, but will not
-    // exist on any other object. Typescript however, will not obey `hasOwnProperty` checks, so we need to
-    // ignore this error until we can determine a better interface
-    var checkable = children && children.type === Checkbox;
-    var dateable = (typeof children === 'number' || children instanceof Date) &&
-        dateFns.isValid(children);
-    var shouldBeSticky = sticky &&
-        (state.columns.unselected.length > 0 ||
-            Number((_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.length) > 0);
-    return (React__default['default'].createElement("td", { className: clsx__default['default']('px-4 text-left border-r last:border-r-0 border-black-10 focus:outline-none', selected ? (sticky ? 'bg-black-5-hex' : 'bg-black-5') : 'bg-white-100', checkable ? 'pl-3.5 pr-1.5' : state.dense ? 'py-1.5' : 'py-3', state.selectable ? 'first:w-[.1%] first:border-r-0' : 'first:pl-6', shouldBeSticky
-            ? 'sticky right-0 sticky-column overflow-visible group-hover:bg-black-5-hex focus:bg-black-5-hex border-l'
-            : 'group-hover:bg-black-5 focus:bg-black-5'), onClick: checkable ? actions.handleClick : undefined, onKeyDown: checkable ? actions.handleKeyDown : undefined, ref: ref, role: "gridcell", style: getWidthStyle(width), tabIndex: -1 },
-        React__default['default'].createElement(Typography, { variant: "body2" }, dateable ? toDate(children) : children)));
-}
-
-function Body() {
-    var intl = reactIntl.useIntl();
-    var _a = useTable(), state = _a[0], dispatch = _a[1];
-    if (state.selectable) {
-        var column_1 = state.columns.selected.find(function (column) { return column.key !== 'checkbox'; });
-        state.rows = state.rows.map(function (row) {
-            var handleChange = function () {
-                dispatch({
-                    type: ActionTypes$6.ToggleRow,
-                    key: row.id,
-                    selectionsRef: state.selectionsRef,
-                });
-            };
-            return __assign(__assign({}, row), { checkbox: (React__default['default'].createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_row' }, { row: "".concat(row[column_1.key]) }), defaultChecked: row.selected, onChange: handleChange, tabIndex: -1 })) });
-        });
-    }
-    return (React__default['default'].createElement("tbody", null, state.loading ? (React__default['default'].createElement("tr", { className: "absolute inset-0 flex items-center justify-center mt-32" },
-        React__default['default'].createElement("td", null,
-            React__default['default'].createElement(Progress, { variant: "circular" },
-                React__default['default'].createElement(Progress.Description, null,
-                    React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Ui.loading" })))))) : (state.rows.slice(0, Number(state.limit)).map(function (row) {
-        var _a, _b, _c;
-        var showRowAction = ((_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length) &&
-            state.rowActions.some(function (action) { return action.enabled === undefined || action.enabled(row); });
-        return (React__default['default'].createElement("tr", { "aria-selected": state.selectable
-                ? (row === null || row === void 0 ? void 0 : row.selected)
-                    ? 'true'
-                    : 'false'
-                : undefined, className: "border-b border-black-10 last:border-b-0 group", key: row.id },
-            state.columns.selected.map(function (column) { return (React__default['default'].createElement(Cell, { key: column.key, selected: row === null || row === void 0 ? void 0 : row.selected }, row[column.key] ? (row[column.key]) : (React__default['default'].createElement("span", { className: "text-black-45" },
-                React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.not_specified" }))))); }),
-            React__default['default'].createElement(Cell, { selected: row === null || row === void 0 ? void 0 : row.selected, sticky: true }, showRowAction ? (React__default['default'].createElement(Menu, { placement: "bottom-end" },
-                React__default['default'].createElement(Menu.Button, { icon: true, label: intl.formatMessage({ id: 'Table.more_actions' }) },
-                    React__default['default'].createElement(MoreVert, null)),
-                React__default['default'].createElement(Menu.Items, null, (_c = (_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.filter(function (action) {
-                    if (action.enabled) {
-                        return action.enabled(row);
-                    }
-                    return true;
-                })) === null || _c === void 0 ? void 0 : _c.map(function (action) {
-                    var onClick = function () {
-                        action.handler(row);
-                    };
-                    return (React__default['default'].createElement("div", { className: "text-black-60", key: "".concat(row.id, "-").concat(action.label) },
-                        React__default['default'].createElement(Menu.Item, { onClick: onClick, startAdornment: action.startAdornment },
-                            React__default['default'].createElement("div", { className: "text-black-90" }, action.label))));
-                })))) : null)));
-    }))));
-}
-
-function BulkActions(_a) {
-    var children = _a.children;
-    var state = useTable()[0];
-    var selected = state.rows.filter(function (row) { return row.selected; }).length;
-    return (React__default['default'].createElement("div", { className: "flex items-center py-px" },
-        React__default['default'].createElement(Typography, { component: "p", variant: "subtitle2" },
-            React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Ui.number_selected", values: { number: selected } })),
-        React__default['default'].createElement("div", { className: "ml-6 items-center flex space-x-3" }, children)));
-}
-
-function GlobalActions(_a) {
-    var children = _a.children;
-    return React__default['default'].createElement("div", { className: "flex items-center space-x-2" }, children);
-}
-
-var ArrowForward = createSvgIcon(React__default['default'].createElement("path", { d: "M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" }), 'ArrowForward');
-
-var ArrowUpward = createSvgIcon(React__default['default'].createElement("path", { d: "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" }), 'ArrowUpward');
-
-function AddColumn(_a) {
-    var actions = _a.actions, focusRef = _a.focusRef;
-    var intl = reactIntl.useIntl();
-    var state = useTable()[0];
-    var fallback = React.useRef(state.columns.selected[0]);
-    var ref = React.useRef({
-        focus: function (options) {
-            var _a;
-            if (focusRef === null || focusRef === void 0 ? void 0 : focusRef.current) {
-                focusRef.current.focus(options);
-            }
-            else {
-                var header = document.querySelector("th[data-key=\"".concat(fallback.current.key, "\"]"));
-                var row = header.parentElement;
-                var table = (_a = row.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
-                var cells = table.rows[row.rowIndex].cells;
-                cells[cells.length - 1].focus();
-            }
-        },
-    });
-    React.useEffect(function () {
-        fallback.current = state.columns.selected[0];
-    }, [state.columns.selected]);
-    return (React__default['default'].createElement(Menu, { focusRef: ref, placement: "bottom-end" },
-        React__default['default'].createElement(Menu.Button, { disabled: state.columns.unselected.length === 0, icon: true, label: intl.formatMessage({ id: 'Table.add_column' }), tabIndex: -1 },
-            React__default['default'].createElement(Add, null)),
-        React__default['default'].createElement(Menu.Items, null,
-            React__default['default'].createElement(Menu.Group, { label: intl.formatMessage({ id: 'Table.add_column' }) }, state.columns.unselected.map(function (column) { return (React__default['default'].createElement(Menu.Item, { "data-key": column.key, key: column.key, onClick: actions.addColumn }, column.value)); })))));
-}
-function Head() {
-    var intl = reactIntl.useIntl();
-    var isInitial = useInitialRender();
-    var _a = useTable(), state = _a[0], dispatch = _a[1];
-    var actions = {
-        addColumn: function (event) {
-            dispatch({
-                type: ActionTypes$6.ToggleColumn,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        hide: function (event) {
-            dispatch({
-                type: ActionTypes$6.ToggleColumn,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        filterChange: function (event) {
-            dispatch({
-                checked: event.currentTarget.checked,
-                key: event.currentTarget.dataset.key,
-                type: ActionTypes$6.FilterChange,
-                value: event.currentTarget.name,
-            });
-        },
-        moveLeft: function (event) {
-            dispatch({
-                type: ActionTypes$6.MoveColumn,
-                direction: exports.Directions.Left,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        moveRight: function (event) {
-            dispatch({
-                type: ActionTypes$6.MoveColumn,
-                direction: exports.Directions.Right,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        sortAscending: function (event) {
-            dispatch({
-                type: ActionTypes$6.SortColumn,
-                direction: exports.Directions.Ascending,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        sortDescending: function (event) {
-            dispatch({
-                type: ActionTypes$6.SortColumn,
-                direction: exports.Directions.Descending,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-    };
-    if (state.selectable) {
-        var checked = state.rows.filter(function (row) { return row === null || row === void 0 ? void 0 : row.selected; });
-        var handleChange = function (event) {
-            var status = event.target.checked ? 'checked' : 'unchecked';
-            dispatch({
-                type: ActionTypes$6.ToggleRows,
-                status: status,
-                selectionsRef: state.selectionsRef,
-            });
-        };
-        var checkbox = {
-            key: 'checkbox',
-            selected: true,
-            value: (React__default['default'].createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_all' }), defaultChecked: checked.length === state.rows.length && state.rows.length > 0, indeterminate: checked.length > 0 && checked.length < state.rows.length, onChange: handleChange, tabIndex: -1 })),
-        };
-        if (isInitial) {
-            state.columns.selected = __spreadArray([checkbox], state.columns.selected, true);
-        }
-        else {
-            var index = state.columns.selected.findIndex(function (column) { return column.key === 'checkbox'; });
-            if (index === -1) {
-                state.columns.selected = __spreadArray([checkbox], state.columns.selected, true);
-            }
-            else {
-                var columns = state.columns.selected.slice(0);
-                columns[0] = checkbox;
-                state.columns.selected = columns;
-            }
-        }
-    }
-    return (React__default['default'].createElement("thead", { className: clsx__default['default']('z-10 transition-shadow duration-150 ease-in', state.scrollable ? 'sticky top-0' : '', state.isScrolling ? 'shadow-3' : 'shadow-0') }, state.loading ? null : (React__default['default'].createElement("tr", null,
-        state.columns.selected.map(function (column, index, columns) { return (React__default['default'].createElement(ColumnHeader, { "data-key": column.key, dense: column.key === 'checkbox', key: column.key, sort: column.sort, tabIndex: index === 0 ? 0 : -1, width: column.width }, column.key === 'checkbox' ? (column.value) : (React__default['default'].createElement(Menu, { headless: true },
-            React__default['default'].createElement(Menu.Button, { tabIndex: -1 },
-                React__default['default'].createElement(MenuHeader, { column: column })),
-            React__default['default'].createElement(Menu.Items, null,
-                column.filter ? (React__default['default'].createElement(Menu.Group, null,
-                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, onClick: actions.sortAscending, startAdornment: FilterList },
-                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.filter" }),
-                        React__default['default'].createElement(Menu, null,
-                            React__default['default'].createElement(Menu.Items, null,
-                                React__default['default'].createElement(Menu.Group, null, column.filter.map(function (filter) { return (React__default['default'].createElement(Menu.Item, { checkbox: true, "data-key": column.key, defaultChecked: filter.checked, key: filter.value, onChange: actions.filterChange, value: filter.value }, filter.label)); }))))))) : null,
-                React__default['default'].createElement(Menu.Group, null,
-                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: column.sortable === false, onClick: actions.sortAscending, startAdornment: ArrowUpward },
-                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.sort_ascending" })),
-                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: column.sortable === false, onClick: actions.sortDescending, startAdornment: ArrowDownward },
-                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.sort_descending" })),
-                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: state.selectable ? index === 1 : index === 0, onClick: actions.moveLeft, startAdornment: ArrowBack },
-                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.move_left" })),
-                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: index === columns.length - 1, onClick: actions.moveRight, startAdornment: ArrowForward },
-                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.move_right" })),
-                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: columns.length === 1 ||
-                            (state.selectable && columns.length === 2), onClick: actions.hide, startAdornment: VisibilityOff },
-                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.hide" })))))))); }),
-        React__default['default'].createElement(ColumnHeader, { dense: true, sticky: true },
-            React__default['default'].createElement(AddColumn, { actions: actions }))))));
-}
-function MenuHeader(_a) {
-    var column = _a.column, _b = _a.show, show = _b === void 0 ? false : _b;
-    return (React__default['default'].createElement(React__default['default'].Fragment, null,
-        React__default['default'].createElement(Typography, { variant: "button" }, column.value),
-        React__default['default'].createElement("div", { className: "w-6 ml-2 text-black-45" }, show ? React__default['default'].createElement(ExpandLess, null) : React__default['default'].createElement(ExpandMore, null)),
-        column.sort !== undefined ? (React__default['default'].createElement("div", { className: "w-4.5 ml-auto text-black-30" },
-            React__default['default'].createElement(ArrowDownward, null))) : null));
-}
-
-function Title$3(_a) {
-    var children = _a.children;
-    return (React__default['default'].createElement(Typography, { component: "h1", variant: "h5" }, children));
-}
-
-function Header$2(_a) {
-    var children = _a.children;
-    var state = useTable()[0];
-    var components = {
-        bulkActions: null,
-        globalActions: null,
-        title: null,
-    };
-    // TODO: This is written like this because Typescript complains when trying to access `child.type.name`. We need to figure out a way to type the child appropriately.
-    React.Children.forEach(children, function (child) {
-        switch (child.type) {
-            case BulkActions:
-                components.bulkActions = child;
-                break;
-            case GlobalActions:
-                components.globalActions = child;
-                break;
-            case Title$3:
-                components.title = child;
-                break;
-        }
-    });
-    var bulkable = state.rows.filter(function (row) { return row.selected; }).length > 0 &&
-        components.bulkActions;
-    if (bulkable) {
-        return (React__default['default'].createElement("div", { className: "px-6 py-4 bg-primary-20" }, components.bulkActions));
-    }
-    return (React__default['default'].createElement("div", { className: "flex items-center justify-between px-6 py-4" },
-        components.title,
-        components.globalActions));
-}
-
-var computeRowStart = function (state) {
-    return state.rows.length > 0 ? (state.page - 1) * state.limit + 1 : 0;
-};
-var computeRowEnd = function (start, count) {
-    return count > 0 ? start + count - 1 : 0;
-};
-/**
- * Determine if the current state has a sentinel row (i.e., more rows than the limit)
- * indicating more data is available.
- */
-var hasSentinel = function (state) {
-    return state.rows.length > state.limit;
-};
-var buildEmptyMeta = function (state) { return ({
-    end: 0,
-    hasNext: false,
-    hasPrev: false,
-    pagination: state.pagination,
-    start: 0,
-    total: 0,
-}); };
-var buildSimpleMeta = function (state) {
-    var start = computeRowStart(state);
-    var sentinel = hasSentinel(state);
-    var hasPrev = start > 1;
-    // We return one extra row as a sentinel to indicate more data is available so this check is necessary.
-    var visibleCount = sentinel ? state.limit : state.rows.length;
-    var end = computeRowEnd(start, visibleCount);
-    var total = sentinel ? undefined : end;
-    return {
-        end: end,
-        hasNext: sentinel,
-        hasPrev: hasPrev,
-        pagination: 'simple',
-        start: start,
-        total: total,
-    };
-};
-var buildLengthAwareMeta = function (state) {
-    var start = computeRowStart(state);
-    var hasPrev = start > 1;
-    var hasNext = state.page * state.limit < state.total;
-    var remaining = state.total - start + 1;
-    var visibleCount = Math.min(state.limit, remaining);
-    var end = computeRowEnd(start, visibleCount);
-    return {
-        end: end,
-        hasNext: hasNext,
-        hasPrev: hasPrev,
-        pagination: 'lengthAware',
-        start: start,
-        total: state.total,
-    };
-};
-var computePaginationMeta = function (state) {
-    if (state.rows.length === 0) {
-        return buildEmptyMeta(state);
-    }
-    return state.pagination === 'simple'
-        ? buildSimpleMeta(state)
-        : buildLengthAwareMeta(state);
-};
-function Position(_a) {
-    var loading = _a.loading, meta = _a.meta;
-    var intl = reactIntl.useIntl();
-    if (loading) {
-        return (React__default['default'].createElement("span", { className: "inline-flex w-24 align-middle" },
-            React__default['default'].createElement(Skeleton, { "aria-label": intl.formatMessage({ id: 'Table.pagination_loading' }), color: "light", variant: "square", width: "long" })));
-    }
-    if (meta.start === 0 && meta.end === 0) {
-        return (React__default['default'].createElement(Typography, { component: "p", variant: "subtitle2" }, intl.formatMessage({ id: 'Ui.no_results' })));
-    }
-    return (React__default['default'].createElement(Typography, { component: "p", variant: "subtitle2" }, intl.formatMessage({ id: 'Table.position' }, {
-        end: meta.end,
-        start: meta.start,
-        total: meta.total || "".concat(meta.end + 1, "+"),
-    })));
-}
-function PaginationComponent(_a) {
-    var onChange = _a.onChange;
-    var intl = reactIntl.useIntl();
-    var _b = useTable(), state = _b[0], dispatch = _b[1];
-    var didMountRef = React.useRef(false);
-    var meta = React.useMemo(function () {
-        return computePaginationMeta({
-            limit: state.limit,
-            page: state.page,
-            pagination: state.pagination,
-            rows: state.rows,
-            total: state.total,
-        });
-    }, [state.limit, state.page, state.pagination, state.rows, state.total]);
-    React.useEffect(function () {
-        if (!didMountRef.current) {
-            didMountRef.current = true;
-            return; // skip initial mount
-        }
-        // Intentionally not calling onChange on every render; only when limit/page change.
-        // onChange is omitted from deps because parent does not provide a stable callback.
-        onChange({ limit: state.limit, page: state.page });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.limit, state.page]);
-    var handleNavigate = function (nextPage) {
-        if (nextPage < 1 || nextPage === state.page) {
-            return;
-        }
-        dispatch({
-            type: nextPage > state.page ? ActionTypes$6.NextPage : ActionTypes$6.PreviousPage,
-        });
-    };
-    var handleClickNext = function () {
-        if (meta.hasNext) {
-            handleNavigate(state.page + 1);
-        }
-    };
-    var handleClickPrevious = function () {
-        if (meta.hasPrev) {
-            handleNavigate(state.page - 1);
-        }
-    };
-    var handleChange = function (e) {
-        var nextLimit = Number(e.currentTarget.value);
-        dispatch({ type: ActionTypes$6.ChangeLimit, limit: nextLimit });
-    };
-    if (state.rows.length === 0) {
-        return (React__default['default'].createElement(Typography, { component: "p", variant: "subtitle2" },
-            React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Ui.no_results" })));
-    }
-    return (React__default['default'].createElement("div", { className: "flex items-center" },
-        React__default['default'].createElement("nav", { "aria-label": intl.formatMessage({ id: 'Table.pagination' }), className: "flex items-center" },
-            React__default['default'].createElement(Position, { loading: state.loading, meta: meta }),
-            React__default['default'].createElement("ul", { className: "flex items-center ml-4" },
-                React__default['default'].createElement("li", { className: "inline-flex" },
-                    React__default['default'].createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Pagination.previous' }), disabled: !meta.hasPrev || state.loading, onClick: handleClickPrevious },
-                        React__default['default'].createElement(ChevronLeft, null))),
-                React__default['default'].createElement("li", { className: "inline-flex ml-3" },
-                    React__default['default'].createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Pagination.next' }), disabled: !meta.hasNext || state.loading, onClick: handleClickNext },
-                        React__default['default'].createElement(ChevronRight, null)))),
-            React__default['default'].createElement("div", { className: "ml-6 min-w-40" },
-                React__default['default'].createElement(Select, { defaultValue: String(state.limit), disabled: state.loading, label: intl.formatMessage({ id: 'Table.per_page' }), onChange: handleChange, size: "small" },
-                    React__default['default'].createElement(Select.Option, { value: "25" }, "25"),
-                    React__default['default'].createElement(Select.Option, { value: "50" }, "50"),
-                    React__default['default'].createElement(Select.Option, { value: "100" }, "100"))))));
-}
-
-function Search(_a) {
-    var _b = _a.defaultValue, defaultValue = _b === void 0 ? '' : _b, onChange = _a.onChange;
-    var intl = reactIntl.useIntl();
-    var _c = useTable(), dispatch = _c[1];
-    var handleChange = function (event) {
-        dispatch({ type: ActionTypes$6.FirstPage });
-        onChange === null || onChange === void 0 ? void 0 : onChange(event);
-    };
-    return (React__default['default'].createElement("div", { className: "ml-auto" },
-        React__default['default'].createElement(TextInput, { defaultValue: defaultValue, label: intl.formatMessage({ id: 'Table.search' }), onChange: handleChange, size: "small", type: "search" })));
-}
-
-function Toolbar(_a) {
-    var children = _a.children;
-    var intl = reactIntl.useIntl();
-    return (React__default['default'].createElement("div", { "aria-label": intl.formatMessage({ id: 'Table.actions' }), className: "flex items-center justify-between px-6 py-3" }, children));
-}
+(function (Directions) {
+    Directions[Directions["Left"] = 0] = "Left";
+    Directions[Directions["Right"] = 1] = "Right";
+    Directions[Directions["Ascending"] = 2] = "Ascending";
+    Directions[Directions["Descending"] = 3] = "Descending";
+})(exports.Directions || (exports.Directions = {}));
 
 var _a$7;
+/**
+ * Partition columns into selected (visible) and unselected (hidden) groups
+ *
+ * @param columns
+ * @returns GroupedTableColumns
+ */
 var partition = function (columns) {
     return columns.reduce(function (previous, current) {
         if (current.selected) {
@@ -11881,6 +11398,14 @@ var partition = function (columns) {
         return previous;
     }, { selected: [], unselected: [] });
 };
+/**
+ * Populate columns from localStorage if available
+ *
+ * @param defaultColumns
+ * @param initialRender
+ * @param storageKey
+ * @returns TableColumn[]
+ */
 var populate = function (defaultColumns, initialRender, storageKey) {
     if (storageKey && initialRender) {
         var serializedColumns = window.localStorage.getItem(storageKey);
@@ -12100,41 +11625,307 @@ var TableContext = React.createContext(null);
 var useTable = function () {
     return React.useContext(TableContext);
 };
-function Table(_a) {
-    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onFilterChange = _a.onFilterChange, onSelect = _a.onSelect, onSort = _a.onSort, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rowActions = _a.rowActions, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, storageKey = _a.storageKey, total = _a.total;
-    var initialRender = useInitialRender();
+
+var getWidthStyle = function (width) {
+    if (width === undefined || width === null || isNaN(Number(width))) {
+        return {};
+    }
+    return { width: "".concat(width, "%") };
+};
+function ColumnHeader(_a) {
+    var _b;
+    var key = _a["data-key"], _c = _a.dense, dense = _c === void 0 ? false : _c, children = _a.children, sort = _a.sort, _d = _a.sticky, sticky = _d === void 0 ? false : _d, _e = _a.tabIndex, tabIndex = _e === void 0 ? -1 : _e, width = _a.width;
+    var ref = React.useRef(null);
+    var state = useTable()[0];
+    var buttonActions = useForwardClick(ref, 'button');
+    var checkboxActions = useForwardClick(ref, 'input[type="checkbox"]');
+    // @ts-expect-error The type property will exist on any ReactElement that is passed as a child, but will not
+    // exist on any other object. Typescript however, will not obey `hasOwnProperty` checks, so we need to
+    // ignore this error until we can determine a better interface
+    var checkable = children && children.type === Checkbox;
+    var shouldBeSticky = sticky &&
+        (state.columns.unselected.length > 0 ||
+            Number((_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.length) > 0);
+    return (React__default['default'].createElement("th", { "aria-sort": sort === exports.Directions.Ascending
+            ? 'ascending'
+            : sort === exports.Directions.Descending
+                ? 'descending'
+                : undefined, className: clsx__default['default']('px-4 text-left border-b border-r last:border-r-0 focus:outline-none last:px-4.5 last:w-[.1%] bg-black-5-hex', dense ? null : state.dense ? 'py-1.5' : 'py-3', checkable ? 'pl-3.5 pr-1.5' : null, state.selectable ? 'first:w-[.1%] first:border-r-0' : 'first:pl-6', shouldBeSticky
+            ? 'sticky right-0 sticky-column overflow-visible border-black-10-hex hover:bg-black-10-hex focus:bg-black-10-hex active:bg-black-15-hex'
+            : 'border-black-10 hover:bg-black-10-hex focus:bg-black-10-hex active:bg-black-15-hex'), "data-key": key, onClick: checkable ? checkboxActions.handleClick : buttonActions.handleClick, onKeyDown: checkable ? checkboxActions.handleKeyDown : buttonActions.handleKeyDown, ref: ref, 
+        // Can't put into className as it contains a dynamic arbitrary variable that tailwind
+        // can't process.
+        style: getWidthStyle(width), tabIndex: tabIndex }, React.Children.map(children, function (child) {
+        if (React.isValidElement(child)) {
+            // @ts-expect-error The only current use case here is for the Table component where
+            // we nest the `Menu`, `AddColumn` and `Checkbox.Input` components inside of the
+            // `ColumnHeader`. While the `Checkbox.Input` component does not accept a
+            // `focusRef`, the other two do. React will silently discard this prop
+            // when it's not appropriate, but the types required for Typescript
+            // to not complain are completely internal to that file, so we
+            // will be ignoring this error.
+            //
+            // @see file://./Head.tsx
+            return React.cloneElement(child, { focusRef: ref });
+        }
+        return child;
+    })));
+}
+
+var toDate = function (value) {
+    var dateTime = '';
+    if (value instanceof Date) {
+        dateTime = dateFns.format(value, 'PP p');
+    }
+    if (typeof value === 'number') {
+        dateTime = dateFns.format(dateFns.fromUnixTime(value), 'PP p');
+    }
+    return dateTime;
+};
+function Cell(_a) {
+    var _b;
+    var children = _a.children, _c = _a.selected, selected = _c === void 0 ? false : _c, _d = _a.sticky, sticky = _d === void 0 ? false : _d, width = _a.width;
+    var ref = React.useRef(null);
+    var state = useTable()[0];
+    var actions = useForwardClick(ref, 'input[type="checkbox"]');
+    // @ts-expect-error The type property will exist on any ReactElement that is passed as a child, but will not
+    // exist on any other object. Typescript however, will not obey `hasOwnProperty` checks, so we need to
+    // ignore this error until we can determine a better interface
+    var checkable = children && children.type === Checkbox;
+    var dateable = (typeof children === 'number' || children instanceof Date) &&
+        dateFns.isValid(children);
+    var shouldBeSticky = sticky &&
+        (state.columns.unselected.length > 0 ||
+            Number((_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.length) > 0);
+    return (React__default['default'].createElement("td", { className: clsx__default['default']('px-4 text-left border-r last:border-r-0 border-black-10 focus:outline-none', selected ? (sticky ? 'bg-black-5-hex' : 'bg-black-5') : 'bg-white-100', checkable ? 'pl-3.5 pr-1.5' : state.dense ? 'py-1.5' : 'py-3', state.selectable ? 'first:w-[.1%] first:border-r-0' : 'first:pl-6', shouldBeSticky
+            ? 'sticky right-0 sticky-column overflow-visible group-hover:bg-black-5-hex focus:bg-black-5-hex border-l'
+            : 'group-hover:bg-black-5 focus:bg-black-5'), onClick: checkable ? actions.handleClick : undefined, onKeyDown: checkable ? actions.handleKeyDown : undefined, ref: ref, role: "gridcell", style: getWidthStyle(width), tabIndex: -1 },
+        React__default['default'].createElement(Typography, { variant: "body2" }, dateable ? toDate(children) : children)));
+}
+
+function Body() {
+    var _a;
+    var intl = reactIntl.useIntl();
+    var _b = useTable(), state = _b[0], dispatch = _b[1];
+    if (state.selectable) {
+        var column_1 = state.columns.selected.find(function (column) { return column.key !== 'checkbox'; });
+        state.rows = state.rows.map(function (row) {
+            var handleChange = function () {
+                dispatch({
+                    type: ActionTypes$6.ToggleRow,
+                    key: row.id,
+                    selectionsRef: state.selectionsRef,
+                });
+            };
+            return __assign(__assign({}, row), { checkbox: (React__default['default'].createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_row' }, { row: "".concat(row[column_1.key]) }), defaultChecked: row.selected, onChange: handleChange, tabIndex: -1 })) });
+        });
+    }
+    var hasRowActions = (_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length;
+    return (React__default['default'].createElement("tbody", null, state.loading ? (React__default['default'].createElement("tr", { className: "absolute inset-0 flex items-center justify-center mt-32" },
+        React__default['default'].createElement("td", null,
+            React__default['default'].createElement(Progress, { variant: "circular" },
+                React__default['default'].createElement(Progress.Description, null,
+                    React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Ui.loading" })))))) : (state.rows.slice(0, Number(state.limit)).map(function (row) {
+        var _a, _b, _c;
+        var showRowAction = hasRowActions &&
+            ((_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.some(function (action) { return action.enabled === undefined || action.enabled(row); }));
+        return (React__default['default'].createElement("tr", { "aria-selected": state.selectable
+                ? (row === null || row === void 0 ? void 0 : row.selected)
+                    ? 'true'
+                    : 'false'
+                : undefined, className: "border-b border-black-10 last:border-b-0 group", key: row.id },
+            state.columns.selected.map(function (column) { return (React__default['default'].createElement(Cell, { key: column.key, selected: row === null || row === void 0 ? void 0 : row.selected }, row[column.key] ? (row[column.key]) : (React__default['default'].createElement("span", { className: "text-black-45" },
+                React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.not_specified" }))))); }),
+            state.staticColumns && !hasRowActions ? null : (React__default['default'].createElement(Cell, { selected: row === null || row === void 0 ? void 0 : row.selected, sticky: true }, showRowAction ? (React__default['default'].createElement(Menu, { placement: "bottom-end" },
+                React__default['default'].createElement(Menu.Button, { icon: true, label: intl.formatMessage({ id: 'Table.more_actions' }) },
+                    React__default['default'].createElement(MoreVert, null)),
+                React__default['default'].createElement(Menu.Items, null, (_c = (_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.filter(function (action) {
+                    if (action.enabled) {
+                        return action.enabled(row);
+                    }
+                    return true;
+                })) === null || _c === void 0 ? void 0 : _c.map(function (action) {
+                    var onClick = function () {
+                        action.handler(row);
+                    };
+                    return (React__default['default'].createElement("div", { className: "text-black-60", key: "".concat(row.id, "-").concat(action.label) },
+                        React__default['default'].createElement(Menu.Item, { onClick: onClick, startAdornment: action.startAdornment },
+                            React__default['default'].createElement("div", { className: "text-black-90" }, action.label))));
+                })))) : null))));
+    }))));
+}
+
+var ArrowForward = createSvgIcon(React__default['default'].createElement("path", { d: "M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" }), 'ArrowForward');
+
+var ArrowUpward = createSvgIcon(React__default['default'].createElement("path", { d: "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" }), 'ArrowUpward');
+
+function AddColumn(_a) {
+    var actions = _a.actions, focusRef = _a.focusRef;
+    var intl = reactIntl.useIntl();
+    var state = useTable()[0];
+    var fallback = React.useRef(state.columns.selected[0]);
+    var ref = React.useRef({
+        focus: function (options) {
+            var _a;
+            if (focusRef === null || focusRef === void 0 ? void 0 : focusRef.current) {
+                focusRef.current.focus(options);
+            }
+            else {
+                var header = document.querySelector("th[data-key=\"".concat(fallback.current.key, "\"]"));
+                var row = header.parentElement;
+                var table = (_a = row.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
+                var cells = table.rows[row.rowIndex].cells;
+                cells[cells.length - 1].focus();
+            }
+        },
+    });
+    React.useEffect(function () {
+        fallback.current = state.columns.selected[0];
+    }, [state.columns.selected]);
+    return (React__default['default'].createElement(Menu, { focusRef: ref, placement: "bottom-end" },
+        React__default['default'].createElement(Menu.Button, { disabled: state.columns.unselected.length === 0, icon: true, label: intl.formatMessage({ id: 'Table.add_column' }), tabIndex: -1 },
+            React__default['default'].createElement(Add, null)),
+        React__default['default'].createElement(Menu.Items, null,
+            React__default['default'].createElement(Menu.Group, { label: intl.formatMessage({ id: 'Table.add_column' }) }, state.columns.unselected.map(function (column) { return (React__default['default'].createElement(Menu.Item, { "data-key": column.key, key: column.key, onClick: actions.addColumn }, column.value)); })))));
+}
+function Head() {
+    var _a;
+    var intl = reactIntl.useIntl();
+    var isInitial = useInitialRender();
+    var _b = useTable(), state = _b[0], dispatch = _b[1];
+    var actions = {
+        addColumn: function (event) {
+            dispatch({
+                type: ActionTypes$6.ToggleColumn,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        hide: function (event) {
+            dispatch({
+                type: ActionTypes$6.ToggleColumn,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        filterChange: function (event) {
+            dispatch({
+                checked: event.currentTarget.checked,
+                key: event.currentTarget.dataset.key,
+                type: ActionTypes$6.FilterChange,
+                value: event.currentTarget.name,
+            });
+        },
+        moveLeft: function (event) {
+            dispatch({
+                type: ActionTypes$6.MoveColumn,
+                direction: exports.Directions.Left,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        moveRight: function (event) {
+            dispatch({
+                type: ActionTypes$6.MoveColumn,
+                direction: exports.Directions.Right,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        sortAscending: function (event) {
+            dispatch({
+                type: ActionTypes$6.SortColumn,
+                direction: exports.Directions.Ascending,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        sortDescending: function (event) {
+            dispatch({
+                type: ActionTypes$6.SortColumn,
+                direction: exports.Directions.Descending,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+    };
+    if (state.selectable) {
+        var checked = state.rows.filter(function (row) { return row === null || row === void 0 ? void 0 : row.selected; });
+        var handleChange = function (event) {
+            var status = event.target.checked ? 'checked' : 'unchecked';
+            dispatch({
+                type: ActionTypes$6.ToggleRows,
+                status: status,
+                selectionsRef: state.selectionsRef,
+            });
+        };
+        var checkbox = {
+            key: 'checkbox',
+            selected: true,
+            value: (React__default['default'].createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_all' }), defaultChecked: checked.length === state.rows.length && state.rows.length > 0, indeterminate: checked.length > 0 && checked.length < state.rows.length, onChange: handleChange, tabIndex: -1 })),
+        };
+        if (isInitial) {
+            state.columns.selected = __spreadArray([checkbox], state.columns.selected, true);
+        }
+        else {
+            var index = state.columns.selected.findIndex(function (column) { return column.key === 'checkbox'; });
+            if (index === -1) {
+                state.columns.selected = __spreadArray([checkbox], state.columns.selected, true);
+            }
+            else {
+                var columns = state.columns.selected.slice(0);
+                columns[0] = checkbox;
+                state.columns.selected = columns;
+            }
+        }
+    }
+    var hasRowActions = (_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length;
+    return (React__default['default'].createElement("thead", { className: clsx__default['default']('z-10 transition-shadow duration-150 ease-in', state.scrollable ? 'sticky top-0' : '', state.isScrolling ? 'shadow-3' : 'shadow-0') }, state.loading ? null : (React__default['default'].createElement("tr", null,
+        state.columns.selected.map(function (column, index, columns) { return (React__default['default'].createElement(ColumnHeader, { "data-key": column.key, dense: column.key === 'checkbox', key: column.key, sort: column.sort, tabIndex: index === 0 ? 0 : -1, width: column.width }, column.key === 'checkbox' ? (column.value) : state.staticColumns ? (React__default['default'].createElement(ColumnHeaderContent, { column: column, menu: false })) : (React__default['default'].createElement(Menu, { headless: true },
+            React__default['default'].createElement(Menu.Button, { tabIndex: -1 },
+                React__default['default'].createElement(ColumnHeaderContent, { column: column })),
+            React__default['default'].createElement(Menu.Items, null,
+                column.filter ? (React__default['default'].createElement(Menu.Group, null,
+                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, onClick: actions.sortAscending, startAdornment: FilterList },
+                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.filter" }),
+                        React__default['default'].createElement(Menu, null,
+                            React__default['default'].createElement(Menu.Items, null,
+                                React__default['default'].createElement(Menu.Group, null, column.filter.map(function (filter) { return (React__default['default'].createElement(Menu.Item, { checkbox: true, "data-key": column.key, defaultChecked: filter.checked, key: filter.value, onChange: actions.filterChange, value: filter.value }, filter.label)); }))))))) : null,
+                React__default['default'].createElement(Menu.Group, null,
+                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: column.sortable === false, onClick: actions.sortAscending, startAdornment: ArrowUpward },
+                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.sort_ascending" })),
+                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: column.sortable === false, onClick: actions.sortDescending, startAdornment: ArrowDownward },
+                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.sort_descending" })),
+                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: state.selectable ? index === 1 : index === 0, onClick: actions.moveLeft, startAdornment: ArrowBack },
+                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.move_left" })),
+                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: index === columns.length - 1, onClick: actions.moveRight, startAdornment: ArrowForward },
+                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.move_right" })),
+                    React__default['default'].createElement(Menu.Item, { "data-key": column.key, disabled: columns.length === 1 ||
+                            (state.selectable && columns.length === 2), onClick: actions.hide, startAdornment: VisibilityOff },
+                        React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Table.hide" })))))))); }),
+        state.staticColumns && !hasRowActions ? null : (React__default['default'].createElement(ColumnHeader, { dense: true, sticky: true },
+            React__default['default'].createElement(AddColumn, { actions: actions })))))));
+}
+function ColumnHeaderContent(_a) {
+    var column = _a.column, _b = _a.menu, menu = _b === void 0 ? true : _b, _c = _a.show, show = _c === void 0 ? false : _c;
+    return (React__default['default'].createElement(React__default['default'].Fragment, null,
+        React__default['default'].createElement(Typography, { variant: "button" }, column.value),
+        menu ? (React__default['default'].createElement("div", { className: "w-6 ml-2 text-black-45" }, show ? React__default['default'].createElement(ExpandLess, null) : React__default['default'].createElement(ExpandMore, null))) : null,
+        column.sort !== undefined ? (React__default['default'].createElement("div", { className: "w-4.5 ml-auto text-black-30" },
+            React__default['default'].createElement(ArrowDownward, null))) : null));
+}
+
+function BaseTable(_a) {
+    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.loading, loading = _c === void 0 ? false : _c, rowActions = _a.rowActions, rows = _a.rows, _d = _a.scrollable, scrollable = _d === void 0 ? true : _d, _e = _a.selectable, selectable = _e === void 0 ? false : _e, storageKey = _a.storageKey, total = _a.total;
     var header = React.useRef(null);
     var tableContainer = React.useRef(null);
-    var _h = React.useState(0), headerBottomPosition = _h[0], setHeaderBottomPosition = _h[1];
+    var _f = React.useState(0), headerBottomPosition = _f[0], setHeaderBottomPosition = _f[1];
     var locale = useLocale()[0];
     var previousLocale = usePrevious(locale);
-    var _j = React.useReducer(runReducer$7, {
-        columns: partition(populate(initialColumns, initialRender, storageKey)),
-        dense: dense,
-        limit: limit,
-        loading: loading,
-        onFilterChange: onFilterChange,
-        onSelect: onSelect,
-        onSort: onSort,
-        page: 1,
-        pagination: pagination,
-        rowActions: rowActions,
-        rows: rows,
-        isScrolling: false,
-        scrollable: scrollable,
-        selectable: selectable,
-        selectionsRef: selectionsRef,
-        total: pagination === 'lengthAware' ? total || rows.length : undefined,
-    }), state = _j[0], dispatch = _j[1];
+    var _g = useTable(), state = _g[0], dispatch = _g[1];
     var handleScroll = React.useCallback(function () {
-        if (!tableContainer.current || !scrollable) {
+        if (!tableContainer.current || !state.scrollable) {
             return;
         }
         dispatch({
             type: ActionTypes$6.UpdateScrolling,
             isScrolling: !(tableContainer.current.scrollTop === 0),
         });
-    }, [scrollable]);
+    }, [dispatch, state.scrollable]);
     var getHeaderBottomPosition = function () {
         if (header.current) {
             setHeaderBottomPosition(header.current.getBoundingClientRect().bottom);
@@ -12143,17 +11934,17 @@ function Table(_a) {
     React.useEffect(function () {
         var container = tableContainer.current;
         getHeaderBottomPosition();
-        if (scrollable) {
+        if (state.scrollable) {
             container === null || container === void 0 ? void 0 : container.addEventListener('scroll', handleScroll);
         }
         window.addEventListener('resize', getHeaderBottomPosition);
         return function () {
-            if (scrollable) {
+            if (state.scrollable) {
                 container === null || container === void 0 ? void 0 : container.removeEventListener('scroll', handleScroll);
             }
             window.removeEventListener('resize', getHeaderBottomPosition);
         };
-    }, [handleScroll, scrollable]);
+    }, [handleScroll, state.scrollable]);
     React.useEffect(function () {
         if (locale === previousLocale) {
             return;
@@ -12189,6 +11980,7 @@ function Table(_a) {
             }
         }
     }, [
+        dispatch,
         initialColumns,
         locale,
         previousLocale,
@@ -12213,37 +12005,37 @@ function Table(_a) {
             selectionsRef: state.selectionsRef,
             total: total,
         });
-    }, [rows, state.selectionsRef, total]);
+    }, [dispatch, rows, state.selectionsRef, total]);
     React.useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateRowActions,
             rowActions: rowActions,
         });
-    }, [rowActions]);
+    }, [dispatch, rowActions]);
     React.useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateLoading,
             loading: loading,
         });
-    }, [loading]);
+    }, [dispatch, loading]);
     React.useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateScrollable,
             scrollable: scrollable,
         });
-    }, [scrollable]);
+    }, [dispatch, scrollable]);
     React.useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateDense,
             dense: dense,
         });
-    }, [dense]);
+    }, [dense, dispatch]);
     React.useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateSelectable,
             selectable: selectable,
         });
-    }, [selectable]);
+    }, [dispatch, selectable]);
     var handleKeyDown = function (event) {
         var _a, _b, _c;
         var cell = event.target;
@@ -12288,14 +12080,291 @@ function Table(_a) {
             ? "calc(".concat(viewportHeight - headerHeight, "px)")
             : "calc(".concat(viewportHeight - headerBottomPosition, "px)")
         : undefined;
+    return (React__default['default'].createElement("div", null,
+        React__default['default'].createElement("header", { className: "divide-y divide-black-10 bg-white-100", ref: header }, children),
+        React__default['default'].createElement("section", { className: "w-full max-w-full" },
+            React__default['default'].createElement("div", { className: scrollable ? 'overflow-auto' : '', ref: tableContainer, style: { maxHeight: maxHeight } },
+                React__default['default'].createElement("table", { cellPadding: 0, className: "w-full font-sans border-spacing-0", onKeyDown: handleKeyDown, role: "grid" },
+                    React__default['default'].createElement(Head, null),
+                    React__default['default'].createElement(Body, null))))));
+}
+
+function BulkActions(_a) {
+    var children = _a.children;
+    var state = useTable()[0];
+    var selected = state.rows.filter(function (row) { return row.selected; }).length;
+    return (React__default['default'].createElement("div", { className: "flex items-center py-px" },
+        React__default['default'].createElement(Typography, { component: "p", variant: "subtitle2" },
+            React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Ui.number_selected", values: { number: selected } })),
+        React__default['default'].createElement("div", { className: "ml-6 items-center flex space-x-3" }, children)));
+}
+
+function GlobalActions(_a) {
+    var children = _a.children;
+    return React__default['default'].createElement("div", { className: "flex items-center space-x-2" }, children);
+}
+
+function Title$3(_a) {
+    var children = _a.children;
+    return (React__default['default'].createElement(Typography, { component: "h1", variant: "h5" }, children));
+}
+
+function Header$2(_a) {
+    var children = _a.children;
+    var state = useTable()[0];
+    var components = {
+        bulkActions: null,
+        globalActions: null,
+        title: null,
+    };
+    // TODO: This is written like this because Typescript complains when trying to access `child.type.name`. We need to figure out a way to type the child appropriately.
+    React.Children.forEach(children, function (child) {
+        switch (child.type) {
+            case BulkActions:
+                components.bulkActions = child;
+                break;
+            case GlobalActions:
+                components.globalActions = child;
+                break;
+            case Title$3:
+                components.title = child;
+                break;
+        }
+    });
+    var bulkable = state.rows.filter(function (row) { return row.selected; }).length > 0 &&
+        components.bulkActions;
+    if (bulkable) {
+        return (React__default['default'].createElement("div", { className: "px-6 py-4 bg-primary-20" }, components.bulkActions));
+    }
+    return (React__default['default'].createElement("div", { className: "flex items-center justify-between px-6 py-4" },
+        components.title,
+        components.globalActions));
+}
+
+var computeRowStart = function (state) {
+    return state.rows.length > 0 ? (state.page - 1) * state.limit + 1 : 0;
+};
+var computeRowEnd = function (start, count) {
+    return count > 0 ? start + count - 1 : 0;
+};
+/**
+ * Determine if the current state has a sentinel row (i.e., more rows than the limit)
+ * indicating more data is available.
+ */
+var hasSentinel = function (state) {
+    return state.rows.length > state.limit;
+};
+var buildEmptyMeta = function (state) { return ({
+    end: 0,
+    hasNext: false,
+    hasPrev: false,
+    pagination: state.pagination,
+    start: 0,
+    total: 0,
+}); };
+var buildSimpleMeta = function (state) {
+    var start = computeRowStart(state);
+    var sentinel = hasSentinel(state);
+    var hasPrev = start > 1;
+    // We return one extra row as a sentinel to indicate more data is available so this check is necessary.
+    var visibleCount = sentinel ? state.limit : state.rows.length;
+    var end = computeRowEnd(start, visibleCount);
+    var total = sentinel ? undefined : end;
+    return {
+        end: end,
+        hasNext: sentinel,
+        hasPrev: hasPrev,
+        pagination: 'simple',
+        start: start,
+        total: total,
+    };
+};
+var buildLengthAwareMeta = function (state) {
+    var start = computeRowStart(state);
+    var hasPrev = start > 1;
+    var hasNext = state.page * state.limit < state.total;
+    var remaining = state.total - start + 1;
+    var visibleCount = Math.min(state.limit, remaining);
+    var end = computeRowEnd(start, visibleCount);
+    return {
+        end: end,
+        hasNext: hasNext,
+        hasPrev: hasPrev,
+        pagination: 'lengthAware',
+        start: start,
+        total: state.total,
+    };
+};
+var computePaginationMeta = function (state) {
+    if (state.rows.length === 0) {
+        return buildEmptyMeta(state);
+    }
+    return state.pagination === 'simple'
+        ? buildSimpleMeta(state)
+        : buildLengthAwareMeta(state);
+};
+function Position(_a) {
+    var loading = _a.loading, meta = _a.meta;
+    var intl = reactIntl.useIntl();
+    if (loading) {
+        return (React__default['default'].createElement("span", { className: "inline-flex w-24 align-middle" },
+            React__default['default'].createElement(Skeleton, { "aria-label": intl.formatMessage({ id: 'Table.pagination_loading' }), color: "light", variant: "square", width: "long" })));
+    }
+    if (meta.start === 0 && meta.end === 0) {
+        return (React__default['default'].createElement(Typography, { component: "p", variant: "subtitle2" }, intl.formatMessage({ id: 'Ui.no_results' })));
+    }
+    return (React__default['default'].createElement(Typography, { component: "p", variant: "subtitle2" }, intl.formatMessage({ id: 'Table.position' }, {
+        end: meta.end,
+        start: meta.start,
+        total: meta.total || "".concat(meta.end + 1, "+"),
+    })));
+}
+function PaginationComponent(_a) {
+    var onChange = _a.onChange;
+    var intl = reactIntl.useIntl();
+    var _b = useTable(), state = _b[0], dispatch = _b[1];
+    var didMountRef = React.useRef(false);
+    var meta = React.useMemo(function () {
+        return computePaginationMeta({
+            limit: state.limit,
+            page: state.page,
+            pagination: state.pagination,
+            rows: state.rows,
+            total: state.total,
+        });
+    }, [state.limit, state.page, state.pagination, state.rows, state.total]);
+    React.useEffect(function () {
+        if (!didMountRef.current) {
+            didMountRef.current = true;
+            return; // skip initial mount
+        }
+        // Intentionally not calling onChange on every render; only when limit/page change.
+        // onChange is omitted from deps because parent does not provide a stable callback.
+        onChange({ limit: state.limit, page: state.page });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.limit, state.page]);
+    var handleNavigate = function (nextPage) {
+        if (nextPage < 1 || nextPage === state.page) {
+            return;
+        }
+        dispatch({
+            type: nextPage > state.page ? ActionTypes$6.NextPage : ActionTypes$6.PreviousPage,
+        });
+    };
+    var handleClickNext = function () {
+        if (meta.hasNext) {
+            handleNavigate(state.page + 1);
+        }
+    };
+    var handleClickPrevious = function () {
+        if (meta.hasPrev) {
+            handleNavigate(state.page - 1);
+        }
+    };
+    var handleChange = function (e) {
+        var nextLimit = Number(e.currentTarget.value);
+        dispatch({ type: ActionTypes$6.ChangeLimit, limit: nextLimit });
+    };
+    if (state.rows.length === 0) {
+        return (React__default['default'].createElement(Typography, { component: "p", variant: "subtitle2" },
+            React__default['default'].createElement(reactIntl.FormattedMessage, { id: "Ui.no_results" })));
+    }
+    return (React__default['default'].createElement("div", { className: "flex items-center" },
+        React__default['default'].createElement("nav", { "aria-label": intl.formatMessage({ id: 'Table.pagination' }), className: "flex items-center" },
+            React__default['default'].createElement(Position, { loading: state.loading, meta: meta }),
+            React__default['default'].createElement("ul", { className: "flex items-center ml-4" },
+                React__default['default'].createElement("li", { className: "inline-flex" },
+                    React__default['default'].createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Pagination.previous' }), disabled: !meta.hasPrev || state.loading, onClick: handleClickPrevious },
+                        React__default['default'].createElement(ChevronLeft, null))),
+                React__default['default'].createElement("li", { className: "inline-flex ml-3" },
+                    React__default['default'].createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Pagination.next' }), disabled: !meta.hasNext || state.loading, onClick: handleClickNext },
+                        React__default['default'].createElement(ChevronRight, null)))),
+            React__default['default'].createElement("div", { className: "ml-6 min-w-40" },
+                React__default['default'].createElement(Select, { defaultValue: String(state.limit), disabled: state.loading, label: intl.formatMessage({ id: 'Table.per_page' }), onChange: handleChange, size: "small" },
+                    React__default['default'].createElement(Select.Option, { value: "25" }, "25"),
+                    React__default['default'].createElement(Select.Option, { value: "50" }, "50"),
+                    React__default['default'].createElement(Select.Option, { value: "100" }, "100"))))));
+}
+
+function Search(_a) {
+    var _b = _a.defaultValue, defaultValue = _b === void 0 ? '' : _b, onChange = _a.onChange;
+    var intl = reactIntl.useIntl();
+    var _c = useTable(), dispatch = _c[1];
+    var handleChange = function (event) {
+        dispatch({ type: ActionTypes$6.FirstPage });
+        onChange === null || onChange === void 0 ? void 0 : onChange(event);
+    };
+    return (React__default['default'].createElement("div", { className: "ml-auto" },
+        React__default['default'].createElement(TextInput, { defaultValue: defaultValue, label: intl.formatMessage({ id: 'Table.search' }), onChange: handleChange, size: "small", type: "search" })));
+}
+
+function Toolbar(_a) {
+    var children = _a.children;
+    var intl = reactIntl.useIntl();
+    return (React__default['default'].createElement("div", { "aria-label": intl.formatMessage({ id: 'Table.actions' }), className: "flex items-center justify-between px-6 py-3" }, children));
+}
+
+function BasicTable(_a) {
+    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onSelect = _a.onSelect, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, total = _a.total;
+    var adjustedColumns = React.useMemo(function () {
+        return initialColumns.map(function (column) { return (__assign(__assign({}, column), { selected: true, sort: undefined })); });
+    }, [initialColumns]);
+    var _h = React.useReducer(runReducer$7, {}, function () {
+        return ({
+            columns: {
+                selected: adjustedColumns,
+                unselected: [],
+            },
+            dense: dense,
+            limit: limit,
+            loading: loading,
+            onSelect: onSelect,
+            page: 1,
+            pagination: pagination,
+            rowActions: undefined,
+            rows: rows,
+            isScrolling: false,
+            scrollable: scrollable,
+            selectable: selectable,
+            selectionsRef: selectionsRef,
+            staticColumns: true,
+            total: pagination === 'lengthAware' ? total || rows.length : undefined,
+        });
+    }), state = _h[0], dispatch = _h[1];
     return (React__default['default'].createElement(TableContext.Provider, { value: [state, dispatch] },
-        React__default['default'].createElement("div", null,
-            React__default['default'].createElement("header", { className: "divide-y divide-black-10 bg-white-100", ref: header }, children),
-            React__default['default'].createElement("section", { className: "w-full max-w-full" },
-                React__default['default'].createElement("div", { className: scrollable ? 'overflow-auto' : '', ref: tableContainer, style: { maxHeight: maxHeight } },
-                    React__default['default'].createElement("table", { cellPadding: 0, className: "w-full font-sans border-spacing-0", onKeyDown: handleKeyDown, role: "grid" },
-                        React__default['default'].createElement(Head, null),
-                        React__default['default'].createElement(Body, null)))))));
+        React__default['default'].createElement(BaseTable, { columns: adjustedColumns, dense: dense, loading: loading, rows: rows, scrollable: scrollable, selectable: selectable, total: total }, children)));
+}
+BasicTable.BulkActions = BulkActions;
+BasicTable.GlobalActions = GlobalActions;
+BasicTable.Header = Header$2;
+BasicTable.Pagination = PaginationComponent;
+BasicTable.Search = Search;
+BasicTable.Title = Title$3;
+BasicTable.Toolbar = Toolbar;
+
+function Table(_a) {
+    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onFilterChange = _a.onFilterChange, onSelect = _a.onSelect, onSort = _a.onSort, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rowActions = _a.rowActions, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, storageKey = _a.storageKey, total = _a.total;
+    var initialRender = useInitialRender();
+    var _h = React.useReducer(runReducer$7, {
+        columns: partition(populate(initialColumns, initialRender, storageKey)),
+        dense: dense,
+        limit: limit,
+        loading: loading,
+        onFilterChange: onFilterChange,
+        onSelect: onSelect,
+        onSort: onSort,
+        page: 1,
+        pagination: pagination,
+        rowActions: rowActions,
+        rows: rows,
+        isScrolling: false,
+        scrollable: scrollable,
+        selectable: selectable,
+        selectionsRef: selectionsRef,
+        total: pagination === 'lengthAware' ? total || rows.length : undefined,
+    }), state = _h[0], dispatch = _h[1];
+    return (React__default['default'].createElement(TableContext.Provider, { value: [state, dispatch] },
+        React__default['default'].createElement(BaseTable, { columns: initialColumns, dense: dense, loading: loading, rowActions: rowActions, rows: rows, scrollable: scrollable, selectable: selectable, storageKey: storageKey, total: total }, children)));
 }
 Table.BulkActions = BulkActions;
 Table.GlobalActions = GlobalActions;
@@ -12571,6 +12640,7 @@ exports.Autocomplete = Autocomplete;
 exports.Avatar = Avatar;
 exports.Badge = Badge;
 exports.Banner = Banner;
+exports.BasicTable = BasicTable;
 exports.Button = Button;
 exports.ButtonGroup = ButtonGroup;
 exports.Card = Card;

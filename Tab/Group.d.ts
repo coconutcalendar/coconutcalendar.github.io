@@ -3,6 +3,11 @@ import React from 'react';
 import type { TabColor, TabSize } from './Tab';
 interface GroupProps {
     /**
+     * The alignment of tabs within the group
+     * @default 'stretch'
+     */
+    align?: TabAlign;
+    /**
      * The orientation of the icon adornment relative to the tab content
      * @default 'vertical'
      */
@@ -33,7 +38,10 @@ interface GroupProps {
      */
     size?: TabSize;
 }
+export declare const TAB_ALIGN_VALUES: readonly ["left", "stretch", "right"];
+export type TabAlign = typeof TAB_ALIGN_VALUES[number];
 type GroupState = {
+    align: TabAlign;
     color: TabColor;
     disabled?: boolean | undefined;
     onClick?: MouseEventHandler<HTMLButtonElement>;
@@ -45,5 +53,5 @@ type GroupState = {
 export type Orientation = 'vertical' | 'horizontal';
 export declare const GroupContext: React.Context<GroupState | null>;
 export declare const useGroup: () => GroupState;
-declare function Group({ children, color, defaultTab, disabled, onClick, orientation, size, adornmentPosition, }: PropsWithChildren<GroupProps>): JSX.Element;
+declare function Group({ align, children, color, defaultTab, disabled, onClick, orientation, size, adornmentPosition, }: PropsWithChildren<GroupProps>): JSX.Element;
 export default Group;
