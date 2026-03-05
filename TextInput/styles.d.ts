@@ -6,7 +6,7 @@ export type TextInputSizes = {
     [key in TextInputSize]: string;
 };
 export type TextInputVariantsWithSizes = {
-    [key in TextInputVariant]: TextInputSizes;
+    [key in TextInputVariant | 'readOnly']: TextInputSizes;
 };
 type TextInputStatuses = {
     [key in TextInputStatus]: string;
@@ -45,13 +45,13 @@ type LabelColors = {
     };
 };
 type Sizes = {
-    [key in TextInputVariant]: TextInputSizes;
+    [key in TextInputVariant | 'readOnly']: TextInputSizes;
 };
 export type TextInputVariantsWithStatuses = {
     [key in TextInputVariant]: TextInputStatuses;
 };
 export type TextInputVariantsWithStatuseColors = {
-    [key in TextInputVariant]: TextInputStatuseColors;
+    [key in TextInputVariant | 'readOnly']: TextInputStatuseColors;
 };
 export declare const labels: Labels;
 export declare const labelColors: LabelColors;
@@ -91,6 +91,7 @@ export declare const baseClasses: {
     help: string;
     inputWrapper: string;
     input: string;
+    enabledInput: string;
     label: string;
     start: string;
 };

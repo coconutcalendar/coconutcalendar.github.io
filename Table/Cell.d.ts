@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
-import type { ColumnWidth } from './TableContext';
+import type { ColumnWidth } from './ColumnHeader';
 interface CellProps {
     /**
      * Whether the cell is selected

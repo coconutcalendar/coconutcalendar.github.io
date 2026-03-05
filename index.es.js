@@ -4566,6 +4566,10 @@ var sizes$4 = {
         medium: 'h-14 pt-3 pb-0',
         small: 'h-12 pt-3 pb-0',
     },
+    readOnly: {
+        medium: 'h-10 pt-4.5 pb-0',
+        small: 'h-10 pt-4.5 pb-0',
+    },
 };
 var parentSizes = {
     outlined: {
@@ -4576,6 +4580,10 @@ var parentSizes = {
         medium: 'h-14',
         small: 'h-12',
     },
+    readOnly: {
+        medium: 'h-10',
+        small: 'h-10',
+    },
 };
 var multilineSizes = {
     outlined: {
@@ -4583,6 +4591,10 @@ var multilineSizes = {
         small: 'w-full mt-2 pb-0',
     },
     filled: {
+        medium: 'w-full mt-6 pb-0',
+        small: 'w-full mt-5 pb-0',
+    },
+    readOnly: {
         medium: 'w-full mt-6 pb-0',
         small: 'w-full mt-5 pb-0',
     },
@@ -4624,6 +4636,17 @@ var focusedStyles = {
             inverse: "focus-within:shadow-input-error-main focus-within:border-error-main focus-within:text-error-main",
         },
     },
+    readOnly: {
+        default: {
+            default: "focus-within:text-primary-main",
+            inverse: "focus-within:text-primary-lighter",
+        },
+        disabled: { default: '', inverse: '' },
+        error: {
+            default: "focus-within:text-error-main",
+            inverse: "focus-within:text-error-light",
+        },
+    },
 };
 var appearFocusedStyles = {
     filled: {
@@ -4652,6 +4675,20 @@ var appearFocusedStyles = {
         error: {
             default: "shadow-input-error-main border border-solid border-error-main text-error-main",
             inverse: "shadow-input-error-main border border-solid border-error-main text-error-main",
+        },
+    },
+    readOnly: {
+        default: {
+            default: "bg-transparent text-primary-main",
+            inverse: "bg-transparent text-primary-lighter",
+        },
+        disabled: {
+            default: '',
+            inverse: '',
+        },
+        error: {
+            default: '',
+            inverse: '',
         },
     },
 };
@@ -4684,6 +4721,20 @@ var variants$3 = {
             inverse: "shadow-input-error-main border border-solid border-error-main text-error-main",
         },
     },
+    readOnly: {
+        default: {
+            default: 'bg-transparent text-black-60',
+            inverse: 'bg-transparent text-white-60',
+        },
+        disabled: {
+            default: '',
+            inverse: '',
+        },
+        error: {
+            default: '',
+            inverse: '',
+        },
+    },
 };
 var adornments = {
     icon: 'w-5',
@@ -4696,6 +4747,10 @@ var adornments = {
             medium: 'mt-6 h-6',
             small: 'mt-5 h-6',
         },
+        readOnly: {
+            medium: 'mt-6 h-6',
+            small: 'mt-5 h-6',
+        },
     },
     size: {
         outlined: {
@@ -4705,6 +4760,10 @@ var adornments = {
         filled: {
             medium: 'h-14',
             small: 'h-12',
+        },
+        readOnly: {
+            medium: 'h-10',
+            small: 'h-10',
         },
     },
     text: {
@@ -4727,7 +4786,8 @@ var baseClasses = {
     end: 'shrink-0 whitespace-normal flex items-center',
     help: 'text-xs font-normal tracking-wide pt-2',
     inputWrapper: 'flex relative rounded',
-    input: "flex-grow min-w-0 px-3 text-sm font-normal tracking-wide rounded disabled:cursor-not-allowed focus:outline-none",
+    input: "flex-grow min-w-0 text-sm font-normal tracking-wide disabled:cursor-not-allowed focus:outline-none",
+    enabledInput: "pl-3 rounded",
     label: "absolute top-0 left-0 block truncate max-w-(full-6) overflow-y-auto font-normal tracking-wide transition-all duration-200 ease-in-out",
     start: "shrink-0 ml-3 whitespace-normal flex items-center",
 };
@@ -4751,6 +4811,25 @@ var TextInput = forwardRef(function (_a, ref) {
     var _t = useState(!!StartAdornment), shrinkLabel = _t[0], setShrinkLabel = _t[1];
     var localRef = useRef(null);
     var syncRef = useSyncRefs(localRef, inputRef);
+    // Disabled state takes precedence over read-only, so we need to ensure that
+    // read-only styles and behaviors are not applied when disabled is true
+    if (disabled) {
+        readOnly = false;
+    }
+    // This component is used within more complex components like Select and DatePickerInput,
+    // where the input is in read-only mode but uses regular input styles.
+    var readOnlyVariant = readOnly && !selectable;
+    // Read-only inputs have specific style and behavior requirements.
+    if (readOnlyVariant) {
+        error = false; // Read-only inputs are exempt from validation and cannot be in an error state
+        required = false; // The required attribute is not permitted on inputs with the readonly attribute specified.
+        helperText = undefined; // Since read-only input value cannot be changed or validated, helper text is not necessary
+        StartAdornment = undefined;
+        variant = 'filled'; // Majority of styles for read-only inputs match the 'filled' variant
+        inputMode = undefined;
+        enterKeyHint = undefined;
+        onClear = undefined; // Read-only inputs cannot be cleared
+    }
     var handleClear = function (event) {
         var _a;
         event === null || event === void 0 ? void 0 : event.preventDefault();
@@ -4779,14 +4858,14 @@ var TextInput = forwardRef(function (_a, ref) {
     var handleBlur = function (event) {
         // handle focused styles manually in browsers that do not support ':focus-within'
         if (!isFocusWithinSupported() && !(extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-expanded'])) {
-            appearFocusedStyles[variant][status][color]
+            appearFocusedStyles[readOnlyVariant ? 'readOnly' : variant][status][color]
                 .split(' ')
                 .forEach(function (className) {
                 var _a;
                 (_a = event.target.parentElement) === null || _a === void 0 ? void 0 : _a.classList.remove(className);
             });
         }
-        if (!disabled && !readOnly && localRef.current) {
+        if (!disabled && !readOnlyVariant && localRef.current) {
             var trimmedValue = localRef.current.value.trim();
             if (localRef.current.value !== trimmedValue) {
                 localRef.current.value = trimmedValue;
@@ -4826,7 +4905,7 @@ var TextInput = forwardRef(function (_a, ref) {
     var handleFocus = function (event) {
         // handle focused styles manually in browsers that do not support ':focus-within'
         if (!isFocusWithinSupported()) {
-            appearFocusedStyles[variant][status][color]
+            appearFocusedStyles[readOnlyVariant ? 'readOnly' : variant][status][color]
                 .split(' ')
                 .forEach(function (className) {
                 var _a;
@@ -4856,12 +4935,12 @@ var TextInput = forwardRef(function (_a, ref) {
         'aria-haspopup': extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-haspopup'],
         'aria-labelledby': (extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-labelledby']) || "label-".concat((extraProps === null || extraProps === void 0 ? void 0 : extraProps.id) || id),
         autoFocus: autoFocus,
-        className: clsx(baseClasses.input, inputVariants[status][color], multiline
+        className: clsx(baseClasses.input, readOnlyVariant ? 'read-only-variant' : baseClasses.enabledInput, inputVariants[status][color], multiline
             ? [
-                multilineSizes[variant][size],
-                'overflow-x-hidden break-words no-scrollbar resize-none',
+                multilineSizes[readOnlyVariant ? 'readOnly' : variant][size],
+                'overflow-x-hidden break-words resize-none',
             ]
-            : [sizes$4[variant][size], 'truncate'], selectable ? 'cursor-pointer' : ''),
+            : [sizes$4[readOnlyVariant ? 'readOnly' : variant][size], 'truncate'], selectable ? 'cursor-pointer' : ''),
         disabled: disabled,
         id: extraProps === null || extraProps === void 0 ? void 0 : extraProps.id,
         inputMode: inputMode || modes[type],
@@ -4871,7 +4950,7 @@ var TextInput = forwardRef(function (_a, ref) {
         onClick: onClick,
         onFocus: handleFocus,
         onKeyDown: onKeyDown,
-        placeholder: '',
+        placeholder: readOnlyVariant ? '—' : '',
         readOnly: readOnly,
         required: required,
         role: extraProps === null || extraProps === void 0 ? void 0 : extraProps.role,
@@ -4881,12 +4960,14 @@ var TextInput = forwardRef(function (_a, ref) {
     };
     return (React.createElement("div", { className: baseClasses.container },
         React.createElement("label", { className: "relative", ref: containerRef },
-            React.createElement("div", { className: clsx(baseClasses.inputWrapper, focusedStyles[variant][status][color], appearFocused
-                    ? appearFocusedStyles[variant][status][color]
-                    : variants$3[variant][status][color], multiline ? '' : parentSizes[variant][size]), ref: ref },
+            React.createElement("div", { className: clsx(baseClasses.inputWrapper, focusedStyles[readOnlyVariant ? 'readOnly' : variant][status][color], appearFocused
+                    ? appearFocusedStyles[readOnlyVariant ? 'readOnly' : variant][status][color]
+                    : variants$3[readOnlyVariant ? 'readOnly' : variant][status][color], multiline
+                    ? ''
+                    : parentSizes[readOnlyVariant ? 'readOnly' : variant][size]), ref: ref },
                 StartAdornment ? (React.createElement("span", { className: clsx(baseClasses.start, variant === 'filled' ? 'pt-3' : null, multiline
-                        ? adornments.multilineSize[variant][size]
-                        : adornments.size[variant][size], adornments.text[status][color], typeof StartAdornment === 'function' &&
+                        ? adornments.multilineSize[readOnlyVariant ? 'readOnly' : variant][size]
+                        : adornments.size[readOnlyVariant ? 'readOnly' : variant][size], adornments.text[status][color], typeof StartAdornment === 'function' &&
                         'uiName' in StartAdornment &&
                         StartAdornment.uiName === 'SvgIcon'
                         ? adornments.icon
@@ -4900,23 +4981,29 @@ var TextInput = forwardRef(function (_a, ref) {
                     React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'TextInput.clear_labelled_input' }, { label: label }), color: color, onClick: handleClear, size: "small" },
                         React.createElement(Close, null)))) : null,
                 EndAdornment ? (React.createElement("span", { className: clsx(baseClasses.end, multiline
-                        ? adornments.multilineSize[variant][size]
-                        : adornments.size[variant][size], adornments.text[status][color], typeof EndAdornment === 'function' &&
+                        ? adornments.multilineSize[readOnlyVariant ? 'readOnly' : variant][size]
+                        : adornments.size[readOnlyVariant ? 'readOnly' : variant][size], adornments.text[status][color], typeof EndAdornment === 'function' &&
                         'uiName' in EndAdornment &&
                         EndAdornment.uiName === 'SvgIcon'
                         ? adornments.icon
-                        : null, 'mr-3') }, typeof EndAdornment === 'function' &&
+                        : null, 'mr-3 ml-3') }, typeof EndAdornment === 'function' &&
                     'uiName' in EndAdornment &&
                     EndAdornment.uiName === 'SvgIcon' ? (React.createElement(EndAdornment, { color: "inherit" })) : (EndAdornment))) : null,
                 React.createElement("span", { className: clsx('input-label', variant === 'outlined'
                         ? 'input-label-outlined'
                         : 'input-label-filled', size === 'medium' ? 'input-label-medium' : 'input-label-small', baseClasses.label, disabled ? 'cursor-not-allowed' : 'cursor-text', appearFocused
-                        ? "".concat(labels.focused[variant], " ").concat(labelColors.focused[variant][status][color])
+                        ? "".concat(readOnlyVariant
+                            ? 'leading-4.5 text-xs'
+                            : labels.focused[variant], " ").concat(labelColors.focused[variant][status][color])
                         : shrinkLabel
-                            ? "".concat(labels.value[variant], " ").concat(labelColors.value[variant][status][color])
-                            : "".concat(labels.inactive[variant], " ").concat(labelColors.inactive[variant][status][color]), appearFocused || shrinkLabel
-                        ? labelSpacing.focused[variant][size]
-                        : labelSpacing.inactive[variant][size]), id: "label-".concat((extraProps === null || extraProps === void 0 ? void 0 : extraProps.id) || id), ref: labelRef }, label))),
+                            ? "".concat(readOnlyVariant
+                                ? 'leading-4.5 text-xs'
+                                : labels.value[variant], " ").concat(labelColors.value[variant][status][color])
+                            : "".concat(labels.inactive[variant], " ").concat(labelColors.inactive[variant][status][color]), readOnlyVariant
+                        ? null
+                        : appearFocused || shrinkLabel
+                            ? labelSpacing.focused[variant][size]
+                            : labelSpacing.inactive[variant][size]), id: "label-".concat((extraProps === null || extraProps === void 0 ? void 0 : extraProps.id) || id), ref: labelRef }, label))),
         React.createElement("div", { "aria-live": error ? 'assertive' : 'off', className: helperText
                 ? clsx(baseClasses.help, labelColors.value[variant][status][color])
                 : 'sr-only', id: "helper-text-".concat(id) }, helperText ? helperText : null)));
@@ -10229,18 +10316,17 @@ function Content$3(_a) {
     return (React.createElement("div", { className: clsx('px-6 overflow-hidden overflow-y-auto focus-visible:ring', overflowing ? 'border-b border-t border-black-10' : null, state.hasTitle ? 'py-0' : 'pt-6'), id: id, ref: ref }, children));
 }
 function Dialog(_a) {
-    var _b;
-    var _c = _a.backdrop, backdrop = _c === void 0 ? Backdrops.Dark : _c, children = _a.children, _d = _a.constraint, constraint = _d === void 0 ? Constraints.Default : _d, _e = _a.dismissable, dismissable = _e === void 0 ? true : _e, onDismiss = _a.onDismiss, _f = _a.open, open = _f === void 0 ? false : _f;
+    var _b = _a.backdrop, backdrop = _b === void 0 ? Backdrops.Dark : _b, children = _a.children, _c = _a.constraint, constraint = _c === void 0 ? Constraints.Default : _c, _d = _a.dismissable, dismissable = _d === void 0 ? true : _d, onDismiss = _a.onDismiss, _e = _a.open, open = _e === void 0 ? false : _e;
     var mouseDownTarget = useRef(null);
     var parentRef = useRef(null);
-    var _g = useReducer(runReducer$4, {
+    var _f = useReducer(runReducer$4, {
         dismissable: dismissable,
         hasContent: false,
         hasTitle: false,
         id: useId(),
         onDismiss: onDismiss,
         parentRef: parentRef,
-    }), state = _g[0], dispatch = _g[1];
+    }), state = _f[0], dispatch = _f[1];
     var handleClick = function (event) {
         if (state.dismissable && mouseDownTarget.current === event.currentTarget) {
             event.stopPropagation();
@@ -10259,11 +10345,9 @@ function Dialog(_a) {
     // Optimization - ReactFocusLock runs very slowly in test environments.
     // We set this explicitly in Dialog.tests, but consumers can
     // set it explicitly or fallback to true in 'test' states.
-    var disabled = global.process
-        ? Object.hasOwnProperty.call((_b = global.process.env) !== null && _b !== void 0 ? _b : {}, 'DISABLE_SCROLL_FOCUS_LOCK')
-            ? global.process.env.DISABLE_SCROLL_FOCUS_LOCK === 'true'
-            : global.process.env.NODE_ENV === 'test'
-        : false;
+    var disabled = Object.hasOwnProperty.call(process.env, 'DISABLE_SCROLL_FOCUS_LOCK')
+        ? process.env.DISABLE_SCROLL_FOCUS_LOCK === 'true'
+        : process.env.NODE_ENV === 'test';
     return open ? (React.createElement(Portal, { open: open },
         React.createElement("div", { "aria-describedby": state.hasContent ? "coconut-dialog-content-".concat(state.id) : undefined, "aria-labelledby": state.hasTitle ? "coconut-dialog-header-".concat(state.id) : undefined, "aria-modal": "true", className: clsx('fixed inset-0 flex items-center justify-center opacity-100 backdrop-blur-2 z-9998', backdrop === Backdrops.Dark ? 'bg-black-45' : 'bg-white-45'), 
             /*
@@ -11251,15 +11335,10 @@ function Switch(_a) {
 var GroupContext = createContext(null);
 var useGroup = function () { return useContext(GroupContext); };
 function Group$5(_a) {
-    var _b = _a.align, align = _b === void 0 ? 'stretch' : _b, children = _a.children, _c = _a.color, color = _c === void 0 ? 'default' : _c, defaultTab = _a.defaultTab, disabled = _a.disabled, onClick = _a.onClick, _d = _a.orientation, orientation = _d === void 0 ? 'horizontal' : _d, _e = _a.size, size = _e === void 0 ? 'large' : _e, _f = _a.adornmentPosition, adornmentPosition = _f === void 0 ? 'vertical' : _f;
-    var _g = useState(defaultTab), selectedTab = _g[0], setSelectedTab = _g[1];
-    return (React.createElement("div", { className: clsx('flex w-full flex-wrap border-b border-solid border-black-10-hex', orientation === 'vertical' ? 'flex-col' : null, align === 'left' && orientation === 'horizontal'
-            ? 'justify-start'
-            : null, align === 'right' && orientation === 'horizontal'
-            ? 'justify-end'
-            : null), role: "tablist" },
+    var children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, defaultTab = _a.defaultTab, disabled = _a.disabled, onClick = _a.onClick, _c = _a.orientation, orientation = _c === void 0 ? 'horizontal' : _c, _d = _a.size, size = _d === void 0 ? 'large' : _d, _e = _a.adornmentPosition, adornmentPosition = _e === void 0 ? 'vertical' : _e;
+    var _f = useState(defaultTab), selectedTab = _f[0], setSelectedTab = _f[1];
+    return (React.createElement("div", { className: clsx('flex w-full flex-wrap', orientation === 'vertical' ? 'flex-col' : null), role: "tablist" },
         React.createElement(GroupContext.Provider, { value: {
-                align: align,
                 color: color,
                 disabled: disabled,
                 onClick: onClick,
@@ -11286,22 +11365,22 @@ var sizes$a = {
 };
 var variants$9 = {
     default: {
-        selected: "border-b-2 border-solid border-black-90 text-black-90 active:bg-black-20 focus:bg-black-10 focus-visible:ring hover:bg-black-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
-        unselected: "border-b-2 border-solid border-transparent text-black-90 active:bg-black-20 focus:bg-black-5 focus-visible:ring hover:bg-black-5 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
+        selected: "border-b-2 border-solid border-black-90 text-black-90 active:bg-black-20 focus:bg-black-10 focus-visible:ring hover:bg-black-10",
+        unselected: "border-b-2 border-solid border-transparent text-black-90 active:bg-black-20 focus:bg-black-5 focus-visible:ring hover:bg-black-5",
     },
     primary: {
-        selected: "border-b-2 border-solid border-primary-main text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
-        unselected: "border-b-2 border-solid border-transparent text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
+        selected: "border-b-2 border-solid border-primary-main text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10",
+        unselected: "border-b-2 border-solid border-transparent text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10",
     },
     secondary: {
-        selected: "border-b-2 border-solid border-secondary-main text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
-        unselected: "border-b-2 border-solid border-transparent text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
+        selected: "border-b-2 border-solid border-secondary-main text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10",
+        unselected: "border-b-2 border-solid border-transparent text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10",
     },
 };
 function Tab(_a) {
     var _b;
     var controls = _a["aria-controls"], children = _a.children, color = _a.color, disabled = _a.disabled, id = _a.id, onClick = _a.onClick, size = _a.size, StartAdornment = _a.startAdornment, value = _a.value;
-    var _c = useGroup(), groupAlign = _c.align, groupColor = _c.color, groupDisabled = _c.disabled, groupClick = _c.onClick, selectedTab = _c.selectedTab, setSelectedTab = _c.setSelectedTab, groupSize = _c.size, adornmentPosition = _c.adornmentPosition;
+    var _c = useGroup(), groupColor = _c.color, groupDisabled = _c.disabled, groupClick = _c.onClick, selectedTab = _c.selectedTab, setSelectedTab = _c.setSelectedTab, groupSize = _c.size, adornmentPosition = _c.adornmentPosition;
     var isDisabled = disabled !== null && disabled !== void 0 ? disabled : groupDisabled;
     var isSelected = selectedTab === value;
     var handleSelectTab = function (event) {
@@ -11310,7 +11389,7 @@ function Tab(_a) {
             onClick ? onClick(event) : groupClick === null || groupClick === void 0 ? void 0 : groupClick(event);
         }
     };
-    return (React.createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx('min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none disabled:border-b-2 disabled:border-solid disabled:bg-transparent disabled:text-black-25', groupAlign === 'stretch' ? 'flex-grow' : null, isSelected
+    return (React.createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx('flex-grow min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none disabled:border-black-25 disabled:bg-transparent disabled:text-black-25', isSelected
             ? variants$9[color !== null && color !== void 0 ? color : groupColor].selected
             : variants$9[color !== null && color !== void 0 ? color : groupColor].unselected, sizes$a[size !== null && size !== void 0 ? size : groupSize].root), disabled: isDisabled, id: id, onClick: handleSelectTab, role: "tab", value: value },
         React.createElement("div", { className: clsx('flex justify-center items-center', adornmentPosition === 'vertical' ? 'flex-col' : '') },
@@ -11327,6 +11406,14 @@ function usePrevious(value) {
     }, [value]);
     return ref.current;
 }
+
+var Directions;
+(function (Directions) {
+    Directions[Directions["Left"] = 0] = "Left";
+    Directions[Directions["Right"] = 1] = "Right";
+    Directions[Directions["Ascending"] = 2] = "Ascending";
+    Directions[Directions["Descending"] = 3] = "Descending";
+})(Directions || (Directions = {}));
 
 var ActionTypes$6;
 (function (ActionTypes) {
@@ -11368,21 +11455,501 @@ function useForwardClick(ref, selector) {
     return { handleClick: handleClick, handleKeyDown: handleKeyDown };
 }
 
-var Directions;
-(function (Directions) {
-    Directions[Directions["Left"] = 0] = "Left";
-    Directions[Directions["Right"] = 1] = "Right";
-    Directions[Directions["Ascending"] = 2] = "Ascending";
-    Directions[Directions["Descending"] = 3] = "Descending";
-})(Directions || (Directions = {}));
+var getWidthStyle = function (width) {
+    if (width === undefined || width === null || isNaN(Number(width))) {
+        return {};
+    }
+    return { width: "".concat(width, "%") };
+};
+function ColumnHeader(_a) {
+    var _b;
+    var key = _a["data-key"], _c = _a.dense, dense = _c === void 0 ? false : _c, children = _a.children, sort = _a.sort, _d = _a.sticky, sticky = _d === void 0 ? false : _d, _e = _a.tabIndex, tabIndex = _e === void 0 ? -1 : _e, width = _a.width;
+    var ref = useRef(null);
+    var state = useTable()[0];
+    var buttonActions = useForwardClick(ref, 'button');
+    var checkboxActions = useForwardClick(ref, 'input[type="checkbox"]');
+    // @ts-expect-error The type property will exist on any ReactElement that is passed as a child, but will not
+    // exist on any other object. Typescript however, will not obey `hasOwnProperty` checks, so we need to
+    // ignore this error until we can determine a better interface
+    var checkable = children && children.type === Checkbox;
+    var shouldBeSticky = sticky &&
+        (state.columns.unselected.length > 0 ||
+            Number((_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.length) > 0);
+    return (React.createElement("th", { "aria-sort": sort === Directions.Ascending
+            ? 'ascending'
+            : sort === Directions.Descending
+                ? 'descending'
+                : undefined, className: clsx('px-4 text-left border-b border-r last:border-r-0 focus:outline-none last:px-4.5 last:w-[.1%] bg-black-5-hex', dense ? null : state.dense ? 'py-1.5' : 'py-3', checkable ? 'pl-3.5 pr-1.5' : null, state.selectable ? 'first:w-[.1%] first:border-r-0' : 'first:pl-6', shouldBeSticky
+            ? 'sticky right-0 sticky-column overflow-visible border-black-10-hex hover:bg-black-10-hex focus:bg-black-10-hex active:bg-black-15-hex'
+            : 'border-black-10 hover:bg-black-10-hex focus:bg-black-10-hex active:bg-black-15-hex'), "data-key": key, onClick: checkable ? checkboxActions.handleClick : buttonActions.handleClick, onKeyDown: checkable ? checkboxActions.handleKeyDown : buttonActions.handleKeyDown, ref: ref, 
+        // Can't put into className as it contains a dynamic arbitrary variable that tailwind
+        // can't process.
+        style: getWidthStyle(width), tabIndex: tabIndex }, Children.map(children, function (child) {
+        if (isValidElement(child)) {
+            // @ts-expect-error The only current use case here is for the Table component where
+            // we nest the `Menu`, `AddColumn` and `Checkbox.Input` components inside of the
+            // `ColumnHeader`. While the `Checkbox.Input` component does not accept a
+            // `focusRef`, the other two do. React will silently discard this prop
+            // when it's not appropriate, but the types required for Typescript
+            // to not complain are completely internal to that file, so we
+            // will be ignoring this error.
+            //
+            // @see file://./Head.tsx
+            return cloneElement(child, { focusRef: ref });
+        }
+        return child;
+    })));
+}
+
+var toDate = function (value) {
+    var dateTime = '';
+    if (value instanceof Date) {
+        dateTime = format$1(value, 'PP p');
+    }
+    if (typeof value === 'number') {
+        dateTime = format$1(fromUnixTime(value), 'PP p');
+    }
+    return dateTime;
+};
+function Cell(_a) {
+    var _b;
+    var children = _a.children, _c = _a.selected, selected = _c === void 0 ? false : _c, _d = _a.sticky, sticky = _d === void 0 ? false : _d, width = _a.width;
+    var ref = useRef(null);
+    var state = useTable()[0];
+    var actions = useForwardClick(ref, 'input[type="checkbox"]');
+    // @ts-expect-error The type property will exist on any ReactElement that is passed as a child, but will not
+    // exist on any other object. Typescript however, will not obey `hasOwnProperty` checks, so we need to
+    // ignore this error until we can determine a better interface
+    var checkable = children && children.type === Checkbox;
+    var dateable = (typeof children === 'number' || children instanceof Date) &&
+        isValid(children);
+    var shouldBeSticky = sticky &&
+        (state.columns.unselected.length > 0 ||
+            Number((_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.length) > 0);
+    return (React.createElement("td", { className: clsx('px-4 text-left border-r last:border-r-0 border-black-10 focus:outline-none', selected ? (sticky ? 'bg-black-5-hex' : 'bg-black-5') : 'bg-white-100', checkable ? 'pl-3.5 pr-1.5' : state.dense ? 'py-1.5' : 'py-3', state.selectable ? 'first:w-[.1%] first:border-r-0' : 'first:pl-6', shouldBeSticky
+            ? 'sticky right-0 sticky-column overflow-visible group-hover:bg-black-5-hex focus:bg-black-5-hex border-l'
+            : 'group-hover:bg-black-5 focus:bg-black-5'), onClick: checkable ? actions.handleClick : undefined, onKeyDown: checkable ? actions.handleKeyDown : undefined, ref: ref, role: "gridcell", style: getWidthStyle(width), tabIndex: -1 },
+        React.createElement(Typography, { variant: "body2" }, dateable ? toDate(children) : children)));
+}
+
+function Body() {
+    var intl = useIntl();
+    var _a = useTable(), state = _a[0], dispatch = _a[1];
+    if (state.selectable) {
+        var column_1 = state.columns.selected.find(function (column) { return column.key !== 'checkbox'; });
+        state.rows = state.rows.map(function (row) {
+            var handleChange = function () {
+                dispatch({
+                    type: ActionTypes$6.ToggleRow,
+                    key: row.id,
+                    selectionsRef: state.selectionsRef,
+                });
+            };
+            return __assign(__assign({}, row), { checkbox: (React.createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_row' }, { row: "".concat(row[column_1.key]) }), defaultChecked: row.selected, onChange: handleChange, tabIndex: -1 })) });
+        });
+    }
+    return (React.createElement("tbody", null, state.loading ? (React.createElement("tr", { className: "absolute inset-0 flex items-center justify-center mt-32" },
+        React.createElement("td", null,
+            React.createElement(Progress, { variant: "circular" },
+                React.createElement(Progress.Description, null,
+                    React.createElement(FormattedMessage, { id: "Ui.loading" })))))) : (state.rows.slice(0, Number(state.limit)).map(function (row) {
+        var _a, _b, _c;
+        var showRowAction = ((_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length) &&
+            state.rowActions.some(function (action) { return action.enabled === undefined || action.enabled(row); });
+        return (React.createElement("tr", { "aria-selected": state.selectable
+                ? (row === null || row === void 0 ? void 0 : row.selected)
+                    ? 'true'
+                    : 'false'
+                : undefined, className: "border-b border-black-10 last:border-b-0 group", key: row.id },
+            state.columns.selected.map(function (column) { return (React.createElement(Cell, { key: column.key, selected: row === null || row === void 0 ? void 0 : row.selected }, row[column.key] ? (row[column.key]) : (React.createElement("span", { className: "text-black-45" },
+                React.createElement(FormattedMessage, { id: "Table.not_specified" }))))); }),
+            React.createElement(Cell, { selected: row === null || row === void 0 ? void 0 : row.selected, sticky: true }, showRowAction ? (React.createElement(Menu, { placement: "bottom-end" },
+                React.createElement(Menu.Button, { icon: true, label: intl.formatMessage({ id: 'Table.more_actions' }) },
+                    React.createElement(MoreVert, null)),
+                React.createElement(Menu.Items, null, (_c = (_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.filter(function (action) {
+                    if (action.enabled) {
+                        return action.enabled(row);
+                    }
+                    return true;
+                })) === null || _c === void 0 ? void 0 : _c.map(function (action) {
+                    var onClick = function () {
+                        action.handler(row);
+                    };
+                    return (React.createElement("div", { className: "text-black-60", key: "".concat(row.id, "-").concat(action.label) },
+                        React.createElement(Menu.Item, { onClick: onClick, startAdornment: action.startAdornment },
+                            React.createElement("div", { className: "text-black-90" }, action.label))));
+                })))) : null)));
+    }))));
+}
+
+function BulkActions(_a) {
+    var children = _a.children;
+    var state = useTable()[0];
+    var selected = state.rows.filter(function (row) { return row.selected; }).length;
+    return (React.createElement("div", { className: "flex items-center py-px" },
+        React.createElement(Typography, { component: "p", variant: "subtitle2" },
+            React.createElement(FormattedMessage, { id: "Ui.number_selected", values: { number: selected } })),
+        React.createElement("div", { className: "ml-6 items-center flex space-x-3" }, children)));
+}
+
+function GlobalActions(_a) {
+    var children = _a.children;
+    return React.createElement("div", { className: "flex items-center space-x-2" }, children);
+}
+
+var ArrowForward = createSvgIcon(React.createElement("path", { d: "M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" }), 'ArrowForward');
+
+var ArrowUpward = createSvgIcon(React.createElement("path", { d: "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" }), 'ArrowUpward');
+
+function AddColumn(_a) {
+    var actions = _a.actions, focusRef = _a.focusRef;
+    var intl = useIntl();
+    var state = useTable()[0];
+    var fallback = useRef(state.columns.selected[0]);
+    var ref = useRef({
+        focus: function (options) {
+            var _a;
+            if (focusRef === null || focusRef === void 0 ? void 0 : focusRef.current) {
+                focusRef.current.focus(options);
+            }
+            else {
+                var header = document.querySelector("th[data-key=\"".concat(fallback.current.key, "\"]"));
+                var row = header.parentElement;
+                var table = (_a = row.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
+                var cells = table.rows[row.rowIndex].cells;
+                cells[cells.length - 1].focus();
+            }
+        },
+    });
+    useEffect(function () {
+        fallback.current = state.columns.selected[0];
+    }, [state.columns.selected]);
+    return (React.createElement(Menu, { focusRef: ref, placement: "bottom-end" },
+        React.createElement(Menu.Button, { disabled: state.columns.unselected.length === 0, icon: true, label: intl.formatMessage({ id: 'Table.add_column' }), tabIndex: -1 },
+            React.createElement(Add, null)),
+        React.createElement(Menu.Items, null,
+            React.createElement(Menu.Group, { label: intl.formatMessage({ id: 'Table.add_column' }) }, state.columns.unselected.map(function (column) { return (React.createElement(Menu.Item, { "data-key": column.key, key: column.key, onClick: actions.addColumn }, column.value)); })))));
+}
+function Head() {
+    var intl = useIntl();
+    var isInitial = useInitialRender();
+    var _a = useTable(), state = _a[0], dispatch = _a[1];
+    var actions = {
+        addColumn: function (event) {
+            dispatch({
+                type: ActionTypes$6.ToggleColumn,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        hide: function (event) {
+            dispatch({
+                type: ActionTypes$6.ToggleColumn,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        filterChange: function (event) {
+            dispatch({
+                checked: event.currentTarget.checked,
+                key: event.currentTarget.dataset.key,
+                type: ActionTypes$6.FilterChange,
+                value: event.currentTarget.name,
+            });
+        },
+        moveLeft: function (event) {
+            dispatch({
+                type: ActionTypes$6.MoveColumn,
+                direction: Directions.Left,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        moveRight: function (event) {
+            dispatch({
+                type: ActionTypes$6.MoveColumn,
+                direction: Directions.Right,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        sortAscending: function (event) {
+            dispatch({
+                type: ActionTypes$6.SortColumn,
+                direction: Directions.Ascending,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+        sortDescending: function (event) {
+            dispatch({
+                type: ActionTypes$6.SortColumn,
+                direction: Directions.Descending,
+                key: event.currentTarget.dataset.key,
+            });
+        },
+    };
+    if (state.selectable) {
+        var checked = state.rows.filter(function (row) { return row === null || row === void 0 ? void 0 : row.selected; });
+        var handleChange = function (event) {
+            var status = event.target.checked ? 'checked' : 'unchecked';
+            dispatch({
+                type: ActionTypes$6.ToggleRows,
+                status: status,
+                selectionsRef: state.selectionsRef,
+            });
+        };
+        var checkbox = {
+            key: 'checkbox',
+            selected: true,
+            value: (React.createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_all' }), defaultChecked: checked.length === state.rows.length && state.rows.length > 0, indeterminate: checked.length > 0 && checked.length < state.rows.length, onChange: handleChange, tabIndex: -1 })),
+        };
+        if (isInitial) {
+            state.columns.selected = __spreadArray([checkbox], state.columns.selected, true);
+        }
+        else {
+            var index = state.columns.selected.findIndex(function (column) { return column.key === 'checkbox'; });
+            if (index === -1) {
+                state.columns.selected = __spreadArray([checkbox], state.columns.selected, true);
+            }
+            else {
+                var columns = state.columns.selected.slice(0);
+                columns[0] = checkbox;
+                state.columns.selected = columns;
+            }
+        }
+    }
+    return (React.createElement("thead", { className: clsx('z-10 transition-shadow duration-150 ease-in', state.scrollable ? 'sticky top-0' : '', state.isScrolling ? 'shadow-3' : 'shadow-0') }, state.loading ? null : (React.createElement("tr", null,
+        state.columns.selected.map(function (column, index, columns) { return (React.createElement(ColumnHeader, { "data-key": column.key, dense: column.key === 'checkbox', key: column.key, sort: column.sort, tabIndex: index === 0 ? 0 : -1, width: column.width }, column.key === 'checkbox' ? (column.value) : (React.createElement(Menu, { headless: true },
+            React.createElement(Menu.Button, { tabIndex: -1 },
+                React.createElement(MenuHeader, { column: column })),
+            React.createElement(Menu.Items, null,
+                column.filter ? (React.createElement(Menu.Group, null,
+                    React.createElement(Menu.Item, { "data-key": column.key, onClick: actions.sortAscending, startAdornment: FilterList },
+                        React.createElement(FormattedMessage, { id: "Table.filter" }),
+                        React.createElement(Menu, null,
+                            React.createElement(Menu.Items, null,
+                                React.createElement(Menu.Group, null, column.filter.map(function (filter) { return (React.createElement(Menu.Item, { checkbox: true, "data-key": column.key, defaultChecked: filter.checked, key: filter.value, onChange: actions.filterChange, value: filter.value }, filter.label)); }))))))) : null,
+                React.createElement(Menu.Group, null,
+                    React.createElement(Menu.Item, { "data-key": column.key, disabled: column.sortable === false, onClick: actions.sortAscending, startAdornment: ArrowUpward },
+                        React.createElement(FormattedMessage, { id: "Table.sort_ascending" })),
+                    React.createElement(Menu.Item, { "data-key": column.key, disabled: column.sortable === false, onClick: actions.sortDescending, startAdornment: ArrowDownward },
+                        React.createElement(FormattedMessage, { id: "Table.sort_descending" })),
+                    React.createElement(Menu.Item, { "data-key": column.key, disabled: state.selectable ? index === 1 : index === 0, onClick: actions.moveLeft, startAdornment: ArrowBack },
+                        React.createElement(FormattedMessage, { id: "Table.move_left" })),
+                    React.createElement(Menu.Item, { "data-key": column.key, disabled: index === columns.length - 1, onClick: actions.moveRight, startAdornment: ArrowForward },
+                        React.createElement(FormattedMessage, { id: "Table.move_right" })),
+                    React.createElement(Menu.Item, { "data-key": column.key, disabled: columns.length === 1 ||
+                            (state.selectable && columns.length === 2), onClick: actions.hide, startAdornment: VisibilityOff },
+                        React.createElement(FormattedMessage, { id: "Table.hide" })))))))); }),
+        React.createElement(ColumnHeader, { dense: true, sticky: true },
+            React.createElement(AddColumn, { actions: actions }))))));
+}
+function MenuHeader(_a) {
+    var column = _a.column, _b = _a.show, show = _b === void 0 ? false : _b;
+    return (React.createElement(React.Fragment, null,
+        React.createElement(Typography, { variant: "button" }, column.value),
+        React.createElement("div", { className: "w-6 ml-2 text-black-45" }, show ? React.createElement(ExpandLess, null) : React.createElement(ExpandMore, null)),
+        column.sort !== undefined ? (React.createElement("div", { className: "w-4.5 ml-auto text-black-30" },
+            React.createElement(ArrowDownward, null))) : null));
+}
+
+function Title$3(_a) {
+    var children = _a.children;
+    return (React.createElement(Typography, { component: "h1", variant: "h5" }, children));
+}
+
+function Header$2(_a) {
+    var children = _a.children;
+    var state = useTable()[0];
+    var components = {
+        bulkActions: null,
+        globalActions: null,
+        title: null,
+    };
+    // TODO: This is written like this because Typescript complains when trying to access `child.type.name`. We need to figure out a way to type the child appropriately.
+    Children.forEach(children, function (child) {
+        switch (child.type) {
+            case BulkActions:
+                components.bulkActions = child;
+                break;
+            case GlobalActions:
+                components.globalActions = child;
+                break;
+            case Title$3:
+                components.title = child;
+                break;
+        }
+    });
+    var bulkable = state.rows.filter(function (row) { return row.selected; }).length > 0 &&
+        components.bulkActions;
+    if (bulkable) {
+        return (React.createElement("div", { className: "px-6 py-4 bg-primary-20" }, components.bulkActions));
+    }
+    return (React.createElement("div", { className: "flex items-center justify-between px-6 py-4" },
+        components.title,
+        components.globalActions));
+}
+
+var computeRowStart = function (state) {
+    return state.rows.length > 0 ? (state.page - 1) * state.limit + 1 : 0;
+};
+var computeRowEnd = function (start, count) {
+    return count > 0 ? start + count - 1 : 0;
+};
+/**
+ * Determine if the current state has a sentinel row (i.e., more rows than the limit)
+ * indicating more data is available.
+ */
+var hasSentinel = function (state) {
+    return state.rows.length > state.limit;
+};
+var buildEmptyMeta = function (state) { return ({
+    end: 0,
+    hasNext: false,
+    hasPrev: false,
+    pagination: state.pagination,
+    start: 0,
+    total: 0,
+}); };
+var buildSimpleMeta = function (state) {
+    var start = computeRowStart(state);
+    var sentinel = hasSentinel(state);
+    var hasPrev = start > 1;
+    // We return one extra row as a sentinel to indicate more data is available so this check is necessary.
+    var visibleCount = sentinel ? state.limit : state.rows.length;
+    var end = computeRowEnd(start, visibleCount);
+    var total = sentinel ? undefined : end;
+    return {
+        end: end,
+        hasNext: sentinel,
+        hasPrev: hasPrev,
+        pagination: 'simple',
+        start: start,
+        total: total,
+    };
+};
+var buildLengthAwareMeta = function (state) {
+    var start = computeRowStart(state);
+    var hasPrev = start > 1;
+    var hasNext = state.page * state.limit < state.total;
+    var remaining = state.total - start + 1;
+    var visibleCount = Math.min(state.limit, remaining);
+    var end = computeRowEnd(start, visibleCount);
+    return {
+        end: end,
+        hasNext: hasNext,
+        hasPrev: hasPrev,
+        pagination: 'lengthAware',
+        start: start,
+        total: state.total,
+    };
+};
+var computePaginationMeta = function (state) {
+    if (state.rows.length === 0) {
+        return buildEmptyMeta(state);
+    }
+    return state.pagination === 'simple'
+        ? buildSimpleMeta(state)
+        : buildLengthAwareMeta(state);
+};
+function Position(_a) {
+    var loading = _a.loading, meta = _a.meta;
+    var intl = useIntl();
+    if (loading) {
+        return (React.createElement("span", { className: "inline-flex w-24 align-middle" },
+            React.createElement(Skeleton, { "aria-label": intl.formatMessage({ id: 'Table.pagination_loading' }), color: "light", variant: "square", width: "long" })));
+    }
+    if (meta.start === 0 && meta.end === 0) {
+        return (React.createElement(Typography, { component: "p", variant: "subtitle2" }, intl.formatMessage({ id: 'Ui.no_results' })));
+    }
+    return (React.createElement(Typography, { component: "p", variant: "subtitle2" }, intl.formatMessage({ id: 'Table.position' }, {
+        end: meta.end,
+        start: meta.start,
+        total: meta.total || "".concat(meta.end + 1, "+"),
+    })));
+}
+function PaginationComponent(_a) {
+    var onChange = _a.onChange;
+    var intl = useIntl();
+    var _b = useTable(), state = _b[0], dispatch = _b[1];
+    var didMountRef = useRef(false);
+    var meta = useMemo(function () {
+        return computePaginationMeta({
+            limit: state.limit,
+            page: state.page,
+            pagination: state.pagination,
+            rows: state.rows,
+            total: state.total,
+        });
+    }, [state.limit, state.page, state.pagination, state.rows, state.total]);
+    useEffect(function () {
+        if (!didMountRef.current) {
+            didMountRef.current = true;
+            return; // skip initial mount
+        }
+        // Intentionally not calling onChange on every render; only when limit/page change.
+        // onChange is omitted from deps because parent does not provide a stable callback.
+        onChange({ limit: state.limit, page: state.page });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.limit, state.page]);
+    var handleNavigate = function (nextPage) {
+        if (nextPage < 1 || nextPage === state.page) {
+            return;
+        }
+        dispatch({
+            type: nextPage > state.page ? ActionTypes$6.NextPage : ActionTypes$6.PreviousPage,
+        });
+    };
+    var handleClickNext = function () {
+        if (meta.hasNext) {
+            handleNavigate(state.page + 1);
+        }
+    };
+    var handleClickPrevious = function () {
+        if (meta.hasPrev) {
+            handleNavigate(state.page - 1);
+        }
+    };
+    var handleChange = function (e) {
+        var nextLimit = Number(e.currentTarget.value);
+        dispatch({ type: ActionTypes$6.ChangeLimit, limit: nextLimit });
+    };
+    if (state.rows.length === 0) {
+        return (React.createElement(Typography, { component: "p", variant: "subtitle2" },
+            React.createElement(FormattedMessage, { id: "Ui.no_results" })));
+    }
+    return (React.createElement("div", { className: "flex items-center" },
+        React.createElement("nav", { "aria-label": intl.formatMessage({ id: 'Table.pagination' }), className: "flex items-center" },
+            React.createElement(Position, { loading: state.loading, meta: meta }),
+            React.createElement("ul", { className: "flex items-center ml-4" },
+                React.createElement("li", { className: "inline-flex" },
+                    React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Pagination.previous' }), disabled: !meta.hasPrev || state.loading, onClick: handleClickPrevious },
+                        React.createElement(ChevronLeft, null))),
+                React.createElement("li", { className: "inline-flex ml-3" },
+                    React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Pagination.next' }), disabled: !meta.hasNext || state.loading, onClick: handleClickNext },
+                        React.createElement(ChevronRight, null)))),
+            React.createElement("div", { className: "ml-6 min-w-40" },
+                React.createElement(Select, { defaultValue: String(state.limit), disabled: state.loading, label: intl.formatMessage({ id: 'Table.per_page' }), onChange: handleChange, size: "small" },
+                    React.createElement(Select.Option, { value: "25" }, "25"),
+                    React.createElement(Select.Option, { value: "50" }, "50"),
+                    React.createElement(Select.Option, { value: "100" }, "100"))))));
+}
+
+function Search(_a) {
+    var _b = _a.defaultValue, defaultValue = _b === void 0 ? '' : _b, onChange = _a.onChange;
+    var intl = useIntl();
+    var _c = useTable(), dispatch = _c[1];
+    var handleChange = function (event) {
+        dispatch({ type: ActionTypes$6.FirstPage });
+        onChange === null || onChange === void 0 ? void 0 : onChange(event);
+    };
+    return (React.createElement("div", { className: "ml-auto" },
+        React.createElement(TextInput, { defaultValue: defaultValue, label: intl.formatMessage({ id: 'Table.search' }), onChange: handleChange, size: "small", type: "search" })));
+}
+
+function Toolbar(_a) {
+    var children = _a.children;
+    var intl = useIntl();
+    return (React.createElement("div", { "aria-label": intl.formatMessage({ id: 'Table.actions' }), className: "flex items-center justify-between px-6 py-3" }, children));
+}
 
 var _a$7;
-/**
- * Partition columns into selected (visible) and unselected (hidden) groups
- *
- * @param columns
- * @returns GroupedTableColumns
- */
 var partition = function (columns) {
     return columns.reduce(function (previous, current) {
         if (current.selected) {
@@ -11394,14 +11961,6 @@ var partition = function (columns) {
         return previous;
     }, { selected: [], unselected: [] });
 };
-/**
- * Populate columns from localStorage if available
- *
- * @param defaultColumns
- * @param initialRender
- * @param storageKey
- * @returns TableColumn[]
- */
 var populate = function (defaultColumns, initialRender, storageKey) {
     if (storageKey && initialRender) {
         var serializedColumns = window.localStorage.getItem(storageKey);
@@ -11621,307 +12180,41 @@ var TableContext = createContext(null);
 var useTable = function () {
     return useContext(TableContext);
 };
-
-var getWidthStyle = function (width) {
-    if (width === undefined || width === null || isNaN(Number(width))) {
-        return {};
-    }
-    return { width: "".concat(width, "%") };
-};
-function ColumnHeader(_a) {
-    var _b;
-    var key = _a["data-key"], _c = _a.dense, dense = _c === void 0 ? false : _c, children = _a.children, sort = _a.sort, _d = _a.sticky, sticky = _d === void 0 ? false : _d, _e = _a.tabIndex, tabIndex = _e === void 0 ? -1 : _e, width = _a.width;
-    var ref = useRef(null);
-    var state = useTable()[0];
-    var buttonActions = useForwardClick(ref, 'button');
-    var checkboxActions = useForwardClick(ref, 'input[type="checkbox"]');
-    // @ts-expect-error The type property will exist on any ReactElement that is passed as a child, but will not
-    // exist on any other object. Typescript however, will not obey `hasOwnProperty` checks, so we need to
-    // ignore this error until we can determine a better interface
-    var checkable = children && children.type === Checkbox;
-    var shouldBeSticky = sticky &&
-        (state.columns.unselected.length > 0 ||
-            Number((_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.length) > 0);
-    return (React.createElement("th", { "aria-sort": sort === Directions.Ascending
-            ? 'ascending'
-            : sort === Directions.Descending
-                ? 'descending'
-                : undefined, className: clsx('px-4 text-left border-b border-r last:border-r-0 focus:outline-none last:px-4.5 last:w-[.1%] bg-black-5-hex', dense ? null : state.dense ? 'py-1.5' : 'py-3', checkable ? 'pl-3.5 pr-1.5' : null, state.selectable ? 'first:w-[.1%] first:border-r-0' : 'first:pl-6', shouldBeSticky
-            ? 'sticky right-0 sticky-column overflow-visible border-black-10-hex hover:bg-black-10-hex focus:bg-black-10-hex active:bg-black-15-hex'
-            : 'border-black-10 hover:bg-black-10-hex focus:bg-black-10-hex active:bg-black-15-hex'), "data-key": key, onClick: checkable ? checkboxActions.handleClick : buttonActions.handleClick, onKeyDown: checkable ? checkboxActions.handleKeyDown : buttonActions.handleKeyDown, ref: ref, 
-        // Can't put into className as it contains a dynamic arbitrary variable that tailwind
-        // can't process.
-        style: getWidthStyle(width), tabIndex: tabIndex }, Children.map(children, function (child) {
-        if (isValidElement(child)) {
-            // @ts-expect-error The only current use case here is for the Table component where
-            // we nest the `Menu`, `AddColumn` and `Checkbox.Input` components inside of the
-            // `ColumnHeader`. While the `Checkbox.Input` component does not accept a
-            // `focusRef`, the other two do. React will silently discard this prop
-            // when it's not appropriate, but the types required for Typescript
-            // to not complain are completely internal to that file, so we
-            // will be ignoring this error.
-            //
-            // @see file://./Head.tsx
-            return cloneElement(child, { focusRef: ref });
-        }
-        return child;
-    })));
-}
-
-var toDate = function (value) {
-    var dateTime = '';
-    if (value instanceof Date) {
-        dateTime = format$1(value, 'PP p');
-    }
-    if (typeof value === 'number') {
-        dateTime = format$1(fromUnixTime(value), 'PP p');
-    }
-    return dateTime;
-};
-function Cell(_a) {
-    var _b;
-    var children = _a.children, _c = _a.selected, selected = _c === void 0 ? false : _c, _d = _a.sticky, sticky = _d === void 0 ? false : _d, width = _a.width;
-    var ref = useRef(null);
-    var state = useTable()[0];
-    var actions = useForwardClick(ref, 'input[type="checkbox"]');
-    // @ts-expect-error The type property will exist on any ReactElement that is passed as a child, but will not
-    // exist on any other object. Typescript however, will not obey `hasOwnProperty` checks, so we need to
-    // ignore this error until we can determine a better interface
-    var checkable = children && children.type === Checkbox;
-    var dateable = (typeof children === 'number' || children instanceof Date) &&
-        isValid(children);
-    var shouldBeSticky = sticky &&
-        (state.columns.unselected.length > 0 ||
-            Number((_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.length) > 0);
-    return (React.createElement("td", { className: clsx('px-4 text-left border-r last:border-r-0 border-black-10 focus:outline-none', selected ? (sticky ? 'bg-black-5-hex' : 'bg-black-5') : 'bg-white-100', checkable ? 'pl-3.5 pr-1.5' : state.dense ? 'py-1.5' : 'py-3', state.selectable ? 'first:w-[.1%] first:border-r-0' : 'first:pl-6', shouldBeSticky
-            ? 'sticky right-0 sticky-column overflow-visible group-hover:bg-black-5-hex focus:bg-black-5-hex border-l'
-            : 'group-hover:bg-black-5 focus:bg-black-5'), onClick: checkable ? actions.handleClick : undefined, onKeyDown: checkable ? actions.handleKeyDown : undefined, ref: ref, role: "gridcell", style: getWidthStyle(width), tabIndex: -1 },
-        React.createElement(Typography, { variant: "body2" }, dateable ? toDate(children) : children)));
-}
-
-function Body() {
-    var _a;
-    var intl = useIntl();
-    var _b = useTable(), state = _b[0], dispatch = _b[1];
-    if (state.selectable) {
-        var column_1 = state.columns.selected.find(function (column) { return column.key !== 'checkbox'; });
-        state.rows = state.rows.map(function (row) {
-            var handleChange = function () {
-                dispatch({
-                    type: ActionTypes$6.ToggleRow,
-                    key: row.id,
-                    selectionsRef: state.selectionsRef,
-                });
-            };
-            return __assign(__assign({}, row), { checkbox: (React.createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_row' }, { row: "".concat(row[column_1.key]) }), defaultChecked: row.selected, onChange: handleChange, tabIndex: -1 })) });
-        });
-    }
-    var hasRowActions = (_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length;
-    return (React.createElement("tbody", null, state.loading ? (React.createElement("tr", { className: "absolute inset-0 flex items-center justify-center mt-32" },
-        React.createElement("td", null,
-            React.createElement(Progress, { variant: "circular" },
-                React.createElement(Progress.Description, null,
-                    React.createElement(FormattedMessage, { id: "Ui.loading" })))))) : (state.rows.slice(0, Number(state.limit)).map(function (row) {
-        var _a, _b, _c;
-        var showRowAction = hasRowActions &&
-            ((_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.some(function (action) { return action.enabled === undefined || action.enabled(row); }));
-        return (React.createElement("tr", { "aria-selected": state.selectable
-                ? (row === null || row === void 0 ? void 0 : row.selected)
-                    ? 'true'
-                    : 'false'
-                : undefined, className: "border-b border-black-10 last:border-b-0 group", key: row.id },
-            state.columns.selected.map(function (column) { return (React.createElement(Cell, { key: column.key, selected: row === null || row === void 0 ? void 0 : row.selected }, row[column.key] ? (row[column.key]) : (React.createElement("span", { className: "text-black-45" },
-                React.createElement(FormattedMessage, { id: "Table.not_specified" }))))); }),
-            state.staticColumns && !hasRowActions ? null : (React.createElement(Cell, { selected: row === null || row === void 0 ? void 0 : row.selected, sticky: true }, showRowAction ? (React.createElement(Menu, { placement: "bottom-end" },
-                React.createElement(Menu.Button, { icon: true, label: intl.formatMessage({ id: 'Table.more_actions' }) },
-                    React.createElement(MoreVert, null)),
-                React.createElement(Menu.Items, null, (_c = (_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.filter(function (action) {
-                    if (action.enabled) {
-                        return action.enabled(row);
-                    }
-                    return true;
-                })) === null || _c === void 0 ? void 0 : _c.map(function (action) {
-                    var onClick = function () {
-                        action.handler(row);
-                    };
-                    return (React.createElement("div", { className: "text-black-60", key: "".concat(row.id, "-").concat(action.label) },
-                        React.createElement(Menu.Item, { onClick: onClick, startAdornment: action.startAdornment },
-                            React.createElement("div", { className: "text-black-90" }, action.label))));
-                })))) : null))));
-    }))));
-}
-
-var ArrowForward = createSvgIcon(React.createElement("path", { d: "M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" }), 'ArrowForward');
-
-var ArrowUpward = createSvgIcon(React.createElement("path", { d: "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" }), 'ArrowUpward');
-
-function AddColumn(_a) {
-    var actions = _a.actions, focusRef = _a.focusRef;
-    var intl = useIntl();
-    var state = useTable()[0];
-    var fallback = useRef(state.columns.selected[0]);
-    var ref = useRef({
-        focus: function (options) {
-            var _a;
-            if (focusRef === null || focusRef === void 0 ? void 0 : focusRef.current) {
-                focusRef.current.focus(options);
-            }
-            else {
-                var header = document.querySelector("th[data-key=\"".concat(fallback.current.key, "\"]"));
-                var row = header.parentElement;
-                var table = (_a = row.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
-                var cells = table.rows[row.rowIndex].cells;
-                cells[cells.length - 1].focus();
-            }
-        },
-    });
-    useEffect(function () {
-        fallback.current = state.columns.selected[0];
-    }, [state.columns.selected]);
-    return (React.createElement(Menu, { focusRef: ref, placement: "bottom-end" },
-        React.createElement(Menu.Button, { disabled: state.columns.unselected.length === 0, icon: true, label: intl.formatMessage({ id: 'Table.add_column' }), tabIndex: -1 },
-            React.createElement(Add, null)),
-        React.createElement(Menu.Items, null,
-            React.createElement(Menu.Group, { label: intl.formatMessage({ id: 'Table.add_column' }) }, state.columns.unselected.map(function (column) { return (React.createElement(Menu.Item, { "data-key": column.key, key: column.key, onClick: actions.addColumn }, column.value)); })))));
-}
-function Head() {
-    var _a;
-    var intl = useIntl();
-    var isInitial = useInitialRender();
-    var _b = useTable(), state = _b[0], dispatch = _b[1];
-    var actions = {
-        addColumn: function (event) {
-            dispatch({
-                type: ActionTypes$6.ToggleColumn,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        hide: function (event) {
-            dispatch({
-                type: ActionTypes$6.ToggleColumn,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        filterChange: function (event) {
-            dispatch({
-                checked: event.currentTarget.checked,
-                key: event.currentTarget.dataset.key,
-                type: ActionTypes$6.FilterChange,
-                value: event.currentTarget.name,
-            });
-        },
-        moveLeft: function (event) {
-            dispatch({
-                type: ActionTypes$6.MoveColumn,
-                direction: Directions.Left,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        moveRight: function (event) {
-            dispatch({
-                type: ActionTypes$6.MoveColumn,
-                direction: Directions.Right,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        sortAscending: function (event) {
-            dispatch({
-                type: ActionTypes$6.SortColumn,
-                direction: Directions.Ascending,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-        sortDescending: function (event) {
-            dispatch({
-                type: ActionTypes$6.SortColumn,
-                direction: Directions.Descending,
-                key: event.currentTarget.dataset.key,
-            });
-        },
-    };
-    if (state.selectable) {
-        var checked = state.rows.filter(function (row) { return row === null || row === void 0 ? void 0 : row.selected; });
-        var handleChange = function (event) {
-            var status = event.target.checked ? 'checked' : 'unchecked';
-            dispatch({
-                type: ActionTypes$6.ToggleRows,
-                status: status,
-                selectionsRef: state.selectionsRef,
-            });
-        };
-        var checkbox = {
-            key: 'checkbox',
-            selected: true,
-            value: (React.createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_all' }), defaultChecked: checked.length === state.rows.length && state.rows.length > 0, indeterminate: checked.length > 0 && checked.length < state.rows.length, onChange: handleChange, tabIndex: -1 })),
-        };
-        if (isInitial) {
-            state.columns.selected = __spreadArray([checkbox], state.columns.selected, true);
-        }
-        else {
-            var index = state.columns.selected.findIndex(function (column) { return column.key === 'checkbox'; });
-            if (index === -1) {
-                state.columns.selected = __spreadArray([checkbox], state.columns.selected, true);
-            }
-            else {
-                var columns = state.columns.selected.slice(0);
-                columns[0] = checkbox;
-                state.columns.selected = columns;
-            }
-        }
-    }
-    var hasRowActions = (_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length;
-    return (React.createElement("thead", { className: clsx('z-10 transition-shadow duration-150 ease-in', state.scrollable ? 'sticky top-0' : '', state.isScrolling ? 'shadow-3' : 'shadow-0') }, state.loading ? null : (React.createElement("tr", null,
-        state.columns.selected.map(function (column, index, columns) { return (React.createElement(ColumnHeader, { "data-key": column.key, dense: column.key === 'checkbox', key: column.key, sort: column.sort, tabIndex: index === 0 ? 0 : -1, width: column.width }, column.key === 'checkbox' ? (column.value) : state.staticColumns ? (React.createElement(ColumnHeaderContent, { column: column, menu: false })) : (React.createElement(Menu, { headless: true },
-            React.createElement(Menu.Button, { tabIndex: -1 },
-                React.createElement(ColumnHeaderContent, { column: column })),
-            React.createElement(Menu.Items, null,
-                column.filter ? (React.createElement(Menu.Group, null,
-                    React.createElement(Menu.Item, { "data-key": column.key, onClick: actions.sortAscending, startAdornment: FilterList },
-                        React.createElement(FormattedMessage, { id: "Table.filter" }),
-                        React.createElement(Menu, null,
-                            React.createElement(Menu.Items, null,
-                                React.createElement(Menu.Group, null, column.filter.map(function (filter) { return (React.createElement(Menu.Item, { checkbox: true, "data-key": column.key, defaultChecked: filter.checked, key: filter.value, onChange: actions.filterChange, value: filter.value }, filter.label)); }))))))) : null,
-                React.createElement(Menu.Group, null,
-                    React.createElement(Menu.Item, { "data-key": column.key, disabled: column.sortable === false, onClick: actions.sortAscending, startAdornment: ArrowUpward },
-                        React.createElement(FormattedMessage, { id: "Table.sort_ascending" })),
-                    React.createElement(Menu.Item, { "data-key": column.key, disabled: column.sortable === false, onClick: actions.sortDescending, startAdornment: ArrowDownward },
-                        React.createElement(FormattedMessage, { id: "Table.sort_descending" })),
-                    React.createElement(Menu.Item, { "data-key": column.key, disabled: state.selectable ? index === 1 : index === 0, onClick: actions.moveLeft, startAdornment: ArrowBack },
-                        React.createElement(FormattedMessage, { id: "Table.move_left" })),
-                    React.createElement(Menu.Item, { "data-key": column.key, disabled: index === columns.length - 1, onClick: actions.moveRight, startAdornment: ArrowForward },
-                        React.createElement(FormattedMessage, { id: "Table.move_right" })),
-                    React.createElement(Menu.Item, { "data-key": column.key, disabled: columns.length === 1 ||
-                            (state.selectable && columns.length === 2), onClick: actions.hide, startAdornment: VisibilityOff },
-                        React.createElement(FormattedMessage, { id: "Table.hide" })))))))); }),
-        state.staticColumns && !hasRowActions ? null : (React.createElement(ColumnHeader, { dense: true, sticky: true },
-            React.createElement(AddColumn, { actions: actions })))))));
-}
-function ColumnHeaderContent(_a) {
-    var column = _a.column, _b = _a.menu, menu = _b === void 0 ? true : _b, _c = _a.show, show = _c === void 0 ? false : _c;
-    return (React.createElement(React.Fragment, null,
-        React.createElement(Typography, { variant: "button" }, column.value),
-        menu ? (React.createElement("div", { className: "w-6 ml-2 text-black-45" }, show ? React.createElement(ExpandLess, null) : React.createElement(ExpandMore, null))) : null,
-        column.sort !== undefined ? (React.createElement("div", { className: "w-4.5 ml-auto text-black-30" },
-            React.createElement(ArrowDownward, null))) : null));
-}
-
-function BaseTable(_a) {
-    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.loading, loading = _c === void 0 ? false : _c, rowActions = _a.rowActions, rows = _a.rows, _d = _a.scrollable, scrollable = _d === void 0 ? true : _d, _e = _a.selectable, selectable = _e === void 0 ? false : _e, storageKey = _a.storageKey, total = _a.total;
+function Table(_a) {
+    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onFilterChange = _a.onFilterChange, onSelect = _a.onSelect, onSort = _a.onSort, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rowActions = _a.rowActions, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, storageKey = _a.storageKey, total = _a.total;
+    var initialRender = useInitialRender();
     var header = useRef(null);
     var tableContainer = useRef(null);
-    var _f = useState(0), headerBottomPosition = _f[0], setHeaderBottomPosition = _f[1];
+    var _h = useState(0), headerBottomPosition = _h[0], setHeaderBottomPosition = _h[1];
     var locale = useLocale()[0];
     var previousLocale = usePrevious(locale);
-    var _g = useTable(), state = _g[0], dispatch = _g[1];
+    var _j = useReducer(runReducer$7, {
+        columns: partition(populate(initialColumns, initialRender, storageKey)),
+        dense: dense,
+        limit: limit,
+        loading: loading,
+        onFilterChange: onFilterChange,
+        onSelect: onSelect,
+        onSort: onSort,
+        page: 1,
+        pagination: pagination,
+        rowActions: rowActions,
+        rows: rows,
+        isScrolling: false,
+        scrollable: scrollable,
+        selectable: selectable,
+        selectionsRef: selectionsRef,
+        total: pagination === 'lengthAware' ? total || rows.length : undefined,
+    }), state = _j[0], dispatch = _j[1];
     var handleScroll = useCallback(function () {
-        if (!tableContainer.current || !state.scrollable) {
+        if (!tableContainer.current || !scrollable) {
             return;
         }
         dispatch({
             type: ActionTypes$6.UpdateScrolling,
             isScrolling: !(tableContainer.current.scrollTop === 0),
         });
-    }, [dispatch, state.scrollable]);
+    }, [scrollable]);
     var getHeaderBottomPosition = function () {
         if (header.current) {
             setHeaderBottomPosition(header.current.getBoundingClientRect().bottom);
@@ -11930,17 +12223,17 @@ function BaseTable(_a) {
     useEffect(function () {
         var container = tableContainer.current;
         getHeaderBottomPosition();
-        if (state.scrollable) {
+        if (scrollable) {
             container === null || container === void 0 ? void 0 : container.addEventListener('scroll', handleScroll);
         }
         window.addEventListener('resize', getHeaderBottomPosition);
         return function () {
-            if (state.scrollable) {
+            if (scrollable) {
                 container === null || container === void 0 ? void 0 : container.removeEventListener('scroll', handleScroll);
             }
             window.removeEventListener('resize', getHeaderBottomPosition);
         };
-    }, [handleScroll, state.scrollable]);
+    }, [handleScroll, scrollable]);
     useEffect(function () {
         if (locale === previousLocale) {
             return;
@@ -11976,7 +12269,6 @@ function BaseTable(_a) {
             }
         }
     }, [
-        dispatch,
         initialColumns,
         locale,
         previousLocale,
@@ -12001,37 +12293,37 @@ function BaseTable(_a) {
             selectionsRef: state.selectionsRef,
             total: total,
         });
-    }, [dispatch, rows, state.selectionsRef, total]);
+    }, [rows, state.selectionsRef, total]);
     useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateRowActions,
             rowActions: rowActions,
         });
-    }, [dispatch, rowActions]);
+    }, [rowActions]);
     useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateLoading,
             loading: loading,
         });
-    }, [dispatch, loading]);
+    }, [loading]);
     useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateScrollable,
             scrollable: scrollable,
         });
-    }, [dispatch, scrollable]);
+    }, [scrollable]);
     useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateDense,
             dense: dense,
         });
-    }, [dense, dispatch]);
+    }, [dense]);
     useEffect(function () {
         dispatch({
             type: ActionTypes$6.UpdateSelectable,
             selectable: selectable,
         });
-    }, [dispatch, selectable]);
+    }, [selectable]);
     var handleKeyDown = function (event) {
         var _a, _b, _c;
         var cell = event.target;
@@ -12076,291 +12368,14 @@ function BaseTable(_a) {
             ? "calc(".concat(viewportHeight - headerHeight, "px)")
             : "calc(".concat(viewportHeight - headerBottomPosition, "px)")
         : undefined;
-    return (React.createElement("div", null,
-        React.createElement("header", { className: "divide-y divide-black-10 bg-white-100", ref: header }, children),
-        React.createElement("section", { className: "w-full max-w-full" },
-            React.createElement("div", { className: scrollable ? 'overflow-auto' : '', ref: tableContainer, style: { maxHeight: maxHeight } },
-                React.createElement("table", { cellPadding: 0, className: "w-full font-sans border-spacing-0", onKeyDown: handleKeyDown, role: "grid" },
-                    React.createElement(Head, null),
-                    React.createElement(Body, null))))));
-}
-
-function BulkActions(_a) {
-    var children = _a.children;
-    var state = useTable()[0];
-    var selected = state.rows.filter(function (row) { return row.selected; }).length;
-    return (React.createElement("div", { className: "flex items-center py-px" },
-        React.createElement(Typography, { component: "p", variant: "subtitle2" },
-            React.createElement(FormattedMessage, { id: "Ui.number_selected", values: { number: selected } })),
-        React.createElement("div", { className: "ml-6 items-center flex space-x-3" }, children)));
-}
-
-function GlobalActions(_a) {
-    var children = _a.children;
-    return React.createElement("div", { className: "flex items-center space-x-2" }, children);
-}
-
-function Title$3(_a) {
-    var children = _a.children;
-    return (React.createElement(Typography, { component: "h1", variant: "h5" }, children));
-}
-
-function Header$2(_a) {
-    var children = _a.children;
-    var state = useTable()[0];
-    var components = {
-        bulkActions: null,
-        globalActions: null,
-        title: null,
-    };
-    // TODO: This is written like this because Typescript complains when trying to access `child.type.name`. We need to figure out a way to type the child appropriately.
-    Children.forEach(children, function (child) {
-        switch (child.type) {
-            case BulkActions:
-                components.bulkActions = child;
-                break;
-            case GlobalActions:
-                components.globalActions = child;
-                break;
-            case Title$3:
-                components.title = child;
-                break;
-        }
-    });
-    var bulkable = state.rows.filter(function (row) { return row.selected; }).length > 0 &&
-        components.bulkActions;
-    if (bulkable) {
-        return (React.createElement("div", { className: "px-6 py-4 bg-primary-20" }, components.bulkActions));
-    }
-    return (React.createElement("div", { className: "flex items-center justify-between px-6 py-4" },
-        components.title,
-        components.globalActions));
-}
-
-var computeRowStart = function (state) {
-    return state.rows.length > 0 ? (state.page - 1) * state.limit + 1 : 0;
-};
-var computeRowEnd = function (start, count) {
-    return count > 0 ? start + count - 1 : 0;
-};
-/**
- * Determine if the current state has a sentinel row (i.e., more rows than the limit)
- * indicating more data is available.
- */
-var hasSentinel = function (state) {
-    return state.rows.length > state.limit;
-};
-var buildEmptyMeta = function (state) { return ({
-    end: 0,
-    hasNext: false,
-    hasPrev: false,
-    pagination: state.pagination,
-    start: 0,
-    total: 0,
-}); };
-var buildSimpleMeta = function (state) {
-    var start = computeRowStart(state);
-    var sentinel = hasSentinel(state);
-    var hasPrev = start > 1;
-    // We return one extra row as a sentinel to indicate more data is available so this check is necessary.
-    var visibleCount = sentinel ? state.limit : state.rows.length;
-    var end = computeRowEnd(start, visibleCount);
-    var total = sentinel ? undefined : end;
-    return {
-        end: end,
-        hasNext: sentinel,
-        hasPrev: hasPrev,
-        pagination: 'simple',
-        start: start,
-        total: total,
-    };
-};
-var buildLengthAwareMeta = function (state) {
-    var start = computeRowStart(state);
-    var hasPrev = start > 1;
-    var hasNext = state.page * state.limit < state.total;
-    var remaining = state.total - start + 1;
-    var visibleCount = Math.min(state.limit, remaining);
-    var end = computeRowEnd(start, visibleCount);
-    return {
-        end: end,
-        hasNext: hasNext,
-        hasPrev: hasPrev,
-        pagination: 'lengthAware',
-        start: start,
-        total: state.total,
-    };
-};
-var computePaginationMeta = function (state) {
-    if (state.rows.length === 0) {
-        return buildEmptyMeta(state);
-    }
-    return state.pagination === 'simple'
-        ? buildSimpleMeta(state)
-        : buildLengthAwareMeta(state);
-};
-function Position(_a) {
-    var loading = _a.loading, meta = _a.meta;
-    var intl = useIntl();
-    if (loading) {
-        return (React.createElement("span", { className: "inline-flex w-24 align-middle" },
-            React.createElement(Skeleton, { "aria-label": intl.formatMessage({ id: 'Table.pagination_loading' }), color: "light", variant: "square", width: "long" })));
-    }
-    if (meta.start === 0 && meta.end === 0) {
-        return (React.createElement(Typography, { component: "p", variant: "subtitle2" }, intl.formatMessage({ id: 'Ui.no_results' })));
-    }
-    return (React.createElement(Typography, { component: "p", variant: "subtitle2" }, intl.formatMessage({ id: 'Table.position' }, {
-        end: meta.end,
-        start: meta.start,
-        total: meta.total || "".concat(meta.end + 1, "+"),
-    })));
-}
-function PaginationComponent(_a) {
-    var onChange = _a.onChange;
-    var intl = useIntl();
-    var _b = useTable(), state = _b[0], dispatch = _b[1];
-    var didMountRef = useRef(false);
-    var meta = useMemo(function () {
-        return computePaginationMeta({
-            limit: state.limit,
-            page: state.page,
-            pagination: state.pagination,
-            rows: state.rows,
-            total: state.total,
-        });
-    }, [state.limit, state.page, state.pagination, state.rows, state.total]);
-    useEffect(function () {
-        if (!didMountRef.current) {
-            didMountRef.current = true;
-            return; // skip initial mount
-        }
-        // Intentionally not calling onChange on every render; only when limit/page change.
-        // onChange is omitted from deps because parent does not provide a stable callback.
-        onChange({ limit: state.limit, page: state.page });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.limit, state.page]);
-    var handleNavigate = function (nextPage) {
-        if (nextPage < 1 || nextPage === state.page) {
-            return;
-        }
-        dispatch({
-            type: nextPage > state.page ? ActionTypes$6.NextPage : ActionTypes$6.PreviousPage,
-        });
-    };
-    var handleClickNext = function () {
-        if (meta.hasNext) {
-            handleNavigate(state.page + 1);
-        }
-    };
-    var handleClickPrevious = function () {
-        if (meta.hasPrev) {
-            handleNavigate(state.page - 1);
-        }
-    };
-    var handleChange = function (e) {
-        var nextLimit = Number(e.currentTarget.value);
-        dispatch({ type: ActionTypes$6.ChangeLimit, limit: nextLimit });
-    };
-    if (state.rows.length === 0) {
-        return (React.createElement(Typography, { component: "p", variant: "subtitle2" },
-            React.createElement(FormattedMessage, { id: "Ui.no_results" })));
-    }
-    return (React.createElement("div", { className: "flex items-center" },
-        React.createElement("nav", { "aria-label": intl.formatMessage({ id: 'Table.pagination' }), className: "flex items-center" },
-            React.createElement(Position, { loading: state.loading, meta: meta }),
-            React.createElement("ul", { className: "flex items-center ml-4" },
-                React.createElement("li", { className: "inline-flex" },
-                    React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Pagination.previous' }), disabled: !meta.hasPrev || state.loading, onClick: handleClickPrevious },
-                        React.createElement(ChevronLeft, null))),
-                React.createElement("li", { className: "inline-flex ml-3" },
-                    React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Pagination.next' }), disabled: !meta.hasNext || state.loading, onClick: handleClickNext },
-                        React.createElement(ChevronRight, null)))),
-            React.createElement("div", { className: "ml-6 min-w-40" },
-                React.createElement(Select, { defaultValue: String(state.limit), disabled: state.loading, label: intl.formatMessage({ id: 'Table.per_page' }), onChange: handleChange, size: "small" },
-                    React.createElement(Select.Option, { value: "25" }, "25"),
-                    React.createElement(Select.Option, { value: "50" }, "50"),
-                    React.createElement(Select.Option, { value: "100" }, "100"))))));
-}
-
-function Search(_a) {
-    var _b = _a.defaultValue, defaultValue = _b === void 0 ? '' : _b, onChange = _a.onChange;
-    var intl = useIntl();
-    var _c = useTable(), dispatch = _c[1];
-    var handleChange = function (event) {
-        dispatch({ type: ActionTypes$6.FirstPage });
-        onChange === null || onChange === void 0 ? void 0 : onChange(event);
-    };
-    return (React.createElement("div", { className: "ml-auto" },
-        React.createElement(TextInput, { defaultValue: defaultValue, label: intl.formatMessage({ id: 'Table.search' }), onChange: handleChange, size: "small", type: "search" })));
-}
-
-function Toolbar(_a) {
-    var children = _a.children;
-    var intl = useIntl();
-    return (React.createElement("div", { "aria-label": intl.formatMessage({ id: 'Table.actions' }), className: "flex items-center justify-between px-6 py-3" }, children));
-}
-
-function BasicTable(_a) {
-    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onSelect = _a.onSelect, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, total = _a.total;
-    var adjustedColumns = useMemo(function () {
-        return initialColumns.map(function (column) { return (__assign(__assign({}, column), { selected: true, sort: undefined })); });
-    }, [initialColumns]);
-    var _h = useReducer(runReducer$7, {}, function () {
-        return ({
-            columns: {
-                selected: adjustedColumns,
-                unselected: [],
-            },
-            dense: dense,
-            limit: limit,
-            loading: loading,
-            onSelect: onSelect,
-            page: 1,
-            pagination: pagination,
-            rowActions: undefined,
-            rows: rows,
-            isScrolling: false,
-            scrollable: scrollable,
-            selectable: selectable,
-            selectionsRef: selectionsRef,
-            staticColumns: true,
-            total: pagination === 'lengthAware' ? total || rows.length : undefined,
-        });
-    }), state = _h[0], dispatch = _h[1];
     return (React.createElement(TableContext.Provider, { value: [state, dispatch] },
-        React.createElement(BaseTable, { columns: adjustedColumns, dense: dense, loading: loading, rows: rows, scrollable: scrollable, selectable: selectable, total: total }, children)));
-}
-BasicTable.BulkActions = BulkActions;
-BasicTable.GlobalActions = GlobalActions;
-BasicTable.Header = Header$2;
-BasicTable.Pagination = PaginationComponent;
-BasicTable.Search = Search;
-BasicTable.Title = Title$3;
-BasicTable.Toolbar = Toolbar;
-
-function Table(_a) {
-    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onFilterChange = _a.onFilterChange, onSelect = _a.onSelect, onSort = _a.onSort, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rowActions = _a.rowActions, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, storageKey = _a.storageKey, total = _a.total;
-    var initialRender = useInitialRender();
-    var _h = useReducer(runReducer$7, {
-        columns: partition(populate(initialColumns, initialRender, storageKey)),
-        dense: dense,
-        limit: limit,
-        loading: loading,
-        onFilterChange: onFilterChange,
-        onSelect: onSelect,
-        onSort: onSort,
-        page: 1,
-        pagination: pagination,
-        rowActions: rowActions,
-        rows: rows,
-        isScrolling: false,
-        scrollable: scrollable,
-        selectable: selectable,
-        selectionsRef: selectionsRef,
-        total: pagination === 'lengthAware' ? total || rows.length : undefined,
-    }), state = _h[0], dispatch = _h[1];
-    return (React.createElement(TableContext.Provider, { value: [state, dispatch] },
-        React.createElement(BaseTable, { columns: initialColumns, dense: dense, loading: loading, rowActions: rowActions, rows: rows, scrollable: scrollable, selectable: selectable, storageKey: storageKey, total: total }, children)));
+        React.createElement("div", null,
+            React.createElement("header", { className: "divide-y divide-black-10 bg-white-100", ref: header }, children),
+            React.createElement("section", { className: "w-full max-w-full" },
+                React.createElement("div", { className: scrollable ? 'overflow-auto' : '', ref: tableContainer, style: { maxHeight: maxHeight } },
+                    React.createElement("table", { cellPadding: 0, className: "w-full font-sans border-spacing-0", onKeyDown: handleKeyDown, role: "grid" },
+                        React.createElement(Head, null),
+                        React.createElement(Body, null)))))));
 }
 Table.BulkActions = BulkActions;
 Table.GlobalActions = GlobalActions;
@@ -12631,5 +12646,5 @@ function Tooltip(_a) {
             arrow ? (React.createElement("div", { className: clsx('border-6 border-black-60 w-0 h-0', styles.class[arrowDirection]), ref: arrowRef, style: styles.style[arrowDirection] })) : null))));
 }
 
-export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, BasicTable, Button, ButtonGroup, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, IconButton, Link, List, Menu, MultiSelect, Pagination, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
+export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, Button, ButtonGroup, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, IconButton, Link, List, Menu, MultiSelect, Pagination, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
 //# sourceMappingURL=index.es.js.map

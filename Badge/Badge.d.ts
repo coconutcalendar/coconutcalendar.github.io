@@ -16,7 +16,7 @@ interface BaseBadgeProps {
      */
     invisible?: boolean;
     /**
-     * Maximum value to display. If the value exceeds this, it will show {number}+ (e.g. 99+)
+     * Maximum value to display. If the value exceeds this, it will show <number>+ (e.g. 99+)
      * @default 99
      */
     max?: number;

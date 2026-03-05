@@ -56,6 +56,19 @@ textarea:not(:placeholder-shown) ~ .input-label {
   color: inherit;
 }
 
+input:not(:-moz-placeholder-shown).read-only-variant ~ .input-label, textarea:not(:-moz-placeholder-shown).read-only-variant ~ .input-label {
+  line-height: 1.125rem;
+}
+
+input:focus.read-only-variant ~ .input-label,
+input:focus-visible.read-only-variant ~ .input-label,
+input:not(:placeholder-shown).read-only-variant ~ .input-label,
+textarea:focus.read-only-variant ~ .input-label,
+textarea:focus-visible.read-only-variant ~ .input-label,
+textarea:not(:placeholder-shown).read-only-variant ~ .input-label {
+  line-height: 1.125rem;
+}
+
 input:not(:-moz-placeholder-shown) ~ .input-label-outlined, textarea:not(:-moz-placeholder-shown) ~ .input-label-outlined {
   margin-top: -0.5625rem;
   margin-left: 0.5rem;
@@ -79,35 +92,35 @@ textarea:not(:placeholder-shown) ~ .input-label-outlined {
   line-height: 1.125rem;
 }
 
-input:not(:-moz-placeholder-shown) ~ .input-label-filled.input-label-medium, textarea:not(:-moz-placeholder-shown) ~ .input-label-filled.input-label-medium {
+input:not(:-moz-placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-medium, textarea:not(:-moz-placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-medium {
   margin-top: 0.25rem;
   margin-left: 0.75rem;
   line-height: 1.25rem;
 }
 
-input:focus ~ .input-label-filled.input-label-medium,
-input:focus-visible ~ .input-label-filled.input-label-medium,
-input:not(:placeholder-shown) ~ .input-label-filled.input-label-medium,
-textarea:focus ~ .input-label-filled.input-label-medium,
-textarea:focus-visible ~ .input-label-filled.input-label-medium,
-textarea:not(:placeholder-shown) ~ .input-label-filled.input-label-medium {
+input:focus:not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+input:focus-visible:not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+input:not(:placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+textarea:focus:not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+textarea:focus-visible:not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+textarea:not(:placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-medium {
   margin-top: 0.25rem;
   margin-left: 0.75rem;
   line-height: 1.25rem;
 }
 
-input:not(:-moz-placeholder-shown) ~ .input-label-filled.input-label-small, textarea:not(:-moz-placeholder-shown) ~ .input-label-filled.input-label-small {
+input:not(:-moz-placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-small, textarea:not(:-moz-placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-small {
   margin-top: 0.125rem;
   margin-left: 0.75rem;
   line-height: 1.25rem;
 }
 
-input:focus ~ .input-label-filled.input-label-small,
-input:focus-visible ~ .input-label-filled.input-label-small,
-input:not(:placeholder-shown) ~ .input-label-filled.input-label-small,
-textarea:focus ~ .input-label-filled.input-label-small,
-textarea:focus-visible ~ .input-label-filled.input-label-small,
-textarea:not(:placeholder-shown) ~ .input-label-filled.input-label-small {
+input:focus:not(.read-only-variant) ~ .input-label-filled.input-label-small,
+input:focus-visible:not(.read-only-variant) ~ .input-label-filled.input-label-small,
+input:not(:placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-small,
+textarea:focus:not(.read-only-variant) ~ .input-label-filled.input-label-small,
+textarea:focus-visible:not(.read-only-variant) ~ .input-label-filled.input-label-small,
+textarea:not(:placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-small {
   margin-top: 0.125rem;
   margin-left: 0.75rem;
   line-height: 1.25rem;

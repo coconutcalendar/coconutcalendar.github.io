@@ -577,6 +577,10 @@ video {
   visibility: collapse;
 }
 
+.static {
+  position: static;
+}
+
 .fixed {
   position: fixed;
 }
@@ -604,6 +608,10 @@ video {
 .inset-x-0 {
   left: 0px;
   right: 0px;
+}
+
+.-left-px {
+  left: -1px;
 }
 
 .bottom-0 {
@@ -1005,18 +1013,6 @@ video {
 
 .max-h-screen {
   max-height: 100vh;
-}
-
-.min-h-10 {
-  min-height: 2.5rem;
-}
-
-.min-h-12 {
-  min-height: 3rem;
-}
-
-.min-h-8 {
-  min-height: 2rem;
 }
 
 .w-0 {
@@ -1527,6 +1523,10 @@ video {
   gap: 1rem;
 }
 
+.gap-8 {
+  gap: 2rem;
+}
+
 .gap-y-6 {
   row-gap: 1.5rem;
 }
@@ -1535,6 +1535,18 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-10 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(2.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(2.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-12 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(3rem * var(--tw-space-x-reverse));
+  margin-left: calc(3rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .space-x-16 > :not([hidden]) ~ :not([hidden]) {
@@ -1981,6 +1993,11 @@ video {
   background-color: var(--color-primary-main);
 }
 
+.bg-purple-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 232 255 / var(--tw-bg-opacity));
+}
+
 .bg-red-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 226 226 / var(--tw-bg-opacity));
@@ -2304,6 +2321,10 @@ video {
 
 .pt-4 {
   padding-top: 1rem;
+}
+
+.pt-4\.5 {
+  padding-top: 1.125rem;
 }
 
 .pt-6 {
@@ -2710,6 +2731,11 @@ video {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.backdrop-filter {
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
 .transition {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
@@ -2838,6 +2864,19 @@ textarea:not(:placeholder-shown) ~ .input-label {
   color: inherit;
 }
 
+input:not(:-moz-placeholder-shown).read-only-variant ~ .input-label, textarea:not(:-moz-placeholder-shown).read-only-variant ~ .input-label {
+  line-height: 1.125rem;
+}
+
+input:focus.read-only-variant ~ .input-label,
+input:focus-visible.read-only-variant ~ .input-label,
+input:not(:placeholder-shown).read-only-variant ~ .input-label,
+textarea:focus.read-only-variant ~ .input-label,
+textarea:focus-visible.read-only-variant ~ .input-label,
+textarea:not(:placeholder-shown).read-only-variant ~ .input-label {
+  line-height: 1.125rem;
+}
+
 input:not(:-moz-placeholder-shown) ~ .input-label-outlined, textarea:not(:-moz-placeholder-shown) ~ .input-label-outlined {
   margin-top: -0.5625rem;
   margin-left: 0.5rem;
@@ -2861,35 +2900,35 @@ textarea:not(:placeholder-shown) ~ .input-label-outlined {
   line-height: 1.125rem;
 }
 
-input:not(:-moz-placeholder-shown) ~ .input-label-filled.input-label-medium, textarea:not(:-moz-placeholder-shown) ~ .input-label-filled.input-label-medium {
+input:not(:-moz-placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-medium, textarea:not(:-moz-placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-medium {
   margin-top: 0.25rem;
   margin-left: 0.75rem;
   line-height: 1.25rem;
 }
 
-input:focus ~ .input-label-filled.input-label-medium,
-input:focus-visible ~ .input-label-filled.input-label-medium,
-input:not(:placeholder-shown) ~ .input-label-filled.input-label-medium,
-textarea:focus ~ .input-label-filled.input-label-medium,
-textarea:focus-visible ~ .input-label-filled.input-label-medium,
-textarea:not(:placeholder-shown) ~ .input-label-filled.input-label-medium {
+input:focus:not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+input:focus-visible:not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+input:not(:placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+textarea:focus:not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+textarea:focus-visible:not(.read-only-variant) ~ .input-label-filled.input-label-medium,
+textarea:not(:placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-medium {
   margin-top: 0.25rem;
   margin-left: 0.75rem;
   line-height: 1.25rem;
 }
 
-input:not(:-moz-placeholder-shown) ~ .input-label-filled.input-label-small, textarea:not(:-moz-placeholder-shown) ~ .input-label-filled.input-label-small {
+input:not(:-moz-placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-small, textarea:not(:-moz-placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-small {
   margin-top: 0.125rem;
   margin-left: 0.75rem;
   line-height: 1.25rem;
 }
 
-input:focus ~ .input-label-filled.input-label-small,
-input:focus-visible ~ .input-label-filled.input-label-small,
-input:not(:placeholder-shown) ~ .input-label-filled.input-label-small,
-textarea:focus ~ .input-label-filled.input-label-small,
-textarea:focus-visible ~ .input-label-filled.input-label-small,
-textarea:not(:placeholder-shown) ~ .input-label-filled.input-label-small {
+input:focus:not(.read-only-variant) ~ .input-label-filled.input-label-small,
+input:focus-visible:not(.read-only-variant) ~ .input-label-filled.input-label-small,
+input:not(:placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-small,
+textarea:focus:not(.read-only-variant) ~ .input-label-filled.input-label-small,
+textarea:focus-visible:not(.read-only-variant) ~ .input-label-filled.input-label-small,
+textarea:not(:placeholder-shown):not(.read-only-variant) ~ .input-label-filled.input-label-small {
   margin-top: 0.125rem;
   margin-left: 0.75rem;
   line-height: 1.25rem;
@@ -3409,14 +3448,6 @@ input[type=number] {
   cursor: not-allowed;
 }
 
-.disabled\:border-b-2:disabled {
-  border-bottom-width: 2px;
-}
-
-.disabled\:border-solid:disabled {
-  border-style: solid;
-}
-
 .disabled\:border-black-15:disabled {
   border-color: hsla(0,0%,0%,0.15);
 }
@@ -3439,10 +3470,6 @@ input[type=number] {
 
 .disabled\:border-secondary-main:disabled {
   border-color: var(--color-secondary-main);
-}
-
-.disabled\:border-transparent:disabled {
-  border-color: transparent;
 }
 
 .disabled\:border-white-100:disabled {

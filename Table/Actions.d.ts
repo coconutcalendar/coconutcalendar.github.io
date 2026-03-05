@@ -1,7 +1,7 @@
 import type { MutableRefObject, ReactNode } from 'react';
 import type SvgIcon from '../SvgIcon/SvgIcon';
 import type { Directions } from '../utilities/directions';
-import type { ClickRowActionEventHandler, GroupedTableColumns, Limit, TableRow } from './TableContext';
+import type { ClickRowActionEventHandler, GroupedTableColumns, Limit, TableRow } from './Table';
 export type Actions = {
     type: ActionTypes.ChangeLimit;
     limit: Limit;
