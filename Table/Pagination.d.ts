@@ -1,4 +1,4 @@
-import type { Limit } from './Table';
+import type { Limit } from './TableContext';
 export type HandlesPaginationChange = (args: {
     limit: Limit;
     page: number;

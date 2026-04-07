@@ -11,6 +11,11 @@ interface TypographyProps {
      */
     component?: ElementType;
     /**
+     * The id of the element.
+     * @default undefined
+     */
+    id?: string;
+    /**
      * If true, the overflow text will be truncated with an ellipsis.
      * Recommended to avoid truncation as it typically causes accessibility issues
      * @default false
@@ -25,5 +30,5 @@ interface TypographyProps {
 }
 type TypographyColor = 'initial' | 'inherit' | 'inverse';
 type TypographyVariant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'subtitle1' | 'subtitle2' | 'subtitle3' | 'body1' | 'body2' | 'button' | 'caption' | 'overline';
-declare function Typography({ children, color, component: Component, truncate, variant, }: PropsWithChildren<TypographyProps>): JSX.Element;
+declare function Typography({ children, color, component: Component, id, truncate, variant, }: PropsWithChildren<TypographyProps>): JSX.Element;
 export default Typography;

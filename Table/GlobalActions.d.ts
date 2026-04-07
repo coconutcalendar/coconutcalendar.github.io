@@ -1,6 +1,6 @@
-import type { ReactElement } from 'react';
+import type { ReactNode } from 'react';
 interface GlobalActionsProps {
-    children: ReactElement | ReactElement[];
+    children: ReactNode;
 }
 declare function GlobalActions({ children }: GlobalActionsProps): JSX.Element;
 export default GlobalActions;

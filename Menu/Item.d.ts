@@ -117,6 +117,10 @@ export type ItemProps = {
      * Value associated with the item
      */
     value?: string;
+    /**
+     * Whether to wrap long option text
+     */
+    wrapText?: boolean;
 } & StartAdornmentProps;
 type ItemColor = 'error' | 'primary' | 'secondary';
 export type MenuItemDataRef = MutableRefObject<{
@@ -125,5 +129,5 @@ export type MenuItemDataRef = MutableRefObject<{
     hasSubmenu: boolean;
     textValue?: string;
 }>;
-declare function Item({ action, applyFocusRef, 'aria-label': label, checkbox, children, color, 'data-key': key, dataSet, defaultChecked, disabled, endAdornment, inset, onChange, onClick, selectable, selected, startAdornment: StartAdornment, value, }: PropsWithChildren<ItemProps>, ref: Ref<HTMLButtonElement>): JSX.Element;
+declare function Item({ action, applyFocusRef, 'aria-label': label, checkbox, children, color, 'data-key': key, dataSet, defaultChecked, disabled, endAdornment, inset, onChange, onClick, selectable, selected, startAdornment: StartAdornment, value, wrapText, }: PropsWithChildren<ItemProps>, ref: Ref<HTMLButtonElement>): JSX.Element;
 export default Item;

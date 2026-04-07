@@ -32,7 +32,7 @@ export interface ButtonProps {
      */
     dataSet?: Record<string, string | undefined>;
     /**
-     * If true, the button is be disabled
+     * If true, the button is disabled
      * @default false
      */
     disabled?: boolean;
@@ -40,6 +40,11 @@ export interface ButtonProps {
      * Icon to display at the end of the button
      */
     endAdornment?: typeof SvgIcon;
+    /**
+     * If true, the button stretches to the full width of its container
+     * @default false
+     */
+    fullWidth?: boolean;
     /**
      * The id of the form element that the button is associated with
      */
@@ -97,7 +102,7 @@ export interface ButtonProps {
      */
     variant?: ButtonVariant;
 }
-export type ButtonColor = 'error' | 'default' | 'inverse' | 'primary' | 'secondary';
+export type ButtonColor = 'error' | 'default' | 'inverse' | 'primary' | 'secondary' | 'inherit';
 type ButtonPosition = 'left' | 'middle' | 'right';
 export type ButtonSize = 'large' | 'medium' | 'small';
 type ButtonType = 'button' | 'reset' | 'submit';

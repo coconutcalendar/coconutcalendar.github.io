@@ -11,6 +11,7 @@ interface SelectState {
 type SelectContextState = SelectState & {
     displayInputRef: MutableRefObject<HTMLInputElement | null>;
     inputRef: MutableRefObject<HTMLInputElement | null>;
+    wrapText?: boolean;
 };
 type UseSelectValues = [SelectContextState, Dispatch<Actions>];
 export declare const useSelect: () => UseSelectValues;
@@ -74,8 +75,13 @@ export interface SelectProps {
      * @default 'outlined'
      */
     variant?: TextInputVariant;
+    /**
+     * Whether option text should wrap to multiple lines instead of truncating
+     * @default false
+     */
+    wrapText?: boolean;
 }
-declare function Select({ children, color, dataSet, defaultValue, disabled, error, helperText, inputRef, label, name, onChange, size, startAdornment, variant, }: PropsWithChildren<SelectProps>): JSX.Element;
+declare function Select({ children, color, dataSet, defaultValue, disabled, error, helperText, inputRef, label, name, onChange, size, startAdornment, variant, wrapText, }: PropsWithChildren<SelectProps>): JSX.Element;
 declare namespace Select {
     var Option: React.ForwardRefExoticComponent<OptionProps & {
         children?: ReactNode;

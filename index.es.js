@@ -4,6 +4,7 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { createPortal } from 'react-dom';
 import { format as format$1, parse as parse$1, setDate, startOfWeek, endOfWeek, isValid, isAfter, isSameWeek, isSameDay, isSameMonth, isToday, isWeekend, startOfMonth, addDays, endOfMonth, differenceInCalendarDays, addMonths, subDays, subMonths, isWithinInterval, fromUnixTime } from 'date-fns';
 import { enUS, es, fr, ko, pl, ptBR, ru, zhCN } from 'date-fns/locale';
+import { Popover as Popover$1 } from 'react-aria-components';
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -70,15 +71,15 @@ function toDataSet(record) {
 
 var sizes = {
     large: {
-        root: 'h-12 px-4 py-3',
+        root: 'min-h-12 px-4 py-3',
         icon: 'w-6 h-6',
     },
     medium: {
-        root: 'h-10 px-2 py-2',
+        root: 'min-h-10 px-2 py-2',
         icon: 'w-5 h-5',
     },
     small: {
-        root: 'h-8 px-1 py-1',
+        root: 'min-h-8 px-1 py-1',
         icon: 'w-4.5 h-4.5',
     },
 };
@@ -123,6 +124,11 @@ var positions = {
             middle: "rounded-none border-l border-error-darker disabled:border-black-15",
             right: 'rounded-r border-l border-error-darker disabled:border-black-15',
         },
+        inherit: {
+            left: 'rounded-l',
+            middle: 'rounded-none border-l border-black-15 disabled:border-black-15',
+            right: 'rounded-r border-l border-black-15 disabled:border-black-15',
+        },
     },
     outlined: {
         default: {
@@ -149,6 +155,11 @@ var positions = {
             left: 'rounded-l disabled:border-error-dark',
             middle: 'rounded-none border-l-0 disabled:border-error-dark',
             right: 'rounded-r border-l-0 disabled:border-error-dark',
+        },
+        inherit: {
+            left: 'rounded-l disabled:border-black-20',
+            middle: 'rounded-none border-l-0 disabled:border-black-20',
+            right: 'rounded-r border-l-0 disabled:border-black-20',
         },
     },
     text: {
@@ -177,6 +188,11 @@ var positions = {
             middle: "rounded-none border-l border-error-darker disabled:border-black-15",
             right: 'rounded-r border-l border-error-darker disabled:border-black-15',
         },
+        inherit: {
+            left: 'rounded-l',
+            middle: 'rounded-none border-l border-black-15 disabled:border-black-15',
+            right: 'rounded-r border-l border-black-15 disabled:border-black-15',
+        },
     },
 };
 var variants = {
@@ -186,6 +202,7 @@ var variants = {
         primary: "bg-primary-main text-white-100 ".concat(disabled.contained.default, " active:bg-primary-darker focus:bg-primary-dark focus-visible:ring hover:bg-primary-dark"),
         secondary: "bg-secondary-main text-white-100 ".concat(disabled.contained.default, " active:bg-secondary-darker focus:bg-secondary-dark focus-visible:ring hover:bg-secondary-dark"),
         error: "bg-error-main text-white-100 ".concat(disabled.contained.default, " active:bg-error-darker focus:bg-error-dark focus-visible:ring hover:bg-error-dark"),
+        inherit: "bg-inherit text-inherit ".concat(disabled.contained.default, " active:bg-black-25 focus:bg-black-15 focus-visible:ring hover:bg-black-15"),
     },
     outlined: {
         default: "border border-solid border-black-20 text-black-90 ".concat(disabled.outlined.default, " active:bg-black-15 focus:bg-black-5 focus-visible:ring hover:bg-black-5"),
@@ -193,6 +210,7 @@ var variants = {
         primary: "border border-solid border-primary-main text-primary-main ".concat(disabled.outlined.default, " active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10"),
         secondary: "border border-solid border-secondary-main text-secondary-main ".concat(disabled.outlined.default, " active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10"),
         error: "border border-solid border-error-darker text-error-darker ".concat(disabled.outlined.default, " active:bg-error-20 focus:bg-error-10 focus-visible:ring hover:bg-error-10"),
+        inherit: "border border-solid border-black-20 text-inherit ".concat(disabled.outlined.default, " active:bg-black-15 focus:bg-black-5 focus-visible:ring hover:bg-black-5"),
     },
     text: {
         default: "text-black-90 ".concat(disabled.text.default, " active:bg-black-15 focus:bg-black-5 focus-visible:ring hover:bg-black-5"),
@@ -200,14 +218,15 @@ var variants = {
         primary: "text-primary-main ".concat(disabled.text.default, " active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10"),
         secondary: "text-secondary-main ".concat(disabled.text.default, " active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10"),
         error: "text-error-darker ".concat(disabled.text.default, " active:bg-error-20 focus:bg-error-10 focus-visible:ring hover:bg-error-10"),
+        inherit: "text-inherit ".concat(disabled.text.default, " active:bg-black-15 focus:bg-black-5 focus-visible:ring hover:bg-black-5"),
     },
 };
 function ButtonComponent(_a, ref) {
     var _b;
-    var controls = _a["aria-controls"], expanded = _a["aria-expanded"], hasPopup = _a["aria-haspopup"], children = _a.children, _c = _a.color, color = _c === void 0 ? 'default' : _c, dataSet = _a.dataSet, _d = _a.disabled, disabled = _d === void 0 ? false : _d, EndAdornment = _a.endAdornment, form = _a.form, href = _a.href, id = _a.id, onClick = _a.onClick, onKeyDown = _a.onKeyDown, _e = _a.position, position = _e === void 0 ? null : _e, _f = _a.size, size = _f === void 0 ? 'medium' : _f, StartAdornment = _a.startAdornment, _g = _a.tabIndex, tabIndex = _g === void 0 ? 0 : _g, target = _a.target, _h = _a.type, type = _h === void 0 ? 'button' : _h, _j = _a.variant, variant = _j === void 0 ? 'contained' : _j;
+    var controls = _a["aria-controls"], expanded = _a["aria-expanded"], hasPopup = _a["aria-haspopup"], children = _a.children, _c = _a.color, color = _c === void 0 ? 'default' : _c, dataSet = _a.dataSet, _d = _a.disabled, disabled = _d === void 0 ? false : _d, EndAdornment = _a.endAdornment, _e = _a.fullWidth, fullWidth = _e === void 0 ? false : _e, form = _a.form, href = _a.href, id = _a.id, onClick = _a.onClick, onKeyDown = _a.onKeyDown, _f = _a.position, position = _f === void 0 ? null : _f, _g = _a.size, size = _g === void 0 ? 'medium' : _g, StartAdornment = _a.startAdornment, _h = _a.tabIndex, tabIndex = _h === void 0 ? 0 : _h, target = _a.target, _j = _a.type, type = _j === void 0 ? 'button' : _j, _k = _a.variant, variant = _k === void 0 ? 'contained' : _k;
     var Component = href ? 'a' : 'button';
-    return (React.createElement(Component, __assign({ "aria-controls": controls, "aria-expanded": expanded, "aria-haspopup": hasPopup, className: clsx('font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none', variants[variant][color], sizes[size].root, position ? positions[variant][color][position] : 'rounded') }, toDataSet(dataSet), { disabled: disabled, form: form, href: href, id: id, onClick: onClick, onKeyDown: onKeyDown, ref: ref, tabIndex: tabIndex }, (href ? { target: target } : { type: type })),
-        React.createElement("div", { className: "flex items-center" },
+    return (React.createElement(Component, __assign({ "aria-controls": controls, "aria-expanded": expanded, "aria-haspopup": hasPopup, className: clsx('font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none', variants[variant][color], sizes[size].root, position ? positions[variant][color][position] : 'rounded', fullWidth && 'w-full') }, toDataSet(dataSet), { disabled: disabled, form: form, href: href, id: id, onClick: onClick, onKeyDown: onKeyDown, ref: ref, tabIndex: tabIndex }, (href ? { target: target } : { type: type })),
+        React.createElement("div", { className: "flex items-center justify-center" },
             StartAdornment ? (React.createElement("span", { className: clsx('flex items-center justify-center', sizes[size].icon) },
                 React.createElement(StartAdornment, { color: "inherit" }))) : null,
             ((_b = children === null || children === void 0 ? void 0 : children.type) === null || _b === void 0 ? void 0 : _b.uiName) === 'SvgIcon' ? (React.createElement("span", { className: sizes[size].icon }, children)) : (React.createElement("span", { className: size === 'small' ? 'px-1' : 'px-2' }, children)),
@@ -273,8 +292,8 @@ var variants$1 = {
     overline: "text-xs font-medium tracking-widest leading-looser uppercase",
 };
 function Typography(_a) {
-    var children = _a.children, _b = _a.color, color = _b === void 0 ? 'initial' : _b, _c = _a.component, Component = _c === void 0 ? 'span' : _c, _d = _a.truncate, truncate = _d === void 0 ? false : _d, _e = _a.variant, variant = _e === void 0 ? 'body1' : _e;
-    return (React.createElement(Component, { className: clsx('font-sans', colors$1[color], truncate ? 'truncate' : null, variants$1[variant]) }, children));
+    var children = _a.children, _b = _a.color, color = _b === void 0 ? 'initial' : _b, _c = _a.component, Component = _c === void 0 ? 'span' : _c, id = _a.id, _d = _a.truncate, truncate = _d === void 0 ? false : _d, _e = _a.variant, variant = _e === void 0 ? 'body1' : _e;
+    return (React.createElement(Component, { className: clsx('font-sans', colors$1[color], truncate ? 'truncate' : null, variants$1[variant]), id: id }, children));
 }
 
 var ProgressContext = createContext(null);
@@ -802,7 +821,7 @@ function contains(parent, child) {
   return false;
 }
 
-function getComputedStyle(element) {
+function getComputedStyle$1(element) {
   return getWindow(element).getComputedStyle(element);
 }
 
@@ -836,7 +855,7 @@ function getParentNode(element) {
 
 function getTrueOffsetParent(element) {
   if (!isHTMLElement(element) || // https://github.com/popperjs/popper-core/issues/837
-  getComputedStyle(element).position === 'fixed') {
+  getComputedStyle$1(element).position === 'fixed') {
     return null;
   }
 
@@ -845,7 +864,7 @@ function getTrueOffsetParent(element) {
   if (offsetParent) {
     var html = getDocumentElement(offsetParent);
 
-    if (getNodeName(offsetParent) === 'body' && getComputedStyle(offsetParent).position === 'static' && getComputedStyle(html).position !== 'static') {
+    if (getNodeName(offsetParent) === 'body' && getComputedStyle$1(offsetParent).position === 'static' && getComputedStyle$1(html).position !== 'static') {
       return html;
     }
   }
@@ -859,7 +878,7 @@ function getContainingBlock(element) {
   var currentNode = getParentNode(element);
 
   while (isHTMLElement(currentNode) && ['html', 'body'].indexOf(getNodeName(currentNode)) < 0) {
-    var css = getComputedStyle(currentNode); // This is non-exhaustive but covers the most common CSS properties that
+    var css = getComputedStyle$1(currentNode); // This is non-exhaustive but covers the most common CSS properties that
     // create a containing block.
 
     if (css.transform !== 'none' || css.perspective !== 'none' || css.willChange && css.willChange !== 'auto') {
@@ -878,11 +897,11 @@ function getOffsetParent(element) {
   var window = getWindow(element);
   var offsetParent = getTrueOffsetParent(element);
 
-  while (offsetParent && isTableElement(offsetParent) && getComputedStyle(offsetParent).position === 'static') {
+  while (offsetParent && isTableElement(offsetParent) && getComputedStyle$1(offsetParent).position === 'static') {
     offsetParent = getTrueOffsetParent(offsetParent);
   }
 
-  if (offsetParent && getNodeName(offsetParent) === 'body' && getComputedStyle(offsetParent).position === 'static') {
+  if (offsetParent && getNodeName(offsetParent) === 'body' && getComputedStyle$1(offsetParent).position === 'static') {
     return window;
   }
 
@@ -1097,7 +1116,7 @@ function computeStyles(_ref4) {
       roundOffsets = _options$roundOffsets === void 0 ? true : _options$roundOffsets;
 
   if (process.env.NODE_ENV !== "production") {
-    var transitionProperty = getComputedStyle(state.elements.popper).transitionProperty || '';
+    var transitionProperty = getComputedStyle$1(state.elements.popper).transitionProperty || '';
 
     if (adaptive && ['transform', 'top', 'right', 'bottom', 'left'].some(function (property) {
       return transitionProperty.indexOf(property) >= 0;
@@ -1299,7 +1318,7 @@ function getDocumentRect(element) {
   var x = -winScroll.scrollLeft + getWindowScrollBarX(element);
   var y = -winScroll.scrollTop;
 
-  if (getComputedStyle(body || html).direction === 'rtl') {
+  if (getComputedStyle$1(body || html).direction === 'rtl') {
     x += Math.max(html.clientWidth, body ? body.clientWidth : 0) - width;
   }
 
@@ -1313,7 +1332,7 @@ function getDocumentRect(element) {
 
 function isScrollParent(element) {
   // Firefox wants us to check `-x` and `-y` variations as well
-  var _getComputedStyle = getComputedStyle(element),
+  var _getComputedStyle = getComputedStyle$1(element),
       overflow = _getComputedStyle.overflow,
       overflowX = _getComputedStyle.overflowX,
       overflowY = _getComputedStyle.overflowY;
@@ -1386,7 +1405,7 @@ function getClientRectFromMixedType(element, clippingParent) {
 
 function getClippingParents(element) {
   var clippingParents = listScrollParents(getParentNode(element));
-  var canEscapeClipping = ['absolute', 'fixed'].indexOf(getComputedStyle(element).position) >= 0;
+  var canEscapeClipping = ['absolute', 'fixed'].indexOf(getComputedStyle$1(element).position) >= 0;
   var clipperElement = canEscapeClipping && isHTMLElement(element) ? getOffsetParent(element) : element;
 
   if (!isElement(clipperElement)) {
@@ -2290,7 +2309,7 @@ function popperGenerator(generatorOptions) {
             }
           }
 
-          var _getComputedStyle = getComputedStyle(popper),
+          var _getComputedStyle = getComputedStyle$1(popper),
               marginTop = _getComputedStyle.marginTop,
               marginRight = _getComputedStyle.marginRight,
               marginBottom = _getComputedStyle.marginBottom,
@@ -2765,9 +2784,9 @@ function Group(_a) {
 }
 
 function Group$1(_a) {
-    var children = _a.children, _b = _a.error, error = _b === void 0 ? false : _b, _c = _a.helperText, helperText = _c === void 0 ? '' : _c, _d = _a.direction, direction = _d === void 0 ? 'col' : _d;
+    var children = _a.children, ariaLabel = _a.ariaLabel, _b = _a.error, error = _b === void 0 ? false : _b, _c = _a.helperText, helperText = _c === void 0 ? '' : _c, _d = _a.direction, direction = _d === void 0 ? 'col' : _d;
     return (React.createElement("div", null,
-        React.createElement("div", { className: clsx("flex flex-".concat(direction), direction === 'row' ? 'items-center' : ''), role: "group" }, children),
+        React.createElement("div", __assign({}, (ariaLabel ? { 'aria-label': ariaLabel } : {}), { className: clsx("flex flex-".concat(direction), direction === 'row' ? 'items-center' : ''), role: "group" }), children),
         helperText ? (React.createElement("span", { "aria-live": error ? 'assertive' : 'off', className: clsx('text-xs', error ? 'text-error-main' : 'text-black-60') }, helperText)) : null));
 }
 
@@ -2900,14 +2919,14 @@ var useSubmenu = function () {
 function Item(_a, ref) {
     var _b;
     var _c;
-    var _d = _a.action, action = _d === void 0 ? false : _d, applyFocusRef = _a.applyFocusRef, label = _a["aria-label"], checkbox = _a.checkbox, children = _a.children, _e = _a.color, color = _e === void 0 ? 'primary' : _e, key = _a["data-key"], dataSet = _a.dataSet, _f = _a.defaultChecked, defaultChecked = _f === void 0 ? false : _f, _g = _a.disabled, disabled = _g === void 0 ? false : _g, endAdornment = _a.endAdornment, _h = _a.inset, inset = _h === void 0 ? false : _h, onChange = _a.onChange, onClick = _a.onClick, _j = _a.selectable, selectable = _j === void 0 ? true : _j, selected = _a.selected, StartAdornment = _a.startAdornment, value = _a.value;
+    var _d = _a.action, action = _d === void 0 ? false : _d, applyFocusRef = _a.applyFocusRef, label = _a["aria-label"], checkbox = _a.checkbox, children = _a.children, _e = _a.color, color = _e === void 0 ? 'primary' : _e, key = _a["data-key"], dataSet = _a.dataSet, _f = _a.defaultChecked, defaultChecked = _f === void 0 ? false : _f, _g = _a.disabled, disabled = _g === void 0 ? false : _g, endAdornment = _a.endAdornment, _h = _a.inset, inset = _h === void 0 ? false : _h, onChange = _a.onChange, onClick = _a.onClick, _j = _a.selectable, selectable = _j === void 0 ? true : _j, selected = _a.selected, StartAdornment = _a.startAdornment, value = _a.value, _k = _a.wrapText, wrapText = _k === void 0 ? false : _k;
     var autocomplete = useAutocomplete();
     var d = useDisposables();
-    var _k = useMenu(), state = _k[0], dispatch = _k[1];
-    var _l = useState(undefined), submenuId = _l[0], setSubmenuId = _l[1];
-    var _m = useReducer(function (state) {
+    var _l = useMenu(), state = _l[0], dispatch = _l[1];
+    var _m = useState(undefined), submenuId = _m[0], setSubmenuId = _m[1];
+    var _o = useReducer(function (state) {
         return !state;
-    }, defaultChecked), checked = _m[0], toggleChecked = _m[1];
+    }, defaultChecked), checked = _o[0], toggleChecked = _o[1];
     var id = "coconut-menu-item-".concat(useId());
     var checkboxRef = useRef(null);
     var itemRef = useRef(null);
@@ -3102,7 +3121,7 @@ function Item(_a, ref) {
                     isCheckbox ? (React.createElement("span", { className: "flex" },
                         React.createElement(Checkbox.Input, { color: color, constrained: true, "data-key": key, defaultChecked: defaultChecked, disabled: disabled, inputRef: checkboxRef, name: value, onChange: handleCheckboxClick },
                             React.createElement(Typography, { color: "inherit", variant: "body2" }, children)))) : (React.createElement(React.Fragment, null,
-                        React.createElement("span", { className: "flex items-center justify-between w-full truncate" },
+                        React.createElement("span", { className: clsx('flex items-center justify-between w-full', wrapText ? 'whitespace-normal break-words' : 'truncate') },
                             React.createElement(Typography, { color: "inherit", variant: "body2" }, children)),
                         selected ? (React.createElement("span", { className: "shrink-0 w-6 h-6 ml-2" },
                             React.createElement(Done, null))) : null))),
@@ -3601,7 +3620,15 @@ Group$2.uiName = 'Autocomplete.Group';
 
 var Add = createSvgIcon(React.createElement("path", { d: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" }), 'Add');
 
+createSvgIcon(React.createElement("path", { d: "M12 22C10.6167 22 9.31667 21.7417 8.1 21.225C6.88333 20.6917 5.825 19.975 4.925 19.075C4.025 18.175 3.30833 17.1167 2.775 15.9C2.25833 14.6833 2 13.3833 2 12C2 10.6167 2.25833 9.31667 2.775 8.1C3.30833 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.31667 8.1 2.8C9.31667 2.26667 10.6167 2 12 2C13.0833 2 14.1083 2.15833 15.075 2.475C16.0417 2.79167 16.9333 3.23333 17.75 3.8L16.3 5.275C15.6667 4.875 14.9917 4.56667 14.275 4.35C13.5583 4.11667 12.8 4 12 4C9.78333 4 7.89167 4.78333 6.325 6.35C4.775 7.9 4 9.78333 4 12C4 14.2167 4.775 16.1083 6.325 17.675C7.89167 19.225 9.78333 20 12 20C12.5333 20 13.05 19.95 13.55 19.85C14.05 19.75 14.5333 19.6083 15 19.425L16.5 20.95C15.8167 21.2833 15.1 21.5417 14.35 21.725C13.6 21.9083 12.8167 22 12 22ZM19 20V17H16V15H19V12H21V15H24V17H21V20H19ZM10.6 16.6L6.35 12.35L7.75 10.95L10.6 13.8L20.6 3.775L22 5.175L10.6 16.6Z" }), 'AddTask');
+
 createSvgIcon(React.createElement("path", { d: "M20 6H16V4C16 2.89 15.11 2 14 2H10C8.89 2 8 2.89 8 4V6H4C2.89 6 2.01 6.89 2.01 8L2 19C2 20.11 2.89 21 4 21H20C21.11 21 22 20.11 22 19H17V16H14V10H17V7H21.735C21.3908 6.40084 20.7449 6 20 6ZM14 6H10V4H14V6Z M21 9V12H24V14H21V17H19V14H16V12H19V9H21Z" }), 'AddToWorkflow');
+
+createSvgIcon(React.createElement(React.Fragment, null,
+    React.createElement("path", { d: "M9.5 3C11.3167 3 12.8496 3.63372 14.0996 4.90039C15.3663 6.15039 16 7.68333 16 9.5C16 10.2333 15.8837 10.9252 15.6504 11.5752C15.4171 12.2251 15.1001 12.7999 14.7002 13.2998L21 19.5996L19.5996 21L13.2998 14.7002C12.7999 15.1001 12.2251 15.4171 11.5752 15.6504C10.9252 15.8837 10.2333 16 9.5 16C7.68333 16 6.14167 15.375 4.875 14.125C3.625 12.8583 3 11.3167 3 9.5C3 7.68343 3.62513 6.15035 4.875 4.90039C6.14167 3.63372 7.68333 3 9.5 3ZM9.5 5C8.25 5 7.18314 5.44186 6.2998 6.3252C5.43327 7.19183 5 8.25009 5 9.5C5 10.75 5.43314 11.8169 6.2998 12.7002C7.18314 13.5669 8.25 14 9.5 14C10.7499 14 11.8082 13.5667 12.6748 12.7002C13.5581 11.8169 14 10.75 14 9.5C14 8.25 13.5581 7.19186 12.6748 6.3252C11.8081 5.44186 10.75 5 9.5 5Z" }),
+    React.createElement("path", { d: "M22 12L24 10L22 8L20 10L22 12Z" }),
+    React.createElement("path", { d: "M17 4L19 2L17 -4.76837e-07L15 2L17 4Z" }),
+    React.createElement("path", { d: "M3 21L5 19L3 17L1 19L3 21Z" })), 'AISearch');
 
 createSvgIcon(React.createElement("path", { d: "M22 5.72l-4.6-3.86-1.29 1.53 4.6 3.86L22 5.72zM7.88 3.39L6.6 1.86 2 5.71l1.29 1.53 4.59-3.85zM12.5 8H11v6l4.75 2.85.75-1.23-4-2.37V8zM12 4c-4.97 0-9 4.03-9 9s4.02 9 9 9c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z" }), 'Alarm');
 
@@ -3612,9 +3639,17 @@ createSvgIcon(React.createElement(React.Fragment, null,
 
 var ArrowBack = createSvgIcon(React.createElement("path", { d: "M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" }), 'ArrowBack');
 
+createSvgIcon(React.createElement("path", { d: "M640-80 240-480l400-400 71 71-329 329 329 329-71 71Z" }), 'ArrowBackIos', '0 -960 960 960');
+
 var ArrowDownward = createSvgIcon(React.createElement("path", { d: "M20 12l-1.41-1.41L13 16.17V4h-2v12.17l-5.58-5.59L4 12l8 8 8-8z" }), 'ArrowDownward');
 
+createSvgIcon(React.createElement("path", { d: "m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z" }), 'ArrowForwardIos', '0 -960 960 960');
+
 createSvgIcon(React.createElement("path", { d: "M16.01 11H4V13H16.01V16L20 12L16.01 8V11Z" }), 'ArrowRightAlt');
+
+var ArrowUpward = createSvgIcon(React.createElement("path", { d: "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" }), 'ArrowUpward');
+
+createSvgIcon(React.createElement("path", { d: "M7 17H14V15H7V17ZM7 13H17V11H7V13ZM7 9H17V7H7V9ZM5 21C4.45 21 3.975 20.8083 3.575 20.425C3.19167 20.025 3 19.55 3 19V5C3 4.45 3.19167 3.98333 3.575 3.6C3.975 3.2 4.45 3 5 3H19C19.55 3 20.0167 3.2 20.4 3.6C20.8 3.98333 21 4.45 21 5V19C21 19.55 20.8 20.025 20.4 20.425C20.0167 20.8083 19.55 21 19 21H5ZM5 19H19V5H5V19ZM5 5V19V5Z" }), 'Article');
 
 createSvgIcon(React.createElement("path", { d: "M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V19z" }), 'AssignmentIndicator');
 
@@ -3666,6 +3701,8 @@ createSvgIcon(React.createElement("path", { d: "M13 5V4C13 3.71667 13.0958 3.479
 createSvgIcon(React.createElement("path", { d: "M12 10.9c-.61 0-1.1.49-1.1 1.1s.49 1.1 1.1 1.1c.61 0 1.1-.49 1.1-1.1s-.49-1.1-1.1-1.1zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z" }), 'Compass');
 
 createSvgIcon(React.createElement("path", { d: "M20 0H4v2h16V0zM4 24h16v-2H4v2zM20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2.75c1.24 0 2.25 1.01 2.25 2.25s-1.01 2.25-2.25 2.25S9.75 10.24 9.75 9 10.76 6.75 12 6.75zM17 17H7v-1.5c0-1.67 3.33-2.5 5-2.5s5 .83 5 2.5V17z" }), 'Contacts');
+
+createSvgIcon(React.createElement("path", { d: "M12 21C9.48333 21 7.35 20.6167 5.6 19.85C3.86667 19.0667 3 18.1167 3 17V7C3 5.9 3.875 4.95833 5.625 4.175C7.39167 3.39167 9.51667 3 12 3C14.4833 3 16.6 3.39167 18.35 4.175C20.1167 4.95833 21 5.9 21 7V17C21 18.1167 20.125 19.0667 18.375 19.85C16.6417 20.6167 14.5167 21 12 21ZM12 9.025C13.4833 9.025 14.975 8.81667 16.475 8.4C17.975 7.96667 18.8167 7.50833 19 7.025C18.8167 6.54167 17.975 6.08333 16.475 5.65C14.9917 5.21667 13.5 5 12 5C10.4833 5 8.99167 5.21667 7.525 5.65C6.075 6.06667 5.23333 6.525 5 7.025C5.23333 7.525 6.075 7.98333 7.525 8.4C8.99167 8.81667 10.4833 9.025 12 9.025ZM12 14C12.7 14 13.375 13.9667 14.025 13.9C14.675 13.8333 15.2917 13.7417 15.875 13.625C16.475 13.4917 17.0333 13.3333 17.55 13.15C18.0833 12.9667 18.5667 12.7583 19 12.525V9.525C18.5667 9.75833 18.0833 9.96667 17.55 10.15C17.0333 10.3333 16.475 10.4917 15.875 10.625C15.2917 10.7417 14.675 10.8333 14.025 10.9C13.375 10.9667 12.7 11 12 11C11.3 11 10.6167 10.9667 9.95 10.9C9.28333 10.8333 8.65 10.7417 8.05 10.625C7.46667 10.4917 6.91667 10.3333 6.4 10.15C5.88333 9.96667 5.41667 9.75833 5 9.525V12.525C5.41667 12.7583 5.88333 12.9667 6.4 13.15C6.91667 13.3333 7.46667 13.4917 8.05 13.625C8.65 13.7417 9.28333 13.8333 9.95 13.9C10.6167 13.9667 11.3 14 12 14ZM12 19C12.7667 19 13.5417 18.9417 14.325 18.825C15.125 18.7083 15.8583 18.5583 16.525 18.375C17.1917 18.175 17.75 17.9583 18.2 17.725C18.65 17.475 18.9167 17.225 19 16.975V14.525C18.5667 14.7583 18.0833 14.9667 17.55 15.15C17.0333 15.3333 16.475 15.4917 15.875 15.625C15.2917 15.7417 14.675 15.8333 14.025 15.9C13.375 15.9667 12.7 16 12 16C11.3 16 10.6167 15.9667 9.95 15.9C9.28333 15.8333 8.65 15.7417 8.05 15.625C7.46667 15.4917 6.91667 15.3333 6.4 15.15C5.88333 14.9667 5.41667 14.7583 5 14.525V17C5.08333 17.25 5.34167 17.4917 5.775 17.725C6.225 17.9583 6.78333 18.175 7.45 18.375C8.11667 18.5583 8.85 18.7083 9.65 18.825C10.45 18.9417 11.2333 19 12 19Z" }), 'Database');
 
 var DateRange = createSvgIcon(React.createElement("path", { d: "M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" }), 'DateRange');
 
@@ -3837,6 +3874,8 @@ createSvgIcon(React.createElement("path", { d: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7
 
 createSvgIcon(React.createElement("path", { d: "M8.3 20C8.03083 20 7.80521 19.9042 7.62313 19.7125C7.44104 19.5208 7.35 19.2833 7.35 19V14C7.35 13.7167 7.44104 13.4792 7.62313 13.2875C7.80521 13.0958 8.03083 13 8.3 13H19.05C19.3192 13 19.5448 13.0958 19.7269 13.2875C19.909 13.4792 20 13.7167 20 14V19C20 19.2833 19.909 19.5208 19.7269 19.7125C19.5448 19.9042 19.3192 20 19.05 20H8.3ZM8.5 11C8.23083 11 8.00521 10.9042 7.82313 10.7125C7.64104 10.5208 7.55 10.2833 7.55 10V5C7.55 4.71667 7.64104 4.47917 7.82313 4.2875C8.00521 4.09583 8.23083 4 8.5 4H19.05C19.3192 4 19.5448 4.09583 19.7269 4.2875C19.909 4.47917 20 4.71667 20 5V10C20 10.2833 19.909 10.5208 19.7269 10.7125C19.5448 10.9042 19.3192 11 19.05 11H8.5ZM3.95 20C3.68083 20 3.45521 19.9042 3.27312 19.7125C3.09104 19.5208 3 19.2833 3 19V14C3 13.7167 3.09104 13.4792 3.27312 13.2875C3.45521 13.0958 3.68083 13 3.95 13H4.7C4.96917 13 5.19479 13.0958 5.37688 13.2875C5.55896 13.4792 5.65 13.7167 5.65 14V19C5.65 19.2833 5.55896 19.5208 5.37688 19.7125C5.19479 19.9042 4.96917 20 4.7 20H3.95ZM3.95 11C3.68083 11 3.45521 10.9042 3.27312 10.7125C3.09104 10.5208 3 10.2833 3 10V5C3 4.71667 3.09104 4.47917 3.27312 4.2875C3.45521 4.09583 3.68083 4 3.95 4H4.7C4.96917 4 5.19479 4.09583 5.37688 4.2875C5.55896 4.47917 5.65 4.71667 5.65 5V10C5.65 10.2833 5.55896 10.5208 5.37688 10.7125C5.19479 10.9042 4.96917 11 4.7 11H3.95Z" }), 'Rows');
 
+createSvgIcon(React.createElement("path", { d: "M21 7V19C21 19.55 20.8 20.025 20.4 20.425C20.0167 20.8083 19.55 21 19 21H5C4.45 21 3.975 20.8083 3.575 20.425C3.19167 20.025 3 19.55 3 19V5C3 4.45 3.19167 3.98333 3.575 3.6C3.975 3.2 4.45 3 5 3H17L21 7ZM12 18C12.8333 18 13.5417 17.7083 14.125 17.125C14.7083 16.5417 15 15.8333 15 15C15 14.1667 14.7083 13.4583 14.125 12.875C13.5417 12.2917 12.8333 12 12 12C11.1667 12 10.4583 12.2917 9.875 12.875C9.29167 13.4583 9 14.1667 9 15C9 15.8333 9.29167 16.5417 9.875 17.125C10.4583 17.7083 11.1667 18 12 18ZM6 10H15V6H6V10Z" }), 'Save');
+
 createSvgIcon(React.createElement("path", { d: "M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" }), 'SaveAlt');
 
 createSvgIcon(React.createElement(React.Fragment, null,
@@ -3857,7 +3896,11 @@ createSvgIcon(React.createElement("path", { d: "M18.41 5.8L17.2 4.59C16.42 3.81 
 
 createSvgIcon(React.createElement("path", { d: "M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 1.99 2 1.99L17 22c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-5 2c1.1 0 2 .9 2 2s-.9 2-2 2c-1.11 0-2-.9-2-2s.89-2 2-2zm0 16c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" }), 'Speaker');
 
+createSvgIcon(React.createElement("path", { d: "M5 19V15V15.1C5 15.0833 5 15.075 5 15.075C5 15.0583 5 15.0333 5 15C5 15 5 15.3833 5 16.15C5 16.9 5 17.85 5 19ZM5 21C4.45 21 3.975 20.8083 3.575 20.425C3.19167 20.025 3 19.55 3 19V15C3 14.45 3.19167 13.9833 3.575 13.6C3.975 13.2 4.45 13 5 13H19C19.55 13 20.0167 13.2 20.4 13.6C20.8 13.9833 21 14.45 21 15H5V19H15C15 19.1667 15 19.3333 15 19.5C15 19.6667 15 19.8333 15 20C15 20.1833 15 20.3583 15 20.525C15 20.6917 15 20.85 15 21H5ZM5 11C4.45 11 3.975 10.8083 3.575 10.425C3.19167 10.025 3 9.55 3 9V5C3 4.45 3.19167 3.98333 3.575 3.6C3.975 3.2 4.45 3 5 3H19C19.55 3 20.0167 3.2 20.4 3.6C20.8 3.98333 21 4.45 21 5V9C21 9.55 20.8 10.025 20.4 10.425C20.0167 10.8083 19.55 11 19 11H5ZM5 9H19V5H5V9ZM5 9V5V9ZM19 23V21H17V19H19V17H21V19H23V21H21V23H19Z" }), 'SplitscreenAdd');
+
 createSvgIcon(React.createElement("path", { d: "M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z" }), 'Star');
+
+createSvgIcon(React.createElement("path", { d: "M100 59.4167L108.083 78.5L112 87.75L122 88.5834L142.583 90.3334L126.917 103.917L119.333 110.5L121.583 120.333L126.25 140.417L108.583 129.75L100 124.417V59.4167ZM100 16.6667L76.5833 71.9167L16.6667 77L62.1667 116.417L48.5 175L100 143.917L151.5 175L137.833 116.417L183.333 77L123.417 71.9167L100 16.6667Z" }), 'StarHalf', '0 0 200 200');
 
 createSvgIcon(React.createElement("path", { d: "M12 7.13l.97 2.29.47 1.11 1.2.1 2.47.21-1.88 1.63-.91.79.27 1.18.56 2.41-2.12-1.28-1.03-.64-1.03.62-2.12 1.28.56-2.41.27-1.18-.91-.79-1.88-1.63 2.47-.21 1.2-.1.47-1.11.97-2.27M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z" }), 'StarOutline');
 
@@ -3870,6 +3913,8 @@ createSvgIcon(React.createElement(React.Fragment, null,
     React.createElement("path", { d: "M18,11.03C17.52,8.18,15.04,6,12.05,6c-3.03,0-6.29,2.51-6.03,6.45c2.47-1.01,4.33-3.21,4.86-5.89 C12.19,9.19,14.88,11,18,11.03z" })), 'SupportAgent');
 
 createSvgIcon(React.createElement("path", { d: "M22 8l-4-4v3H3v2h15v3l4-4zM2 16l4 4v-3h15v-2H6v-3l-4 4z" }), 'SyncAlt');
+
+createSvgIcon(React.createElement("path", { d: "M324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM707-253q93-93 93-227t-93-227q-93-93-227-93t-227 93q-93 93-93 227t93 227q93 93 227 93t227-93Zm-397-57q-70-70-70-170t70-170q70-70 170-70t170 70q70 70 70 170t-70 170q-70 70-170 70t-170-70Zm283-57q47-47 47-113t-47-113q-47-47-113-47t-113 47q-47 47-47 113t47 113q47 47 113 47t113-47Zm-169.5-56.5Q400-447 400-480t23.5-56.5Q447-560 480-560t56.5 23.5Q560-513 560-480t-23.5 56.5Q513-400 480-400t-56.5-23.5Z" }), 'Target', '0 -960 960 960');
 
 createSvgIcon(React.createElement("path", { d: "M10.6 16.05 17.65 9l-1.4-1.4-5.65 5.65-2.85-2.85-1.4 1.4ZM5 21q-.825 0-1.413-.587Q3 19.825 3 19V5q0-.825.587-1.413Q4.175 3 5 3h4.2q.325-.9 1.088-1.45Q11.05 1 12 1t1.713.55Q14.475 2.1 14.8 3H19q.825 0 1.413.587Q21 4.175 21 5v14q0 .825-.587 1.413Q19.825 21 19 21Zm7-16.75q.325 0 .538-.213.212-.212.212-.537 0-.325-.212-.538-.213-.212-.538-.212-.325 0-.537.212-.213.213-.213.538 0 .325.213.537.212.213.537.213Z" }), 'TaskComplete');
 
@@ -3910,6 +3955,8 @@ createSvgIcon(React.createElement("path", { d: "M19 4H5c-1.11 0-2 .9-2 2v12c0 1.
 createSvgIcon(React.createElement("path", { d: "M4 20q-.825 0-1.412-.587Q2 18.825 2 18V6q0-.825.588-1.412Q3.175 4 4 4h1.325q.825 0 1.413.588.587.587.587 1.412v12q0 .825-.587 1.413Q6.15 20 5.325 20Zm7.35 0q-.825 0-1.412-.587Q9.35 18.825 9.35 18V6q0-.825.588-1.412Q10.525 4 11.35 4h1.325q.825 0 1.413.588.587.587.587 1.412v12q0 .825-.587 1.413Q13.5 20 12.675 20Zm7.325 0q-.825 0-1.412-.587-.588-.588-.588-1.413V6q0-.825.588-1.412Q17.85 4 18.675 4H20q.825 0 1.413.588Q22 5.175 22 6v12q0 .825-.587 1.413Q20.825 20 20 20Z" }), 'WeekView');
 
 createSvgIcon(React.createElement("path", { d: "M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" }), 'Workflow');
+
+createSvgIcon(React.createElement("path", { d: "M1 20V16C1 15.4333 1.19167 14.9583 1.575 14.575C1.975 14.1917 2.45 14 3 14H6.275C6.60833 14 6.925 14.0833 7.225 14.25C7.525 14.4167 7.76667 14.6417 7.95 14.925C8.43333 15.575 9.025 16.0833 9.725 16.45C10.4417 16.8167 11.2 17 12 17C12.8167 17 13.575 16.8167 14.275 16.45C14.9917 16.0833 15.5833 15.575 16.05 14.925C16.2667 14.6417 16.5167 14.4167 16.8 14.25C17.1 14.0833 17.4083 14 17.725 14H21C21.5667 14 22.0417 14.1917 22.425 14.575C22.8083 14.9583 23 15.4333 23 16V20H16V17.725C15.4167 18.1417 14.7833 18.4583 14.1 18.675C13.4333 18.8917 12.7333 19 12 19C11.2833 19 10.5833 18.8917 9.9 18.675C9.21667 18.4417 8.58333 18.1167 8 17.7V20H1ZM12 16C11.3667 16 10.7667 15.8583 10.2 15.575C9.63333 15.275 9.15833 14.8667 8.775 14.35C8.49167 13.9333 8.13333 13.6083 7.7 13.375C7.28333 13.125 6.825 13 6.325 13C6.69167 12.3833 7.46667 11.9 8.65 11.55C9.83333 11.1833 10.95 11 12 11C13.05 11 14.1667 11.1833 15.35 11.55C16.5333 11.9 17.3083 12.3833 17.675 13C17.1917 13 16.7333 13.125 16.3 13.375C15.8667 13.6083 15.5083 13.9333 15.225 14.35C14.8583 14.8833 14.3917 15.2917 13.825 15.575C13.2583 15.8583 12.65 16 12 16ZM4 13C3.16667 13 2.45833 12.7083 1.875 12.125C1.29167 11.5417 1 10.8333 1 10C1 9.15 1.29167 8.44167 1.875 7.875C2.45833 7.29167 3.16667 7 4 7C4.85 7 5.55833 7.29167 6.125 7.875C6.70833 8.44167 7 9.15 7 10C7 10.8333 6.70833 11.5417 6.125 12.125C5.55833 12.7083 4.85 13 4 13ZM20 13C19.1667 13 18.4583 12.7083 17.875 12.125C17.2917 11.5417 17 10.8333 17 10C17 9.15 17.2917 8.44167 17.875 7.875C18.4583 7.29167 19.1667 7 20 7C20.85 7 21.5583 7.29167 22.125 7.875C22.7083 8.44167 23 9.15 23 10C23 10.8333 22.7083 11.5417 22.125 12.125C21.5583 12.7083 20.85 13 20 13ZM12 10C11.1667 10 10.4583 9.70833 9.875 9.125C9.29167 8.54167 9 7.83333 9 7C9 6.15 9.29167 5.44167 9.875 4.875C10.4583 4.29167 11.1667 4 12 4C12.85 4 13.5583 4.29167 14.125 4.875C14.7083 5.44167 15 6.15 15 7C15 7.83333 14.7083 8.54167 14.125 9.125C13.5583 9.70833 12.85 10 12 10Z" }), 'Workforce');
 
 createSvgIcon(React.createElement(React.Fragment, null,
     React.createElement("path", { d: "M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14Z" }),
@@ -4566,10 +4613,6 @@ var sizes$4 = {
         medium: 'h-14 pt-3 pb-0',
         small: 'h-12 pt-3 pb-0',
     },
-    readOnly: {
-        medium: 'h-10 pt-4.5 pb-0',
-        small: 'h-10 pt-4.5 pb-0',
-    },
 };
 var parentSizes = {
     outlined: {
@@ -4580,10 +4623,6 @@ var parentSizes = {
         medium: 'h-14',
         small: 'h-12',
     },
-    readOnly: {
-        medium: 'h-10',
-        small: 'h-10',
-    },
 };
 var multilineSizes = {
     outlined: {
@@ -4591,10 +4630,6 @@ var multilineSizes = {
         small: 'w-full mt-2 pb-0',
     },
     filled: {
-        medium: 'w-full mt-6 pb-0',
-        small: 'w-full mt-5 pb-0',
-    },
-    readOnly: {
         medium: 'w-full mt-6 pb-0',
         small: 'w-full mt-5 pb-0',
     },
@@ -4636,17 +4671,6 @@ var focusedStyles = {
             inverse: "focus-within:shadow-input-error-main focus-within:border-error-main focus-within:text-error-main",
         },
     },
-    readOnly: {
-        default: {
-            default: "focus-within:text-primary-main",
-            inverse: "focus-within:text-primary-lighter",
-        },
-        disabled: { default: '', inverse: '' },
-        error: {
-            default: "focus-within:text-error-main",
-            inverse: "focus-within:text-error-light",
-        },
-    },
 };
 var appearFocusedStyles = {
     filled: {
@@ -4675,20 +4699,6 @@ var appearFocusedStyles = {
         error: {
             default: "shadow-input-error-main border border-solid border-error-main text-error-main",
             inverse: "shadow-input-error-main border border-solid border-error-main text-error-main",
-        },
-    },
-    readOnly: {
-        default: {
-            default: "bg-transparent text-primary-main",
-            inverse: "bg-transparent text-primary-lighter",
-        },
-        disabled: {
-            default: '',
-            inverse: '',
-        },
-        error: {
-            default: '',
-            inverse: '',
         },
     },
 };
@@ -4721,20 +4731,6 @@ var variants$3 = {
             inverse: "shadow-input-error-main border border-solid border-error-main text-error-main",
         },
     },
-    readOnly: {
-        default: {
-            default: 'bg-transparent text-black-60',
-            inverse: 'bg-transparent text-white-60',
-        },
-        disabled: {
-            default: '',
-            inverse: '',
-        },
-        error: {
-            default: '',
-            inverse: '',
-        },
-    },
 };
 var adornments = {
     icon: 'w-5',
@@ -4747,10 +4743,6 @@ var adornments = {
             medium: 'mt-6 h-6',
             small: 'mt-5 h-6',
         },
-        readOnly: {
-            medium: 'mt-6 h-6',
-            small: 'mt-5 h-6',
-        },
     },
     size: {
         outlined: {
@@ -4760,10 +4752,6 @@ var adornments = {
         filled: {
             medium: 'h-14',
             small: 'h-12',
-        },
-        readOnly: {
-            medium: 'h-10',
-            small: 'h-10',
         },
     },
     text: {
@@ -4786,8 +4774,7 @@ var baseClasses = {
     end: 'shrink-0 whitespace-normal flex items-center',
     help: 'text-xs font-normal tracking-wide pt-2',
     inputWrapper: 'flex relative rounded',
-    input: "flex-grow min-w-0 text-sm font-normal tracking-wide disabled:cursor-not-allowed focus:outline-none",
-    enabledInput: "pl-3 rounded",
+    input: "flex-grow min-w-0 px-3 text-sm font-normal tracking-wide rounded disabled:cursor-not-allowed focus:outline-none",
     label: "absolute top-0 left-0 block truncate max-w-(full-6) overflow-y-auto font-normal tracking-wide transition-all duration-200 ease-in-out",
     start: "shrink-0 ml-3 whitespace-normal flex items-center",
 };
@@ -4811,25 +4798,6 @@ var TextInput = forwardRef(function (_a, ref) {
     var _t = useState(!!StartAdornment), shrinkLabel = _t[0], setShrinkLabel = _t[1];
     var localRef = useRef(null);
     var syncRef = useSyncRefs(localRef, inputRef);
-    // Disabled state takes precedence over read-only, so we need to ensure that
-    // read-only styles and behaviors are not applied when disabled is true
-    if (disabled) {
-        readOnly = false;
-    }
-    // This component is used within more complex components like Select and DatePickerInput,
-    // where the input is in read-only mode but uses regular input styles.
-    var readOnlyVariant = readOnly && !selectable;
-    // Read-only inputs have specific style and behavior requirements.
-    if (readOnlyVariant) {
-        error = false; // Read-only inputs are exempt from validation and cannot be in an error state
-        required = false; // The required attribute is not permitted on inputs with the readonly attribute specified.
-        helperText = undefined; // Since read-only input value cannot be changed or validated, helper text is not necessary
-        StartAdornment = undefined;
-        variant = 'filled'; // Majority of styles for read-only inputs match the 'filled' variant
-        inputMode = undefined;
-        enterKeyHint = undefined;
-        onClear = undefined; // Read-only inputs cannot be cleared
-    }
     var handleClear = function (event) {
         var _a;
         event === null || event === void 0 ? void 0 : event.preventDefault();
@@ -4858,14 +4826,14 @@ var TextInput = forwardRef(function (_a, ref) {
     var handleBlur = function (event) {
         // handle focused styles manually in browsers that do not support ':focus-within'
         if (!isFocusWithinSupported() && !(extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-expanded'])) {
-            appearFocusedStyles[readOnlyVariant ? 'readOnly' : variant][status][color]
+            appearFocusedStyles[variant][status][color]
                 .split(' ')
                 .forEach(function (className) {
                 var _a;
                 (_a = event.target.parentElement) === null || _a === void 0 ? void 0 : _a.classList.remove(className);
             });
         }
-        if (!disabled && !readOnlyVariant && localRef.current) {
+        if (!disabled && !readOnly && localRef.current) {
             var trimmedValue = localRef.current.value.trim();
             if (localRef.current.value !== trimmedValue) {
                 localRef.current.value = trimmedValue;
@@ -4905,7 +4873,7 @@ var TextInput = forwardRef(function (_a, ref) {
     var handleFocus = function (event) {
         // handle focused styles manually in browsers that do not support ':focus-within'
         if (!isFocusWithinSupported()) {
-            appearFocusedStyles[readOnlyVariant ? 'readOnly' : variant][status][color]
+            appearFocusedStyles[variant][status][color]
                 .split(' ')
                 .forEach(function (className) {
                 var _a;
@@ -4935,12 +4903,12 @@ var TextInput = forwardRef(function (_a, ref) {
         'aria-haspopup': extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-haspopup'],
         'aria-labelledby': (extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-labelledby']) || "label-".concat((extraProps === null || extraProps === void 0 ? void 0 : extraProps.id) || id),
         autoFocus: autoFocus,
-        className: clsx(baseClasses.input, readOnlyVariant ? 'read-only-variant' : baseClasses.enabledInput, inputVariants[status][color], multiline
+        className: clsx(baseClasses.input, inputVariants[status][color], multiline
             ? [
-                multilineSizes[readOnlyVariant ? 'readOnly' : variant][size],
-                'overflow-x-hidden break-words resize-none',
+                multilineSizes[variant][size],
+                'overflow-x-hidden break-words no-scrollbar resize-none',
             ]
-            : [sizes$4[readOnlyVariant ? 'readOnly' : variant][size], 'truncate'], selectable ? 'cursor-pointer' : ''),
+            : [sizes$4[variant][size], 'truncate'], selectable ? 'cursor-pointer' : ''),
         disabled: disabled,
         id: extraProps === null || extraProps === void 0 ? void 0 : extraProps.id,
         inputMode: inputMode || modes[type],
@@ -4950,7 +4918,7 @@ var TextInput = forwardRef(function (_a, ref) {
         onClick: onClick,
         onFocus: handleFocus,
         onKeyDown: onKeyDown,
-        placeholder: readOnlyVariant ? '—' : '',
+        placeholder: '',
         readOnly: readOnly,
         required: required,
         role: extraProps === null || extraProps === void 0 ? void 0 : extraProps.role,
@@ -4960,14 +4928,12 @@ var TextInput = forwardRef(function (_a, ref) {
     };
     return (React.createElement("div", { className: baseClasses.container },
         React.createElement("label", { className: "relative", ref: containerRef },
-            React.createElement("div", { className: clsx(baseClasses.inputWrapper, focusedStyles[readOnlyVariant ? 'readOnly' : variant][status][color], appearFocused
-                    ? appearFocusedStyles[readOnlyVariant ? 'readOnly' : variant][status][color]
-                    : variants$3[readOnlyVariant ? 'readOnly' : variant][status][color], multiline
-                    ? ''
-                    : parentSizes[readOnlyVariant ? 'readOnly' : variant][size]), ref: ref },
+            React.createElement("div", { className: clsx(baseClasses.inputWrapper, focusedStyles[variant][status][color], appearFocused
+                    ? appearFocusedStyles[variant][status][color]
+                    : variants$3[variant][status][color], multiline ? '' : parentSizes[variant][size]), ref: ref },
                 StartAdornment ? (React.createElement("span", { className: clsx(baseClasses.start, variant === 'filled' ? 'pt-3' : null, multiline
-                        ? adornments.multilineSize[readOnlyVariant ? 'readOnly' : variant][size]
-                        : adornments.size[readOnlyVariant ? 'readOnly' : variant][size], adornments.text[status][color], typeof StartAdornment === 'function' &&
+                        ? adornments.multilineSize[variant][size]
+                        : adornments.size[variant][size], adornments.text[status][color], typeof StartAdornment === 'function' &&
                         'uiName' in StartAdornment &&
                         StartAdornment.uiName === 'SvgIcon'
                         ? adornments.icon
@@ -4981,29 +4947,23 @@ var TextInput = forwardRef(function (_a, ref) {
                     React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'TextInput.clear_labelled_input' }, { label: label }), color: color, onClick: handleClear, size: "small" },
                         React.createElement(Close, null)))) : null,
                 EndAdornment ? (React.createElement("span", { className: clsx(baseClasses.end, multiline
-                        ? adornments.multilineSize[readOnlyVariant ? 'readOnly' : variant][size]
-                        : adornments.size[readOnlyVariant ? 'readOnly' : variant][size], adornments.text[status][color], typeof EndAdornment === 'function' &&
+                        ? adornments.multilineSize[variant][size]
+                        : adornments.size[variant][size], adornments.text[status][color], typeof EndAdornment === 'function' &&
                         'uiName' in EndAdornment &&
                         EndAdornment.uiName === 'SvgIcon'
                         ? adornments.icon
-                        : null, 'mr-3 ml-3') }, typeof EndAdornment === 'function' &&
+                        : null, 'mr-3') }, typeof EndAdornment === 'function' &&
                     'uiName' in EndAdornment &&
                     EndAdornment.uiName === 'SvgIcon' ? (React.createElement(EndAdornment, { color: "inherit" })) : (EndAdornment))) : null,
                 React.createElement("span", { className: clsx('input-label', variant === 'outlined'
                         ? 'input-label-outlined'
                         : 'input-label-filled', size === 'medium' ? 'input-label-medium' : 'input-label-small', baseClasses.label, disabled ? 'cursor-not-allowed' : 'cursor-text', appearFocused
-                        ? "".concat(readOnlyVariant
-                            ? 'leading-4.5 text-xs'
-                            : labels.focused[variant], " ").concat(labelColors.focused[variant][status][color])
+                        ? "".concat(labels.focused[variant], " ").concat(labelColors.focused[variant][status][color])
                         : shrinkLabel
-                            ? "".concat(readOnlyVariant
-                                ? 'leading-4.5 text-xs'
-                                : labels.value[variant], " ").concat(labelColors.value[variant][status][color])
-                            : "".concat(labels.inactive[variant], " ").concat(labelColors.inactive[variant][status][color]), readOnlyVariant
-                        ? null
-                        : appearFocused || shrinkLabel
-                            ? labelSpacing.focused[variant][size]
-                            : labelSpacing.inactive[variant][size]), id: "label-".concat((extraProps === null || extraProps === void 0 ? void 0 : extraProps.id) || id), ref: labelRef }, label))),
+                            ? "".concat(labels.value[variant], " ").concat(labelColors.value[variant][status][color])
+                            : "".concat(labels.inactive[variant], " ").concat(labelColors.inactive[variant][status][color]), appearFocused || shrinkLabel
+                        ? labelSpacing.focused[variant][size]
+                        : labelSpacing.inactive[variant][size]), id: "label-".concat((extraProps === null || extraProps === void 0 ? void 0 : extraProps.id) || id), ref: labelRef }, label))),
         React.createElement("div", { "aria-live": error ? 'assertive' : 'off', className: helperText
                 ? clsx(baseClasses.help, labelColors.value[variant][status][color])
                 : 'sr-only', id: "helper-text-".concat(id) }, helperText ? helperText : null)));
@@ -10316,17 +10276,17 @@ function Content$3(_a) {
     return (React.createElement("div", { className: clsx('px-6 overflow-hidden overflow-y-auto focus-visible:ring', overflowing ? 'border-b border-t border-black-10' : null, state.hasTitle ? 'py-0' : 'pt-6'), id: id, ref: ref }, children));
 }
 function Dialog(_a) {
-    var _b = _a.backdrop, backdrop = _b === void 0 ? Backdrops.Dark : _b, children = _a.children, _c = _a.constraint, constraint = _c === void 0 ? Constraints.Default : _c, _d = _a.dismissable, dismissable = _d === void 0 ? true : _d, onDismiss = _a.onDismiss, _e = _a.open, open = _e === void 0 ? false : _e;
+    var _b;
+    var _c = _a.backdrop, backdrop = _c === void 0 ? Backdrops.Dark : _c, children = _a.children, _d = _a.constraint, constraint = _d === void 0 ? Constraints.Default : _d, _e = _a.dismissable, dismissable = _e === void 0 ? true : _e, onDismiss = _a.onDismiss, _f = _a.open, open = _f === void 0 ? false : _f;
     var mouseDownTarget = useRef(null);
     var parentRef = useRef(null);
-    var _f = useReducer(runReducer$4, {
+    var _g = useReducer(runReducer$4, {
         dismissable: dismissable,
         hasContent: false,
         hasTitle: false,
         id: useId(),
-        onDismiss: onDismiss,
         parentRef: parentRef,
-    }), state = _f[0], dispatch = _f[1];
+    }), state = _g[0], dispatch = _g[1];
     var handleClick = function (event) {
         if (state.dismissable && mouseDownTarget.current === event.currentTarget) {
             event.stopPropagation();
@@ -10345,9 +10305,11 @@ function Dialog(_a) {
     // Optimization - ReactFocusLock runs very slowly in test environments.
     // We set this explicitly in Dialog.tests, but consumers can
     // set it explicitly or fallback to true in 'test' states.
-    var disabled = Object.hasOwnProperty.call(process.env, 'DISABLE_SCROLL_FOCUS_LOCK')
-        ? process.env.DISABLE_SCROLL_FOCUS_LOCK === 'true'
-        : process.env.NODE_ENV === 'test';
+    var disabled = global.process
+        ? Object.hasOwnProperty.call((_b = global.process.env) !== null && _b !== void 0 ? _b : {}, 'DISABLE_SCROLL_FOCUS_LOCK')
+            ? global.process.env.DISABLE_SCROLL_FOCUS_LOCK === 'true'
+            : global.process.env.NODE_ENV === 'test'
+        : false;
     return open ? (React.createElement(Portal, { open: open },
         React.createElement("div", { "aria-describedby": state.hasContent ? "coconut-dialog-content-".concat(state.id) : undefined, "aria-labelledby": state.hasTitle ? "coconut-dialog-header-".concat(state.id) : undefined, "aria-modal": "true", className: clsx('fixed inset-0 flex items-center justify-center opacity-100 backdrop-blur-2 z-9998', backdrop === Backdrops.Dark ? 'bg-black-45' : 'bg-white-45'), 
             /*
@@ -10361,11 +10323,11 @@ function Dialog(_a) {
             React.createElement(ReactRemoveScroll, { enabled: !disabled },
                 React.createElement(FocusLockCombination, { disabled: disabled, returnFocus: true },
                     React.createElement("div", { className: clsx('relative flex flex-col overflow-auto font-sans rounded outline-none shadow-24 bg-white-100', constraints[constraint]) },
-                        React.createElement(DialogContext.Provider, { value: [state, dispatch] }, children))))))) : null;
+                        React.createElement(DialogContext.Provider, { value: [state, dispatch, onDismiss] }, children))))))) : null;
 }
 function Header$1(_a) {
     var children = _a.children;
-    var _b = useDialog(), state = _b[0], dispatch = _b[1];
+    var _b = useDialog(), state = _b[0], dispatch = _b[1], onDismiss = _b[2];
     var intl = useIntl();
     var id = "coconut-dialog-header-".concat(state.id);
     useLayoutEffect(function () {
@@ -10380,7 +10342,7 @@ function Header$1(_a) {
         React.createElement("h2", { className: "flex truncate", id: id, title: nodeToString(children) },
             React.createElement(Typography, { truncate: true, variant: "h5" }, children)),
         state.dismissable ? (React.createElement("div", { className: "ml-2" },
-            React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Ui.close' }), onClick: state.onDismiss, size: "medium" },
+            React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Ui.close' }), onClick: onDismiss, size: "medium" },
                 React.createElement(Close, null)))) : null));
 }
 Dialog.Actions = Actions$2;
@@ -10833,6 +10795,71 @@ function Pagination(_a) {
                 React.createElement(LastPage, null)))));
 }
 
+/* eslint-disable react/forbid-component-props */
+var CENTER_PLACEMENT_EDGE_THRESHOLD = 20; // pixels from the edge of the viewport
+function Popover(_a) {
+    var ariaLabel = _a["aria-label"], ariaLabelledby = _a["aria-labelledby"], ariaDescribedby = _a["aria-describedby"], children = _a.children, _b = _a.isOpen, isOpen = _b === void 0 ? false : _b, _c = _a.offset, offset = _c === void 0 ? 8 : _c, onOpenChange = _a.onOpenChange, _d = _a.placement, placement = _d === void 0 ? 'bottom' : _d, triggerRef = _a.triggerRef;
+    var popoverRef = React.useRef(null);
+    var _e = useState(false), isNearEdge = _e[0], setIsNearEdge = _e[1];
+    var isCenterPlacement = placement === 'center';
+    useEffect(function useCenterPlacementOffset() {
+        var popover = popoverRef.current;
+        if (!popover || !isCenterPlacement)
+            return;
+        var updateCenterOffset = function () {
+            var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
+            var popoverStyles = getComputedStyle(popover);
+            var popoverHeight = popoverStyles
+                .getPropertyValue('--trigger-anchor-point')
+                .replace(/px/g, '')
+                .split(' ')[1];
+            if (trigger && popoverHeight) {
+                var triggerStyles = getComputedStyle(trigger);
+                var borderWidth = parseFloat(triggerStyles.borderWidth) || 0;
+                var totalHeight = trigger.clientHeight + borderWidth * 2;
+                popover.style.setProperty('--center-offset', Number(popoverHeight) / 2 + totalHeight / 2 + offset + 'px');
+            }
+        };
+        if (isOpen) {
+            requestAnimationFrame(updateCenterOffset);
+        }
+    }, [isCenterPlacement, isOpen, offset, triggerRef]);
+    useEffect(function useEdgeProximityDetection() {
+        var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
+        if (!trigger || !isCenterPlacement || !isOpen) {
+            return;
+        }
+        var checkEdgeProximity = function () {
+            var rect = trigger.getBoundingClientRect();
+            var threshold = CENTER_PLACEMENT_EDGE_THRESHOLD;
+            var nearTop = rect.top < threshold;
+            var nearBottom = window.innerHeight - rect.bottom < threshold;
+            var nearLeft = rect.left < threshold;
+            var nearRight = window.innerWidth - rect.right < threshold;
+            var isNear = nearTop || nearBottom || nearLeft || nearRight;
+            setIsNearEdge(isNear);
+        };
+        requestAnimationFrame(function () {
+            requestAnimationFrame(checkEdgeProximity);
+        });
+        var resizeTimeout;
+        var debouncedCheckEdgeProximity = function () {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(checkEdgeProximity, 100);
+        };
+        window.addEventListener('resize', debouncedCheckEdgeProximity);
+        return function () {
+            window.removeEventListener('resize', debouncedCheckEdgeProximity);
+            clearTimeout(resizeTimeout);
+            // reset after animation completes
+            setTimeout(function () {
+                setIsNearEdge(false);
+            }, 300);
+        };
+    }, [isCenterPlacement, isOpen, triggerRef]);
+    return (React.createElement(Popover$1, { "aria-describedby": ariaDescribedby, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledby, className: clsx('react-aria-Popover focus-visible:ring', isCenterPlacement && !isNearEdge && 'center-placement'), isOpen: isOpen, offset: offset, onOpenChange: onOpenChange, placement: isCenterPlacement ? 'top' : placement, ref: popoverRef, triggerRef: triggerRef }, children));
+}
+
 var RadioContext = createContext(null);
 var useRadio = function () {
     return useContext(RadioContext);
@@ -10989,6 +11016,7 @@ function Option(_a, ref) {
     var children = _a.children, _b = _a.disabled, disabled = _b === void 0 ? false : _b, displayValue = _a.displayValue, _c = _a.value, value = _c === void 0 ? '' : _c;
     var state = useSelect()[0];
     var selected = state.value === value;
+    var wrapText = state.wrapText;
     var internalRef = useRef(null);
     var optionRef = useSyncRefs(internalRef, ref, function (element) {
         if (selected && state.displayInputRef.current && (element === null || element === void 0 ? void 0 : element.textContent)) {
@@ -11019,7 +11047,7 @@ function Option(_a, ref) {
             }
         }
     };
-    return (React.createElement(Menu.Item, { disabled: disabled, onClick: handleClick, ref: optionRef, selected: selected }, children));
+    return (React.createElement(Menu.Item, { disabled: disabled, onClick: handleClick, ref: optionRef, selected: selected, wrapText: wrapText }, children));
 }
 
 function Text$3(_a) {
@@ -11116,13 +11144,13 @@ var useSelect = function () {
     return useContext(SelectContext);
 };
 function Select(_a) {
-    var children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, dataSet = _a.dataSet, _c = _a.defaultValue, defaultValue = _c === void 0 ? '' : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, inputRef = _a.inputRef, label = _a.label, name = _a.name, onChange = _a.onChange, _f = _a.size, size = _f === void 0 ? 'medium' : _f, startAdornment = _a.startAdornment, _g = _a.variant, variant = _g === void 0 ? 'outlined' : _g;
+    var children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, dataSet = _a.dataSet, _c = _a.defaultValue, defaultValue = _c === void 0 ? '' : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, inputRef = _a.inputRef, label = _a.label, name = _a.name, onChange = _a.onChange, _f = _a.size, size = _f === void 0 ? 'medium' : _f, startAdornment = _a.startAdornment, _g = _a.variant, variant = _g === void 0 ? 'outlined' : _g, _h = _a.wrapText, wrapText = _h === void 0 ? false : _h;
     var displayInputRef = useRef(null);
     var localRef = useRef(null);
     var syncRef = useSyncRefs(localRef, inputRef);
-    var _h = useReducer(runReducer$6, {}, function () { return ({
+    var _j = useReducer(runReducer$6, {}, function () { return ({
         value: defaultValue,
-    }); }), state = _h[0], dispatch = _h[1];
+    }); }), state = _j[0], dispatch = _j[1];
     useEffect(function () {
         // When options do not contain an empty option, display value should be adjusted manually
         if (state.value === '' && displayInputRef.current) {
@@ -11141,7 +11169,10 @@ function Select(_a) {
             }
         };
     };
-    return (React.createElement(SelectContext.Provider, { value: [__assign(__assign({}, state), { displayInputRef: displayInputRef, inputRef: localRef }), dispatch] },
+    return (React.createElement(SelectContext.Provider, { value: [
+            __assign(__assign({}, state), { displayInputRef: displayInputRef, inputRef: localRef, wrapText: wrapText }),
+            dispatch,
+        ] },
         React.createElement(Menu, null,
             React.createElement(Text$3, { color: color, dataSet: dataSet, defaultValue: defaultValue, disabled: disabled, displayInputRef: displayInputRef, error: error, helperText: helperText, inputRef: syncRef, label: label, name: name, onChange: onChange, revert: revert, size: size, startAdornment: startAdornment, variant: variant }),
             React.createElement(Menu.Items, null, children))));
@@ -11335,10 +11366,15 @@ function Switch(_a) {
 var GroupContext = createContext(null);
 var useGroup = function () { return useContext(GroupContext); };
 function Group$5(_a) {
-    var children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, defaultTab = _a.defaultTab, disabled = _a.disabled, onClick = _a.onClick, _c = _a.orientation, orientation = _c === void 0 ? 'horizontal' : _c, _d = _a.size, size = _d === void 0 ? 'large' : _d, _e = _a.adornmentPosition, adornmentPosition = _e === void 0 ? 'vertical' : _e;
-    var _f = useState(defaultTab), selectedTab = _f[0], setSelectedTab = _f[1];
-    return (React.createElement("div", { className: clsx('flex w-full flex-wrap', orientation === 'vertical' ? 'flex-col' : null), role: "tablist" },
+    var _b = _a.align, align = _b === void 0 ? 'stretch' : _b, children = _a.children, _c = _a.color, color = _c === void 0 ? 'default' : _c, defaultTab = _a.defaultTab, disabled = _a.disabled, onClick = _a.onClick, _d = _a.orientation, orientation = _d === void 0 ? 'horizontal' : _d, _e = _a.size, size = _e === void 0 ? 'large' : _e, _f = _a.adornmentPosition, adornmentPosition = _f === void 0 ? 'vertical' : _f;
+    var _g = useState(defaultTab), selectedTab = _g[0], setSelectedTab = _g[1];
+    return (React.createElement("div", { className: clsx('flex w-full flex-wrap border-b border-solid border-black-10-hex', orientation === 'vertical' ? 'flex-col' : null, align === 'left' && orientation === 'horizontal'
+            ? 'justify-start'
+            : null, align === 'right' && orientation === 'horizontal'
+            ? 'justify-end'
+            : null), role: "tablist" },
         React.createElement(GroupContext.Provider, { value: {
+                align: align,
                 color: color,
                 disabled: disabled,
                 onClick: onClick,
@@ -11365,22 +11401,22 @@ var sizes$a = {
 };
 var variants$9 = {
     default: {
-        selected: "border-b-2 border-solid border-black-90 text-black-90 active:bg-black-20 focus:bg-black-10 focus-visible:ring hover:bg-black-10",
-        unselected: "border-b-2 border-solid border-transparent text-black-90 active:bg-black-20 focus:bg-black-5 focus-visible:ring hover:bg-black-5",
+        selected: "border-b-2 border-solid border-black-90 text-black-90 active:bg-black-20 focus:bg-black-10 focus-visible:ring hover:bg-black-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
+        unselected: "border-b-2 border-solid border-transparent text-black-90 active:bg-black-20 focus:bg-black-5 focus-visible:ring hover:bg-black-5 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
     },
     primary: {
-        selected: "border-b-2 border-solid border-primary-main text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10",
-        unselected: "border-b-2 border-solid border-transparent text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10",
+        selected: "border-b-2 border-solid border-primary-main text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
+        unselected: "border-b-2 border-solid border-transparent text-primary-main active:bg-primary-20 focus:bg-primary-10 focus-visible:ring hover:bg-primary-10 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
     },
     secondary: {
-        selected: "border-b-2 border-solid border-secondary-main text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10",
-        unselected: "border-b-2 border-solid border-transparent text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10",
+        selected: "border-b-2 border-solid border-secondary-main text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10 disabled:border-b-2 disabled:border-solid disabled:border-black-25",
+        unselected: "border-b-2 border-solid border-transparent text-secondary-main active:bg-secondary-20 focus:bg-secondary-10 focus-visible:ring hover:bg-secondary-10 disabled:border-b-2 disabled:border-solid disabled:border-transparent",
     },
 };
 function Tab(_a) {
     var _b;
     var controls = _a["aria-controls"], children = _a.children, color = _a.color, disabled = _a.disabled, id = _a.id, onClick = _a.onClick, size = _a.size, StartAdornment = _a.startAdornment, value = _a.value;
-    var _c = useGroup(), groupColor = _c.color, groupDisabled = _c.disabled, groupClick = _c.onClick, selectedTab = _c.selectedTab, setSelectedTab = _c.setSelectedTab, groupSize = _c.size, adornmentPosition = _c.adornmentPosition;
+    var _c = useGroup(), groupAlign = _c.align, groupColor = _c.color, groupDisabled = _c.disabled, groupClick = _c.onClick, selectedTab = _c.selectedTab, setSelectedTab = _c.setSelectedTab, groupSize = _c.size, adornmentPosition = _c.adornmentPosition;
     var isDisabled = disabled !== null && disabled !== void 0 ? disabled : groupDisabled;
     var isSelected = selectedTab === value;
     var handleSelectTab = function (event) {
@@ -11389,7 +11425,7 @@ function Tab(_a) {
             onClick ? onClick(event) : groupClick === null || groupClick === void 0 ? void 0 : groupClick(event);
         }
     };
-    return (React.createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx('flex-grow min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none disabled:border-black-25 disabled:bg-transparent disabled:text-black-25', isSelected
+    return (React.createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx('min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none disabled:border-b-2 disabled:border-solid disabled:bg-transparent disabled:text-black-25', groupAlign === 'stretch' ? 'flex-grow' : null, isSelected
             ? variants$9[color !== null && color !== void 0 ? color : groupColor].selected
             : variants$9[color !== null && color !== void 0 ? color : groupColor].unselected, sizes$a[size !== null && size !== void 0 ? size : groupSize].root), disabled: isDisabled, id: id, onClick: handleSelectTab, role: "tab", value: value },
         React.createElement("div", { className: clsx('flex justify-center items-center', adornmentPosition === 'vertical' ? 'flex-col' : '') },
@@ -11406,14 +11442,6 @@ function usePrevious(value) {
     }, [value]);
     return ref.current;
 }
-
-var Directions;
-(function (Directions) {
-    Directions[Directions["Left"] = 0] = "Left";
-    Directions[Directions["Right"] = 1] = "Right";
-    Directions[Directions["Ascending"] = 2] = "Ascending";
-    Directions[Directions["Descending"] = 3] = "Descending";
-})(Directions || (Directions = {}));
 
 var ActionTypes$6;
 (function (ActionTypes) {
@@ -11454,6 +11482,262 @@ function useForwardClick(ref, selector) {
     };
     return { handleClick: handleClick, handleKeyDown: handleKeyDown };
 }
+
+var Directions;
+(function (Directions) {
+    Directions[Directions["Left"] = 0] = "Left";
+    Directions[Directions["Right"] = 1] = "Right";
+    Directions[Directions["Ascending"] = 2] = "Ascending";
+    Directions[Directions["Descending"] = 3] = "Descending";
+})(Directions || (Directions = {}));
+
+var _a$7;
+/**
+ * Partition columns into selected (visible) and unselected (hidden) groups
+ *
+ * @param columns
+ * @returns GroupedTableColumns
+ */
+var partition = function (columns) {
+    return columns.reduce(function (previous, current) {
+        if (current.selected) {
+            previous.selected.push(current);
+        }
+        else {
+            previous.unselected.push(current);
+        }
+        return previous;
+    }, { selected: [], unselected: [] });
+};
+/**
+ * Populate columns from localStorage if available
+ *
+ * @param defaultColumns
+ * @param initialRender
+ * @param storageKey
+ * @returns TableColumn[]
+ */
+var populate = function (defaultColumns, initialRender, storageKey) {
+    if (storageKey && initialRender) {
+        var serializedColumns = window.localStorage.getItem(storageKey);
+        if (serializedColumns) {
+            var storedColumns_1 = JSON.parse(serializedColumns);
+            var newColumns = defaultColumns.filter(function (defaultColumn) {
+                return !storedColumns_1.some(function (storedColumn) { return defaultColumn.key === storedColumn.key; });
+            });
+            return storedColumns_1
+                .filter(function (storedColumn) {
+                return defaultColumns.find(function (defaultColumn) { return defaultColumn.key === storedColumn.key; });
+            })
+                .map(function (storedColumn) {
+                var defaultColumn = defaultColumns.find(function (defaultColumn) { return defaultColumn.key === storedColumn.key; });
+                var column = __assign(__assign({}, storedColumn), { value: (defaultColumn === null || defaultColumn === void 0 ? void 0 : defaultColumn.value) || storedColumn.value });
+                if ((defaultColumn === null || defaultColumn === void 0 ? void 0 : defaultColumn.width) !== undefined) {
+                    column.width = defaultColumn.width;
+                }
+                else {
+                    // Remove width if default doesn't specify one, to reflect current code intention
+                    delete column.width;
+                }
+                if (defaultColumn === null || defaultColumn === void 0 ? void 0 : defaultColumn.filter) {
+                    column.filter = __spreadArray([], defaultColumn.filter, true);
+                }
+                return column;
+            })
+                .concat(newColumns);
+        }
+    }
+    return defaultColumns;
+};
+var reducers$7 = (_a$7 = {},
+    _a$7[ActionTypes$6.ChangeLimit] = function (state, action) {
+        // 1-based index of the first visible row on the current page
+        var anchoredFirstRowIndex = (state.page - 1) * state.limit + 1;
+        var newLimit = action.limit;
+        var newPage = Math.ceil(anchoredFirstRowIndex / newLimit);
+        return __assign(__assign({}, state), { limit: newLimit, page: newPage });
+    },
+    _a$7[ActionTypes$6.FilterChange] = function (state, action) {
+        var columns = __spreadArray(__spreadArray([], state.columns.selected, true), state.columns.unselected, true);
+        return __assign(__assign({}, state), { columns: partition(columns.map(function (column) {
+                var _a;
+                if (column.key === action.key) {
+                    (_a = column.filter) === null || _a === void 0 ? void 0 : _a.map(function (filter) {
+                        var _a;
+                        if (filter.value === action.value) {
+                            filter.checked = action.checked;
+                            (_a = state.onFilterChange) === null || _a === void 0 ? void 0 : _a.call(state, {
+                                columnKey: action.key,
+                                value: action.value,
+                                checked: action.checked,
+                            });
+                        }
+                        return filter;
+                    });
+                }
+                return column;
+            })) });
+    },
+    _a$7[ActionTypes$6.FirstPage] = function (state) { return (__assign(__assign({}, state), { page: 1 })); },
+    _a$7[ActionTypes$6.MoveColumn] = function (state, action) {
+        var columns = state.columns.selected;
+        if (state.selectable) {
+            columns = columns.slice(1);
+        }
+        var oldIndex = columns.findIndex(function (column) { return column.key === action.key; });
+        var newIndex = action.direction === Directions.Left ? oldIndex - 1 : oldIndex + 1;
+        columns.splice(newIndex, 0, columns.splice(oldIndex, 1)[0]);
+        return __assign(__assign({}, state), { columns: partition(__spreadArray(__spreadArray(__spreadArray([], (state.selectable ? [state.columns.selected[0]] : []), true), columns, true), state.columns.unselected, true)) });
+    },
+    _a$7[ActionTypes$6.NextPage] = function (state) { return (__assign(__assign({}, state), { page: state.page + 1 })); },
+    _a$7[ActionTypes$6.PreviousPage] = function (state) { return (__assign(__assign({}, state), { page: state.page - 1 })); },
+    _a$7[ActionTypes$6.SortColumn] = function (state, action) {
+        var columns = __spreadArray(__spreadArray([], state.columns.selected, true), state.columns.unselected, true);
+        return __assign(__assign({}, state), { columns: partition(columns.map(function (column) {
+                var _a;
+                if (column.key === action.key) {
+                    column.sort = action.direction;
+                    (_a = state.onSort) === null || _a === void 0 ? void 0 : _a.call(state, {
+                        direction: column.sort,
+                        key: action.key,
+                    });
+                }
+                else {
+                    column.sort = undefined;
+                }
+                return column;
+            })), page: 1 });
+    },
+    _a$7[ActionTypes$6.ToggleColumn] = function (state, action) {
+        var columns = __spreadArray(__spreadArray([], state.columns.selected, true), state.columns.unselected, true);
+        state.columns.selected.forEach(function (column, index, columns) {
+            if (column.key === action.key) {
+                var focusable = columns[index + 1] || columns[index - 1];
+                var element = document.querySelector("th[data-key=\"".concat(focusable.key, "\"]"));
+                element === null || element === void 0 ? void 0 : element.focus();
+                element === null || element === void 0 ? void 0 : element.setAttribute('tabIndex', '0');
+            }
+        });
+        return __assign(__assign({}, state), { columns: partition(columns.map(function (column) {
+                if (column.key === action.key) {
+                    column.selected = !column.selected;
+                }
+                return column;
+            })) });
+    },
+    _a$7[ActionTypes$6.ToggleRow] = function (state, action) {
+        var rows = state.rows.map(function (row) {
+            if (row.id === action.key) {
+                row.selected = !row.selected;
+                if (action.selectionsRef === undefined) {
+                    return row;
+                }
+                if (row.selected) {
+                    action.selectionsRef.current.push(row.id);
+                }
+                else {
+                    var deselectedRow = action.selectionsRef.current.indexOf(row.id);
+                    action.selectionsRef.current.splice(deselectedRow, 1);
+                }
+            }
+            return row;
+        });
+        var selectedRows = state.rows.filter(function (row) { return row.selected; });
+        if (state.onSelect) {
+            state.onSelect(selectedRows);
+        }
+        return __assign(__assign({}, state), { allSelected: selectedRows.length == state.limit, rows: rows });
+    },
+    _a$7[ActionTypes$6.ToggleRows] = function (state, action) {
+        var selected = action.status === 'checked';
+        var rows = state.rows.map(function (row) {
+            row.selected = selected;
+            if (action.selectionsRef === undefined) {
+                return row;
+            }
+            if (row.selected && action.selectionsRef.current.indexOf(row.id) === -1) {
+                action.selectionsRef.current.push(row.id);
+            }
+            if (!row.selected) {
+                var deselectedRow = action.selectionsRef.current.indexOf(row.id);
+                action.selectionsRef.current.splice(deselectedRow, 1);
+            }
+            return row;
+        });
+        if (state.onSelect) {
+            state.onSelect(state.rows.filter(function (row) { return row.selected; }));
+        }
+        return __assign(__assign({}, state), { allSelected: selected, rows: rows });
+    },
+    _a$7[ActionTypes$6.UpdateRows] = function (state, action) {
+        var selectedRows = state.rows.filter(function (row) { return row.selected; });
+        if (selectedRows.length > 0) {
+            var _loop_1 = function (selectedRow) {
+                var index = action.rows.findIndex(function (row) { return row.id === selectedRow.id; });
+                if (index > -1) {
+                    action.rows[index].selected = true;
+                }
+            };
+            for (var _i = 0, selectedRows_1 = selectedRows; _i < selectedRows_1.length; _i++) {
+                var selectedRow = selectedRows_1[_i];
+                _loop_1(selectedRow);
+            }
+        }
+        if (action.selectionsRef) {
+            action.selectionsRef.current = action.selectionsRef.current.filter(function (selectedRow) {
+                return action.rows.find(function (row) { return row.id === selectedRow; }) !== undefined;
+            });
+        }
+        var page = state.page;
+        if (action.total < (state.page - 1) * state.limit + 1) {
+            page = Math.ceil(action.total / state.limit);
+        }
+        else if (action.rows.length === 0 && state.page > 1) {
+            page = state.page - 1;
+        }
+        return __assign(__assign({}, state), { page: page > 0 ? page : 1, rows: action.rows, total: action.total });
+    },
+    _a$7[ActionTypes$6.UpdateRowActions] = function (state, action) {
+        return __assign(__assign({}, state), { rowActions: action.rowActions });
+    },
+    _a$7[ActionTypes$6.UpdateLoading] = function (state, action) {
+        return __assign(__assign({}, state), { loading: action.loading });
+    },
+    _a$7[ActionTypes$6.UpdateColumns] = function (state, action) {
+        return __assign(__assign({}, state), { columns: action.columns });
+    },
+    _a$7[ActionTypes$6.UpdateScrolling] = function (state, actions) {
+        return __assign(__assign({}, state), { isScrolling: actions.isScrolling });
+    },
+    _a$7[ActionTypes$6.UpdateScrollable] = function (state, actions) {
+        return __assign(__assign({}, state), { scrollable: actions.scrollable });
+    },
+    _a$7[ActionTypes$6.UpdateDense] = function (state, actions) {
+        return __assign(__assign({}, state), { dense: actions.dense });
+    },
+    _a$7[ActionTypes$6.UpdateSelectable] = function (state, actions) {
+        var columns = {
+            selected: __spreadArray([], state.columns.selected, true),
+            unselected: __spreadArray([], state.columns.unselected, true),
+        };
+        // If selectable is being set to false, remove the checkbox column
+        if (!actions.selectable) {
+            var checkboxIndex = columns.selected.findIndex(function (column) { return column.key === 'checkbox'; });
+            if (checkboxIndex !== -1) {
+                columns.selected = __spreadArray(__spreadArray([], columns.selected.slice(0, checkboxIndex), true), columns.selected.slice(checkboxIndex + 1), true);
+            }
+        }
+        // If selectable is being set to true, Head.tsx will handle adding the checkbox column
+        return __assign(__assign({}, state), { columns: columns, selectable: actions.selectable });
+    },
+    _a$7);
+var runReducer$7 = function (state, action) {
+    return reducers$7[action.type](state, action);
+};
+var TableContext = createContext(null);
+var useTable = function () {
+    return useContext(TableContext);
+};
 
 var getWidthStyle = function (width) {
     if (width === undefined || width === null || isNaN(Number(width))) {
@@ -11533,8 +11817,9 @@ function Cell(_a) {
 }
 
 function Body() {
+    var _a;
     var intl = useIntl();
-    var _a = useTable(), state = _a[0], dispatch = _a[1];
+    var _b = useTable(), state = _b[0], dispatch = _b[1];
     if (state.selectable) {
         var column_1 = state.columns.selected.find(function (column) { return column.key !== 'checkbox'; });
         state.rows = state.rows.map(function (row) {
@@ -11548,22 +11833,22 @@ function Body() {
             return __assign(__assign({}, row), { checkbox: (React.createElement(Checkbox.Input, { "aria-label": intl.formatMessage({ id: 'Table.select_row' }, { row: "".concat(row[column_1.key]) }), defaultChecked: row.selected, onChange: handleChange, tabIndex: -1 })) });
         });
     }
+    var hasRowActions = (_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length;
     return (React.createElement("tbody", null, state.loading ? (React.createElement("tr", { className: "absolute inset-0 flex items-center justify-center mt-32" },
         React.createElement("td", null,
             React.createElement(Progress, { variant: "circular" },
                 React.createElement(Progress.Description, null,
                     React.createElement(FormattedMessage, { id: "Ui.loading" })))))) : (state.rows.slice(0, Number(state.limit)).map(function (row) {
         var _a, _b, _c;
-        var showRowAction = ((_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length) &&
-            state.rowActions.some(function (action) { return action.enabled === undefined || action.enabled(row); });
+        var showRowAction = hasRowActions &&
+            ((_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.some(function (action) { return action.enabled === undefined || action.enabled(row); }));
         return (React.createElement("tr", { "aria-selected": state.selectable
                 ? (row === null || row === void 0 ? void 0 : row.selected)
                     ? 'true'
                     : 'false'
                 : undefined, className: "border-b border-black-10 last:border-b-0 group", key: row.id },
-            state.columns.selected.map(function (column) { return (React.createElement(Cell, { key: column.key, selected: row === null || row === void 0 ? void 0 : row.selected }, row[column.key] ? (row[column.key]) : (React.createElement("span", { className: "text-black-45" },
-                React.createElement(FormattedMessage, { id: "Table.not_specified" }))))); }),
-            React.createElement(Cell, { selected: row === null || row === void 0 ? void 0 : row.selected, sticky: true }, showRowAction ? (React.createElement(Menu, { placement: "bottom-end" },
+            state.columns.selected.map(function (column) { return (React.createElement(Cell, { key: column.key, selected: row === null || row === void 0 ? void 0 : row.selected }, row[column.key] ? (row[column.key]) : (React.createElement("span", { className: "text-black-60" }, "\u2014")))); }),
+            state.staticColumns && !hasRowActions ? null : (React.createElement(Cell, { selected: row === null || row === void 0 ? void 0 : row.selected, sticky: true }, showRowAction ? (React.createElement(Menu, { placement: "bottom-end" },
                 React.createElement(Menu.Button, { icon: true, label: intl.formatMessage({ id: 'Table.more_actions' }) },
                     React.createElement(MoreVert, null)),
                 React.createElement(Menu.Items, null, (_c = (_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.filter(function (action) {
@@ -11578,28 +11863,11 @@ function Body() {
                     return (React.createElement("div", { className: "text-black-60", key: "".concat(row.id, "-").concat(action.label) },
                         React.createElement(Menu.Item, { onClick: onClick, startAdornment: action.startAdornment },
                             React.createElement("div", { className: "text-black-90" }, action.label))));
-                })))) : null)));
+                })))) : null))));
     }))));
 }
 
-function BulkActions(_a) {
-    var children = _a.children;
-    var state = useTable()[0];
-    var selected = state.rows.filter(function (row) { return row.selected; }).length;
-    return (React.createElement("div", { className: "flex items-center py-px" },
-        React.createElement(Typography, { component: "p", variant: "subtitle2" },
-            React.createElement(FormattedMessage, { id: "Ui.number_selected", values: { number: selected } })),
-        React.createElement("div", { className: "ml-6 items-center flex space-x-3" }, children)));
-}
-
-function GlobalActions(_a) {
-    var children = _a.children;
-    return React.createElement("div", { className: "flex items-center space-x-2" }, children);
-}
-
 var ArrowForward = createSvgIcon(React.createElement("path", { d: "M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" }), 'ArrowForward');
-
-var ArrowUpward = createSvgIcon(React.createElement("path", { d: "M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" }), 'ArrowUpward');
 
 function AddColumn(_a) {
     var actions = _a.actions, focusRef = _a.focusRef;
@@ -11631,9 +11899,10 @@ function AddColumn(_a) {
             React.createElement(Menu.Group, { label: intl.formatMessage({ id: 'Table.add_column' }) }, state.columns.unselected.map(function (column) { return (React.createElement(Menu.Item, { "data-key": column.key, key: column.key, onClick: actions.addColumn }, column.value)); })))));
 }
 function Head() {
+    var _a;
     var intl = useIntl();
     var isInitial = useInitialRender();
-    var _a = useTable(), state = _a[0], dispatch = _a[1];
+    var _b = useTable(), state = _b[0], dispatch = _b[1];
     var actions = {
         addColumn: function (event) {
             dispatch({
@@ -11714,10 +11983,11 @@ function Head() {
             }
         }
     }
+    var hasRowActions = (_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length;
     return (React.createElement("thead", { className: clsx('z-10 transition-shadow duration-150 ease-in', state.scrollable ? 'sticky top-0' : '', state.isScrolling ? 'shadow-3' : 'shadow-0') }, state.loading ? null : (React.createElement("tr", null,
-        state.columns.selected.map(function (column, index, columns) { return (React.createElement(ColumnHeader, { "data-key": column.key, dense: column.key === 'checkbox', key: column.key, sort: column.sort, tabIndex: index === 0 ? 0 : -1, width: column.width }, column.key === 'checkbox' ? (column.value) : (React.createElement(Menu, { headless: true },
+        state.columns.selected.map(function (column, index, columns) { return (React.createElement(ColumnHeader, { "data-key": column.key, dense: column.key === 'checkbox', key: column.key, sort: column.sort, tabIndex: index === 0 ? 0 : -1, width: column.width }, column.key === 'checkbox' ? (column.value) : state.staticColumns ? (React.createElement(ColumnHeaderContent, { column: column, menu: false })) : (React.createElement(Menu, { headless: true },
             React.createElement(Menu.Button, { tabIndex: -1 },
-                React.createElement(MenuHeader, { column: column })),
+                React.createElement(ColumnHeaderContent, { column: column })),
             React.createElement(Menu.Items, null,
                 column.filter ? (React.createElement(Menu.Group, null,
                     React.createElement(Menu.Item, { "data-key": column.key, onClick: actions.sortAscending, startAdornment: FilterList },
@@ -11737,16 +12007,229 @@ function Head() {
                     React.createElement(Menu.Item, { "data-key": column.key, disabled: columns.length === 1 ||
                             (state.selectable && columns.length === 2), onClick: actions.hide, startAdornment: VisibilityOff },
                         React.createElement(FormattedMessage, { id: "Table.hide" })))))))); }),
-        React.createElement(ColumnHeader, { dense: true, sticky: true },
-            React.createElement(AddColumn, { actions: actions }))))));
+        state.staticColumns && !hasRowActions ? null : (React.createElement(ColumnHeader, { dense: true, sticky: true },
+            React.createElement(AddColumn, { actions: actions })))))));
 }
-function MenuHeader(_a) {
-    var column = _a.column, _b = _a.show, show = _b === void 0 ? false : _b;
+function ColumnHeaderContent(_a) {
+    var column = _a.column, _b = _a.menu, menu = _b === void 0 ? true : _b, _c = _a.show, show = _c === void 0 ? false : _c;
     return (React.createElement(React.Fragment, null,
         React.createElement(Typography, { variant: "button" }, column.value),
-        React.createElement("div", { className: "w-6 ml-2 text-black-45" }, show ? React.createElement(ExpandLess, null) : React.createElement(ExpandMore, null)),
+        menu ? (React.createElement("div", { className: "w-6 ml-2 text-black-45" }, show ? React.createElement(ExpandLess, null) : React.createElement(ExpandMore, null))) : null,
         column.sort !== undefined ? (React.createElement("div", { className: "w-4.5 ml-auto text-black-30" },
             React.createElement(ArrowDownward, null))) : null));
+}
+
+function BaseTable(_a) {
+    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.loading, loading = _c === void 0 ? false : _c, rowActions = _a.rowActions, rows = _a.rows, _d = _a.scrollable, scrollable = _d === void 0 ? true : _d, _e = _a.selectable, selectable = _e === void 0 ? false : _e, storageKey = _a.storageKey, total = _a.total;
+    var header = useRef(null);
+    var tableContainer = useRef(null);
+    var _f = useState(0), headerBottomPosition = _f[0], setHeaderBottomPosition = _f[1];
+    var locale = useLocale()[0];
+    var previousLocale = usePrevious(locale);
+    var _g = useTable(), state = _g[0], dispatch = _g[1];
+    var handleScroll = useCallback(function () {
+        if (!tableContainer.current || !state.scrollable) {
+            return;
+        }
+        dispatch({
+            type: ActionTypes$6.UpdateScrolling,
+            isScrolling: !(tableContainer.current.scrollTop === 0),
+        });
+    }, [dispatch, state.scrollable]);
+    var getHeaderBottomPosition = function () {
+        if (header.current) {
+            setHeaderBottomPosition(header.current.getBoundingClientRect().bottom);
+        }
+    };
+    useEffect(function () {
+        var container = tableContainer.current;
+        getHeaderBottomPosition();
+        if (state.scrollable) {
+            container === null || container === void 0 ? void 0 : container.addEventListener('scroll', handleScroll);
+        }
+        window.addEventListener('resize', getHeaderBottomPosition);
+        return function () {
+            if (state.scrollable) {
+                container === null || container === void 0 ? void 0 : container.removeEventListener('scroll', handleScroll);
+            }
+            window.removeEventListener('resize', getHeaderBottomPosition);
+        };
+    }, [handleScroll, state.scrollable]);
+    useEffect(function () {
+        if (locale === previousLocale) {
+            return;
+        }
+        if (initialColumns.some(function (column) { return column.filter !== undefined; })) {
+            var columns_1 = __assign({}, state.columns);
+            var keys_1 = ['selected', 'unselected'];
+            initialColumns.forEach(function (initialColumn) {
+                keys_1.forEach(function (key) {
+                    var index = columns_1[key].findIndex(function (column) { return column.key === initialColumn.key && column.filter; });
+                    if (index > -1) {
+                        var column = columns_1[key][index];
+                        if (column.filter && initialColumn.filter) {
+                            column.filter = column.filter.map(function (filter) {
+                                var _a, _b, _c;
+                                return (__assign(__assign({}, filter), { label: (_c = (_b = (_a = initialColumn.filter) === null || _a === void 0 ? void 0 : _a.find(function (initialFilter) { return filter.value === initialFilter.value; })) === null || _b === void 0 ? void 0 : _b.label) !== null && _c !== void 0 ? _c : filter.label }));
+                            });
+                            columns_1[key][index] = column;
+                        }
+                    }
+                });
+            });
+            dispatch({
+                type: ActionTypes$6.UpdateColumns,
+                columns: columns_1,
+            });
+            if (state.selectable) {
+                var index = columns_1.selected.findIndex(function (column) { return column.key === 'checkbox'; });
+                columns_1.selected = __spreadArray(__spreadArray([], columns_1.selected.slice(0, index), true), columns_1.selected.slice(index + 1), true);
+            }
+            if (storageKey) {
+                window.localStorage.setItem(storageKey, JSON.stringify(__spreadArray(__spreadArray([], columns_1.selected, true), columns_1.unselected, true)));
+            }
+        }
+    }, [
+        dispatch,
+        initialColumns,
+        locale,
+        previousLocale,
+        state.selectable,
+        state.columns,
+        storageKey,
+    ]);
+    useEffect(function () {
+        if (storageKey) {
+            var columns = __assign({}, state.columns);
+            if (state.selectable) {
+                var index = columns.selected.findIndex(function (column) { return column.key === 'checkbox'; });
+                columns.selected = __spreadArray(__spreadArray([], columns.selected.slice(0, index), true), columns.selected.slice(index + 1), true);
+            }
+            window.localStorage.setItem(storageKey, JSON.stringify(__spreadArray(__spreadArray([], columns.selected, true), columns.unselected, true)));
+        }
+    }, [state.selectable, state.columns, storageKey]);
+    useEffect(function () {
+        dispatch({
+            type: ActionTypes$6.UpdateRows,
+            rows: rows,
+            selectionsRef: state.selectionsRef,
+            total: total,
+        });
+    }, [dispatch, rows, state.selectionsRef, total]);
+    useEffect(function () {
+        dispatch({
+            type: ActionTypes$6.UpdateRowActions,
+            rowActions: rowActions,
+        });
+    }, [dispatch, rowActions]);
+    useEffect(function () {
+        dispatch({
+            type: ActionTypes$6.UpdateLoading,
+            loading: loading,
+        });
+    }, [dispatch, loading]);
+    useEffect(function () {
+        dispatch({
+            type: ActionTypes$6.UpdateScrollable,
+            scrollable: scrollable,
+        });
+    }, [dispatch, scrollable]);
+    useEffect(function () {
+        dispatch({
+            type: ActionTypes$6.UpdateDense,
+            dense: dense,
+        });
+    }, [dense, dispatch]);
+    useEffect(function () {
+        dispatch({
+            type: ActionTypes$6.UpdateSelectable,
+            selectable: selectable,
+        });
+    }, [dispatch, selectable]);
+    var handleKeyDown = function (event) {
+        var _a, _b, _c;
+        var cell = event.target;
+        var row = cell.parentElement;
+        var table = (_a = row.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
+        var cellIndex = cell.cellIndex;
+        var rowIndex = row.rowIndex;
+        if (cellIndex === undefined || rowIndex === undefined) {
+            return;
+        }
+        var newCell;
+        switch (event.key) {
+            case Keys.ArrowDown:
+                newCell = (_b = table.rows[rowIndex + 1]) === null || _b === void 0 ? void 0 : _b.cells[cellIndex];
+                break;
+            case Keys.ArrowUp:
+                newCell = (_c = table.rows[rowIndex - 1]) === null || _c === void 0 ? void 0 : _c.cells[cellIndex];
+                break;
+            case Keys.ArrowRight:
+                newCell = table.rows[rowIndex].cells[cellIndex + 1];
+                break;
+            case Keys.ArrowLeft:
+                newCell = table.rows[rowIndex].cells[cellIndex - 1];
+                break;
+        }
+        if (newCell) {
+            newCell.focus();
+            newCell.setAttribute('tabIndex', '0');
+            cell.setAttribute('tabIndex', '-1');
+        }
+    };
+    var viewportHeight = window.innerHeight;
+    var headerHeight = header.current
+        ? header.current.getBoundingClientRect().height
+        : 0;
+    // Tables within the viewport have heights that rely on the bottom position of the header.
+    // However, to give other tables (beyond the viewport) the same height, we need to rely on the height of the header instead.
+    var isBelowViewport = headerBottomPosition > viewportHeight;
+    // Calculate maxHeight only if scrollable is enabled
+    var maxHeight = scrollable
+        ? isBelowViewport
+            ? "calc(".concat(viewportHeight - headerHeight, "px)")
+            : "calc(".concat(viewportHeight - headerBottomPosition, "px)")
+        : undefined;
+    return (React.createElement("div", null,
+        React.createElement("header", { className: "divide-y divide-black-10 bg-white-100", ref: header }, children),
+        React.createElement("section", { className: "w-full max-w-full" },
+            React.createElement("div", { className: scrollable ? 'overflow-auto' : '', ref: tableContainer, style: { maxHeight: maxHeight } },
+                React.createElement("table", { cellPadding: 0, className: "w-full font-sans border-spacing-0", onKeyDown: handleKeyDown, role: "grid" },
+                    React.createElement(Head, null),
+                    React.createElement(Body, null))))));
+}
+
+function BulkActions(_a) {
+    var children = _a.children;
+    var _b = useTable(), state = _b[0], dispatch = _b[1];
+    var selectedRows = state.rows.filter(function (row) { return row.selected; });
+    var numberSelected = selectedRows.length;
+    var handleChange = function (toggled) {
+        var status = toggled ? 'checked' : 'unchecked';
+        dispatch({
+            type: ActionTypes$6.ToggleRows,
+            status: status,
+            selectionsRef: state.selectionsRef,
+        });
+    };
+    return (React.createElement("div", { className: "flex items-center py-px" },
+        React.createElement(Typography, { component: "p", variant: "subtitle2" },
+            React.createElement(FormattedMessage, { id: "Ui.number_selected", values: { number: numberSelected } })),
+        React.createElement("div", { className: "ml-6 items-center flex space-x-3" },
+            React.createElement(Button, { onClick: function () {
+                    handleChange(false);
+                }, variant: "contained" },
+                React.createElement(FormattedMessage, { id: "Table.clear_selection" })),
+            !state.allSelected ? (React.createElement(Button, { onClick: function () {
+                    handleChange(true);
+                }, variant: "contained" },
+                React.createElement(FormattedMessage, { id: "Table.select_all_n", values: { count: state.rows.length } }))) : null,
+            typeof children === 'function' ? children(selectedRows) : children)));
+}
+
+function GlobalActions(_a) {
+    var children = _a.children;
+    return React.createElement("div", { className: "flex items-center space-x-2" }, children);
 }
 
 function Title$3(_a) {
@@ -11949,246 +12432,49 @@ function Toolbar(_a) {
     return (React.createElement("div", { "aria-label": intl.formatMessage({ id: 'Table.actions' }), className: "flex items-center justify-between px-6 py-3" }, children));
 }
 
-var _a$7;
-var partition = function (columns) {
-    return columns.reduce(function (previous, current) {
-        if (current.selected) {
-            previous.selected.push(current);
-        }
-        else {
-            previous.unselected.push(current);
-        }
-        return previous;
-    }, { selected: [], unselected: [] });
-};
-var populate = function (defaultColumns, initialRender, storageKey) {
-    if (storageKey && initialRender) {
-        var serializedColumns = window.localStorage.getItem(storageKey);
-        if (serializedColumns) {
-            var storedColumns_1 = JSON.parse(serializedColumns);
-            var newColumns = defaultColumns.filter(function (defaultColumn) {
-                return !storedColumns_1.some(function (storedColumn) { return defaultColumn.key === storedColumn.key; });
-            });
-            return storedColumns_1
-                .filter(function (storedColumn) {
-                return defaultColumns.find(function (defaultColumn) { return defaultColumn.key === storedColumn.key; });
-            })
-                .map(function (storedColumn) {
-                var defaultColumn = defaultColumns.find(function (defaultColumn) { return defaultColumn.key === storedColumn.key; });
-                var column = __assign(__assign({}, storedColumn), { value: (defaultColumn === null || defaultColumn === void 0 ? void 0 : defaultColumn.value) || storedColumn.value });
-                if ((defaultColumn === null || defaultColumn === void 0 ? void 0 : defaultColumn.width) !== undefined) {
-                    column.width = defaultColumn.width;
-                }
-                else {
-                    // Remove width if default doesn't specify one, to reflect current code intention
-                    delete column.width;
-                }
-                if (defaultColumn === null || defaultColumn === void 0 ? void 0 : defaultColumn.filter) {
-                    column.filter = __spreadArray([], defaultColumn.filter, true);
-                }
-                return column;
-            })
-                .concat(newColumns);
-        }
-    }
-    return defaultColumns;
-};
-var reducers$7 = (_a$7 = {},
-    _a$7[ActionTypes$6.ChangeLimit] = function (state, action) {
-        // 1-based index of the first visible row on the current page
-        var anchoredFirstRowIndex = (state.page - 1) * state.limit + 1;
-        var newLimit = action.limit;
-        var newPage = Math.ceil(anchoredFirstRowIndex / newLimit);
-        return __assign(__assign({}, state), { limit: newLimit, page: newPage });
-    },
-    _a$7[ActionTypes$6.FilterChange] = function (state, action) {
-        var columns = __spreadArray(__spreadArray([], state.columns.selected, true), state.columns.unselected, true);
-        return __assign(__assign({}, state), { columns: partition(columns.map(function (column) {
-                var _a;
-                if (column.key === action.key) {
-                    (_a = column.filter) === null || _a === void 0 ? void 0 : _a.map(function (filter) {
-                        var _a;
-                        if (filter.value === action.value) {
-                            filter.checked = action.checked;
-                            (_a = state.onFilterChange) === null || _a === void 0 ? void 0 : _a.call(state, {
-                                columnKey: action.key,
-                                value: action.value,
-                                checked: action.checked,
-                            });
-                        }
-                        return filter;
-                    });
-                }
-                return column;
-            })) });
-    },
-    _a$7[ActionTypes$6.FirstPage] = function (state) { return (__assign(__assign({}, state), { page: 1 })); },
-    _a$7[ActionTypes$6.MoveColumn] = function (state, action) {
-        var columns = state.columns.selected;
-        if (state.selectable) {
-            columns = columns.slice(1);
-        }
-        var oldIndex = columns.findIndex(function (column) { return column.key === action.key; });
-        var newIndex = action.direction === Directions.Left ? oldIndex - 1 : oldIndex + 1;
-        columns.splice(newIndex, 0, columns.splice(oldIndex, 1)[0]);
-        return __assign(__assign({}, state), { columns: partition(__spreadArray(__spreadArray(__spreadArray([], (state.selectable ? [state.columns.selected[0]] : []), true), columns, true), state.columns.unselected, true)) });
-    },
-    _a$7[ActionTypes$6.NextPage] = function (state) { return (__assign(__assign({}, state), { page: state.page + 1 })); },
-    _a$7[ActionTypes$6.PreviousPage] = function (state) { return (__assign(__assign({}, state), { page: state.page - 1 })); },
-    _a$7[ActionTypes$6.SortColumn] = function (state, action) {
-        var columns = __spreadArray(__spreadArray([], state.columns.selected, true), state.columns.unselected, true);
-        return __assign(__assign({}, state), { columns: partition(columns.map(function (column) {
-                var _a;
-                if (column.key === action.key) {
-                    column.sort = action.direction;
-                    (_a = state.onSort) === null || _a === void 0 ? void 0 : _a.call(state, {
-                        direction: column.sort,
-                        key: action.key,
-                    });
-                }
-                else {
-                    column.sort = undefined;
-                }
-                return column;
-            })), page: 1 });
-    },
-    _a$7[ActionTypes$6.ToggleColumn] = function (state, action) {
-        var columns = __spreadArray(__spreadArray([], state.columns.selected, true), state.columns.unselected, true);
-        state.columns.selected.forEach(function (column, index, columns) {
-            if (column.key === action.key) {
-                var focusable = columns[index + 1] || columns[index - 1];
-                var element = document.querySelector("th[data-key=\"".concat(focusable.key, "\"]"));
-                element === null || element === void 0 ? void 0 : element.focus();
-                element === null || element === void 0 ? void 0 : element.setAttribute('tabIndex', '0');
-            }
+function BasicTable(_a) {
+    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onSelect = _a.onSelect, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, total = _a.total;
+    var adjustedColumns = useMemo(function () {
+        return initialColumns.map(function (column) { return (__assign(__assign({}, column), { selected: true, sort: undefined })); });
+    }, [initialColumns]);
+    var _h = useReducer(runReducer$7, {}, function () {
+        return ({
+            columns: {
+                selected: adjustedColumns,
+                unselected: [],
+            },
+            dense: dense,
+            limit: limit,
+            loading: loading,
+            onSelect: onSelect,
+            page: 1,
+            pagination: pagination,
+            rowActions: undefined,
+            rows: rows,
+            isScrolling: false,
+            scrollable: scrollable,
+            selectable: selectable,
+            allSelected: false,
+            selectionsRef: selectionsRef,
+            staticColumns: true,
+            total: pagination === 'lengthAware' ? total || rows.length : undefined,
         });
-        return __assign(__assign({}, state), { columns: partition(columns.map(function (column) {
-                if (column.key === action.key) {
-                    column.selected = !column.selected;
-                }
-                return column;
-            })) });
-    },
-    _a$7[ActionTypes$6.ToggleRow] = function (state, action) {
-        var rows = state.rows.map(function (row) {
-            if (row.id === action.key) {
-                row.selected = !row.selected;
-                if (action.selectionsRef === undefined) {
-                    return row;
-                }
-                if (row.selected) {
-                    action.selectionsRef.current.push(row.id);
-                }
-                else {
-                    var deselectedRow = action.selectionsRef.current.indexOf(row.id);
-                    action.selectionsRef.current.splice(deselectedRow, 1);
-                }
-            }
-            return row;
-        });
-        if (state.onSelect) {
-            state.onSelect(state.rows.filter(function (row) { return row.selected; }));
-        }
-        return __assign(__assign({}, state), { rows: rows });
-    },
-    _a$7[ActionTypes$6.ToggleRows] = function (state, action) {
-        var rows = state.rows.map(function (row) {
-            row.selected = action.status === 'checked';
-            if (action.selectionsRef === undefined) {
-                return row;
-            }
-            if (row.selected && action.selectionsRef.current.indexOf(row.id) === -1) {
-                action.selectionsRef.current.push(row.id);
-            }
-            if (!row.selected) {
-                var deselectedRow = action.selectionsRef.current.indexOf(row.id);
-                action.selectionsRef.current.splice(deselectedRow, 1);
-            }
-            return row;
-        });
-        if (state.onSelect) {
-            state.onSelect(state.rows.filter(function (row) { return row.selected; }));
-        }
-        return __assign(__assign({}, state), { rows: rows });
-    },
-    _a$7[ActionTypes$6.UpdateRows] = function (state, action) {
-        var selectedRows = state.rows.filter(function (row) { return row.selected; });
-        if (selectedRows.length > 0) {
-            var _loop_1 = function (selectedRow) {
-                var index = action.rows.findIndex(function (row) { return row.id === selectedRow.id; });
-                if (index > -1) {
-                    action.rows[index].selected = true;
-                }
-            };
-            for (var _i = 0, selectedRows_1 = selectedRows; _i < selectedRows_1.length; _i++) {
-                var selectedRow = selectedRows_1[_i];
-                _loop_1(selectedRow);
-            }
-        }
-        if (action.selectionsRef) {
-            action.selectionsRef.current = action.selectionsRef.current.filter(function (selectedRow) {
-                return action.rows.find(function (row) { return row.id === selectedRow; }) !== undefined;
-            });
-        }
-        var page = state.page;
-        if (action.total < (state.page - 1) * state.limit + 1) {
-            page = Math.ceil(action.total / state.limit);
-        }
-        else if (action.rows.length === 0 && state.page > 1) {
-            page = state.page - 1;
-        }
-        return __assign(__assign({}, state), { page: page > 0 ? page : 1, rows: action.rows, total: action.total });
-    },
-    _a$7[ActionTypes$6.UpdateRowActions] = function (state, action) {
-        return __assign(__assign({}, state), { rowActions: action.rowActions });
-    },
-    _a$7[ActionTypes$6.UpdateLoading] = function (state, action) {
-        return __assign(__assign({}, state), { loading: action.loading });
-    },
-    _a$7[ActionTypes$6.UpdateColumns] = function (state, action) {
-        return __assign(__assign({}, state), { columns: action.columns });
-    },
-    _a$7[ActionTypes$6.UpdateScrolling] = function (state, actions) {
-        return __assign(__assign({}, state), { isScrolling: actions.isScrolling });
-    },
-    _a$7[ActionTypes$6.UpdateScrollable] = function (state, actions) {
-        return __assign(__assign({}, state), { scrollable: actions.scrollable });
-    },
-    _a$7[ActionTypes$6.UpdateDense] = function (state, actions) {
-        return __assign(__assign({}, state), { dense: actions.dense });
-    },
-    _a$7[ActionTypes$6.UpdateSelectable] = function (state, actions) {
-        var columns = {
-            selected: __spreadArray([], state.columns.selected, true),
-            unselected: __spreadArray([], state.columns.unselected, true),
-        };
-        // If selectable is being set to false, remove the checkbox column
-        if (!actions.selectable) {
-            var checkboxIndex = columns.selected.findIndex(function (column) { return column.key === 'checkbox'; });
-            if (checkboxIndex !== -1) {
-                columns.selected = __spreadArray(__spreadArray([], columns.selected.slice(0, checkboxIndex), true), columns.selected.slice(checkboxIndex + 1), true);
-            }
-        }
-        // If selectable is being set to true, Head.tsx will handle adding the checkbox column
-        return __assign(__assign({}, state), { columns: columns, selectable: actions.selectable });
-    },
-    _a$7);
-var runReducer$7 = function (state, action) {
-    return reducers$7[action.type](state, action);
-};
-var TableContext = createContext(null);
-var useTable = function () {
-    return useContext(TableContext);
-};
+    }), state = _h[0], dispatch = _h[1];
+    return (React.createElement(TableContext.Provider, { value: [state, dispatch] },
+        React.createElement(BaseTable, { columns: adjustedColumns, dense: dense, loading: loading, rows: rows, scrollable: scrollable, selectable: selectable, total: total }, children)));
+}
+BasicTable.BulkActions = BulkActions;
+BasicTable.GlobalActions = GlobalActions;
+BasicTable.Header = Header$2;
+BasicTable.Pagination = PaginationComponent;
+BasicTable.Search = Search;
+BasicTable.Title = Title$3;
+BasicTable.Toolbar = Toolbar;
+
 function Table(_a) {
     var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onFilterChange = _a.onFilterChange, onSelect = _a.onSelect, onSort = _a.onSort, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rowActions = _a.rowActions, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, storageKey = _a.storageKey, total = _a.total;
     var initialRender = useInitialRender();
-    var header = useRef(null);
-    var tableContainer = useRef(null);
-    var _h = useState(0), headerBottomPosition = _h[0], setHeaderBottomPosition = _h[1];
-    var locale = useLocale()[0];
-    var previousLocale = usePrevious(locale);
-    var _j = useReducer(runReducer$7, {
+    var _h = useReducer(runReducer$7, {
         columns: partition(populate(initialColumns, initialRender, storageKey)),
         dense: dense,
         limit: limit,
@@ -12203,179 +12489,12 @@ function Table(_a) {
         isScrolling: false,
         scrollable: scrollable,
         selectable: selectable,
+        allSelected: false,
         selectionsRef: selectionsRef,
         total: pagination === 'lengthAware' ? total || rows.length : undefined,
-    }), state = _j[0], dispatch = _j[1];
-    var handleScroll = useCallback(function () {
-        if (!tableContainer.current || !scrollable) {
-            return;
-        }
-        dispatch({
-            type: ActionTypes$6.UpdateScrolling,
-            isScrolling: !(tableContainer.current.scrollTop === 0),
-        });
-    }, [scrollable]);
-    var getHeaderBottomPosition = function () {
-        if (header.current) {
-            setHeaderBottomPosition(header.current.getBoundingClientRect().bottom);
-        }
-    };
-    useEffect(function () {
-        var container = tableContainer.current;
-        getHeaderBottomPosition();
-        if (scrollable) {
-            container === null || container === void 0 ? void 0 : container.addEventListener('scroll', handleScroll);
-        }
-        window.addEventListener('resize', getHeaderBottomPosition);
-        return function () {
-            if (scrollable) {
-                container === null || container === void 0 ? void 0 : container.removeEventListener('scroll', handleScroll);
-            }
-            window.removeEventListener('resize', getHeaderBottomPosition);
-        };
-    }, [handleScroll, scrollable]);
-    useEffect(function () {
-        if (locale === previousLocale) {
-            return;
-        }
-        if (initialColumns.some(function (column) { return column.filter !== undefined; })) {
-            var columns_1 = __assign({}, state.columns);
-            var keys_1 = ['selected', 'unselected'];
-            initialColumns.forEach(function (initialColumn) {
-                keys_1.forEach(function (key) {
-                    var index = columns_1[key].findIndex(function (column) { return column.key === initialColumn.key && column.filter; });
-                    if (index > -1) {
-                        var column = columns_1[key][index];
-                        if (column.filter && initialColumn.filter) {
-                            column.filter = column.filter.map(function (filter) {
-                                var _a, _b, _c;
-                                return (__assign(__assign({}, filter), { label: (_c = (_b = (_a = initialColumn.filter) === null || _a === void 0 ? void 0 : _a.find(function (initialFilter) { return filter.value === initialFilter.value; })) === null || _b === void 0 ? void 0 : _b.label) !== null && _c !== void 0 ? _c : filter.label }));
-                            });
-                            columns_1[key][index] = column;
-                        }
-                    }
-                });
-            });
-            dispatch({
-                type: ActionTypes$6.UpdateColumns,
-                columns: columns_1,
-            });
-            if (state.selectable) {
-                var index = columns_1.selected.findIndex(function (column) { return column.key === 'checkbox'; });
-                columns_1.selected = __spreadArray(__spreadArray([], columns_1.selected.slice(0, index), true), columns_1.selected.slice(index + 1), true);
-            }
-            if (storageKey) {
-                window.localStorage.setItem(storageKey, JSON.stringify(__spreadArray(__spreadArray([], columns_1.selected, true), columns_1.unselected, true)));
-            }
-        }
-    }, [
-        initialColumns,
-        locale,
-        previousLocale,
-        state.selectable,
-        state.columns,
-        storageKey,
-    ]);
-    useEffect(function () {
-        if (storageKey) {
-            var columns = __assign({}, state.columns);
-            if (state.selectable) {
-                var index = columns.selected.findIndex(function (column) { return column.key === 'checkbox'; });
-                columns.selected = __spreadArray(__spreadArray([], columns.selected.slice(0, index), true), columns.selected.slice(index + 1), true);
-            }
-            window.localStorage.setItem(storageKey, JSON.stringify(__spreadArray(__spreadArray([], columns.selected, true), columns.unselected, true)));
-        }
-    }, [state.selectable, state.columns, storageKey]);
-    useEffect(function () {
-        dispatch({
-            type: ActionTypes$6.UpdateRows,
-            rows: rows,
-            selectionsRef: state.selectionsRef,
-            total: total,
-        });
-    }, [rows, state.selectionsRef, total]);
-    useEffect(function () {
-        dispatch({
-            type: ActionTypes$6.UpdateRowActions,
-            rowActions: rowActions,
-        });
-    }, [rowActions]);
-    useEffect(function () {
-        dispatch({
-            type: ActionTypes$6.UpdateLoading,
-            loading: loading,
-        });
-    }, [loading]);
-    useEffect(function () {
-        dispatch({
-            type: ActionTypes$6.UpdateScrollable,
-            scrollable: scrollable,
-        });
-    }, [scrollable]);
-    useEffect(function () {
-        dispatch({
-            type: ActionTypes$6.UpdateDense,
-            dense: dense,
-        });
-    }, [dense]);
-    useEffect(function () {
-        dispatch({
-            type: ActionTypes$6.UpdateSelectable,
-            selectable: selectable,
-        });
-    }, [selectable]);
-    var handleKeyDown = function (event) {
-        var _a, _b, _c;
-        var cell = event.target;
-        var row = cell.parentElement;
-        var table = (_a = row.parentElement) === null || _a === void 0 ? void 0 : _a.parentElement;
-        var cellIndex = cell.cellIndex;
-        var rowIndex = row.rowIndex;
-        if (cellIndex === undefined || rowIndex === undefined) {
-            return;
-        }
-        var newCell;
-        switch (event.key) {
-            case Keys.ArrowDown:
-                newCell = (_b = table.rows[rowIndex + 1]) === null || _b === void 0 ? void 0 : _b.cells[cellIndex];
-                break;
-            case Keys.ArrowUp:
-                newCell = (_c = table.rows[rowIndex - 1]) === null || _c === void 0 ? void 0 : _c.cells[cellIndex];
-                break;
-            case Keys.ArrowRight:
-                newCell = table.rows[rowIndex].cells[cellIndex + 1];
-                break;
-            case Keys.ArrowLeft:
-                newCell = table.rows[rowIndex].cells[cellIndex - 1];
-                break;
-        }
-        if (newCell) {
-            newCell.focus();
-            newCell.setAttribute('tabIndex', '0');
-            cell.setAttribute('tabIndex', '-1');
-        }
-    };
-    var viewportHeight = window.innerHeight;
-    var headerHeight = header.current
-        ? header.current.getBoundingClientRect().height
-        : 0;
-    // Tables within the viewport have heights that rely on the bottom position of the header.
-    // However, to give other tables (beyond the viewport) the same height, we need to rely on the height of the header instead.
-    var isBelowViewport = headerBottomPosition > viewportHeight;
-    // Calculate maxHeight only if scrollable is enabled
-    var maxHeight = scrollable
-        ? isBelowViewport
-            ? "calc(".concat(viewportHeight - headerHeight, "px)")
-            : "calc(".concat(viewportHeight - headerBottomPosition, "px)")
-        : undefined;
+    }), state = _h[0], dispatch = _h[1];
     return (React.createElement(TableContext.Provider, { value: [state, dispatch] },
-        React.createElement("div", null,
-            React.createElement("header", { className: "divide-y divide-black-10 bg-white-100", ref: header }, children),
-            React.createElement("section", { className: "w-full max-w-full" },
-                React.createElement("div", { className: scrollable ? 'overflow-auto' : '', ref: tableContainer, style: { maxHeight: maxHeight } },
-                    React.createElement("table", { cellPadding: 0, className: "w-full font-sans border-spacing-0", onKeyDown: handleKeyDown, role: "grid" },
-                        React.createElement(Head, null),
-                        React.createElement(Body, null)))))));
+        React.createElement(BaseTable, { columns: initialColumns, dense: dense, loading: loading, rowActions: rowActions, rows: rows, scrollable: scrollable, selectable: selectable, storageKey: storageKey, total: total }, children)));
 }
 Table.BulkActions = BulkActions;
 Table.GlobalActions = GlobalActions;
@@ -12646,5 +12765,5 @@ function Tooltip(_a) {
             arrow ? (React.createElement("div", { className: clsx('border-6 border-black-60 w-0 h-0', styles.class[arrowDirection]), ref: arrowRef, style: styles.style[arrowDirection] })) : null))));
 }
 
-export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, Button, ButtonGroup, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, IconButton, Link, List, Menu, MultiSelect, Pagination, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
+export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, BasicTable, Button, ButtonGroup, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, IconButton, Link, List, Menu, MultiSelect, Pagination, Popover, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
 //# sourceMappingURL=index.es.js.map

@@ -1,4 +1,8 @@
 import type { PropsWithChildren, ReactNode, Ref } from 'react';
+/**
+ * OptionProps does not include a wrapText prop directly.
+ * Wrapping is controlled by the parent Select via context.
+ */
 export interface OptionProps {
     /**
      * If true, the option is disabled
