@@ -15,8 +15,9 @@ export interface BaseTableProps {
     rows: TableRow[];
     scrollable?: boolean;
     selectable?: boolean;
+    selectedIds?: string[];
     storageKey?: string;
     total?: number;
 }
-declare function BaseTable({ children, columns: initialColumns, dense, loading, rowActions, rows, scrollable, selectable, storageKey, total, }: BaseTableProps): JSX.Element;
+declare function BaseTable({ children, columns: initialColumns, dense, loading, rowActions, rows, scrollable, selectable, selectedIds, storageKey, total, }: BaseTableProps): JSX.Element;
 export default BaseTable;

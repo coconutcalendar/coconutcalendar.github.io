@@ -73,6 +73,12 @@ export interface TableProps {
      */
     selectable?: boolean;
     /**
+     * Controls the selected rows externally. When provided, the table will sync its internal selection state
+     * to match this array of row IDs. Pair with `onSelect` to keep this value up to date when the user
+     * interacts with the table directly.
+     */
+    selectedIds?: string[];
+    /**
      * Mutable ref object to track selected row IDs. Used for controlled selection state
      */
     selectionsRef?: MutableRefObject<string[]>;
@@ -87,7 +93,7 @@ export interface TableProps {
      */
     total?: number;
 }
-declare function Table({ children, columns: initialColumns, dense, limit, loading, onFilterChange, onSelect, onSort, pagination, rowActions, rows, scrollable, selectable, selectionsRef, storageKey, total, }: TableProps): JSX.Element;
+declare function Table({ children, columns: initialColumns, dense, limit, loading, onFilterChange, onSelect, onSort, pagination, rowActions, rows, scrollable, selectable, selectedIds, selectionsRef, storageKey, total, }: TableProps): JSX.Element;
 declare namespace Table {
     var BulkActions: typeof import("./BulkActions").default;
     var GlobalActions: typeof import("./GlobalActions").default;

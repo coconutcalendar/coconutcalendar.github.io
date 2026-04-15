@@ -189,6 +189,8 @@ var Favorite = createSvgIcon(React__default['default'].createElement("path", { d
 
 var FavoriteOutline = createSvgIcon(React__default['default'].createElement("path", { d: "M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" }), 'FavoriteOutline');
 
+var Feedback = createSvgIcon(React__default['default'].createElement("path", { d: "M491-339q70 0 119-45t49-109q0-57-36.5-96.5T534-629q-47 0-79.5 30T422-525q0 19 7.5 37t21.5 33l57-57q-3-2-4.5-5t-1.5-7q0-11 9-17.5t23-6.5q20 0 33 16.5t13 39.5q0 31-25.5 52.5T492-418q-47 0-79.5-38T380-549q0-29 11-55.5t31-46.5l-57-57q-32 31-49 72t-17 86q0 88 56 149.5T491-339ZM240-80v-172q-57-52-88.5-121.5T120-520q0-150 105-255t255-105q125 0 221.5 73.5T827-615l52 205q5 19-7 34.5T840-360h-80v120q0 33-23.5 56.5T680-160h-80v80h-80v-160h160v-200h108l-38-155q-23-91-98-148t-172-57q-116 0-198 81t-82 197q0 60 24.5 114t69.5 96l26 24v208h-80Zm254-360Z" }), 'Feedback', '0 -960 960 960');
+
 var FileCopy = createSvgIcon(React__default['default'].createElement("path", { d: "M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4 6 6v10c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h7zm-1 7h5.5L14 6.5V12z" }), 'FileCopy');
 
 var FileMissing = createSvgIcon(React__default['default'].createElement(React__default['default'].Fragment, null,
@@ -474,6 +476,7 @@ exports.ExpandLess = ExpandLess;
 exports.ExpandMore = ExpandMore;
 exports.Favorite = Favorite;
 exports.FavoriteOutline = FavoriteOutline;
+exports.Feedback = Feedback;
 exports.FileCopy = FileCopy;
 exports.FileMissing = FileMissing;
 exports.Files = Files;

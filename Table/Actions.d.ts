@@ -66,6 +66,9 @@ export type Actions = {
 } | {
     type: ActionTypes.UpdateSelectable;
     selectable: boolean;
+} | {
+    type: ActionTypes.SyncSelections;
+    ids: string[];
 };
 export declare enum ActionTypes {
     MoveColumn = 0,
@@ -85,5 +88,6 @@ export declare enum ActionTypes {
     UpdateScrolling = 14,
     UpdateScrollable = 15,
     UpdateDense = 16,
-    UpdateSelectable = 17
+    UpdateSelectable = 17,
+    SyncSelections = 18
 }

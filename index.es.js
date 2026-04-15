@@ -4,7 +4,7 @@ import { useIntl, FormattedMessage } from 'react-intl';
 import { createPortal } from 'react-dom';
 import { format as format$1, parse as parse$1, setDate, startOfWeek, endOfWeek, isValid, isAfter, isSameWeek, isSameDay, isSameMonth, isToday, isWeekend, startOfMonth, addDays, endOfMonth, differenceInCalendarDays, addMonths, subDays, subMonths, isWithinInterval, fromUnixTime } from 'date-fns';
 import { enUS, es, fr, ko, pl, ptBR, ru, zhCN } from 'date-fns/locale';
-import { Popover as Popover$1 } from 'react-aria-components';
+import { useSlottedContext, ModalContext, Heading, ModalOverlay, Modal, Dialog as Dialog$1, Popover as Popover$1 } from 'react-aria-components';
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -276,20 +276,20 @@ var colors$1 = {
     inverse: 'text-white-90',
 };
 var variants$1 = {
-    h1: "text-6xl font-medium tracking-tight leading-tighter",
-    h2: "text-5xl font-medium tracking-tight leading-tight",
-    h3: "text-4xl font-medium tracking-normal leading-tighter",
-    h4: "text-3xl font-medium tracking-normal leading-tight",
-    h5: "text-2xl font-medium tracking-normal leading-snug",
-    h6: "text-xl font-medium tracking-wide leading-normal",
-    subtitle1: "text-base font-medium tracking-normal leading-7",
-    subtitle2: "text-sm font-medium tracking-wide leading-6",
-    subtitle3: "text-xs font-medium tracking-wider leading-loose",
-    body1: "text-base font-normal tracking-normal leading-6",
-    body2: "text-sm font-normal tracking-wide leading-5",
-    button: "text-sm font-medium tracking-wide leading-6",
-    caption: "text-xs font-normal tracking-wider leading-tighter",
-    overline: "text-xs font-medium tracking-widest leading-looser uppercase",
+    h1: "text-6xl font-medium tracking-tight",
+    h2: "text-5xl font-medium tracking-tight",
+    h3: "text-4xl font-medium tracking-normal",
+    h4: "text-3xl font-medium tracking-normal",
+    h5: "text-2xl font-medium tracking-normal",
+    h6: "text-xl font-medium tracking-wide",
+    subtitle1: "text-base font-medium tracking-normal",
+    subtitle2: "text-sm font-medium tracking-wide",
+    subtitle3: "text-xs font-medium tracking-wider",
+    body1: "text-base font-normal tracking-normal",
+    body2: "text-sm font-normal tracking-wide",
+    button: "text-sm font-medium tracking-wide",
+    caption: "text-xs font-normal tracking-wider",
+    overline: "text-xs font-medium tracking-widest uppercase",
 };
 function Typography(_a) {
     var children = _a.children, _b = _a.color, color = _b === void 0 ? 'initial' : _b, _c = _a.component, Component = _c === void 0 ? 'span' : _c, id = _a.id, _d = _a.truncate, truncate = _d === void 0 ? false : _d, _e = _a.variant, variant = _e === void 0 ? 'body1' : _e;
@@ -2672,6 +2672,7 @@ var colors$4 = {
 var sizes$2 = {
     large: 'w-15 h-15 p-3',
     medium: 'w-12 h-12 p-3',
+    base: 'w-10 h-10 p-2',
     small: 'w-7 h-7 p-0.5',
 };
 function Component(_a, ref) {
@@ -3178,9 +3179,12 @@ function Portal(_a) {
         if (element) {
             element.style.display = open ? 'block' : 'none';
             if (open && discoverable) {
-                // react-focus-on adds these to other portals. use discoverable to override.
+                // react-focus-on and react-aria add these to other portals. use discoverable to override.
                 (_a = element.parentElement) === null || _a === void 0 ? void 0 : _a.removeAttribute('aria-hidden');
                 (_b = element.parentElement) === null || _b === void 0 ? void 0 : _b.removeAttribute('data-focus-on-hidden');
+                if (element.parentElement instanceof HTMLElement) {
+                    element.parentElement.inert = false;
+                }
             }
         }
     }, [element, open, discoverable]);
@@ -3739,6 +3743,8 @@ var ExpandMore = createSvgIcon(React.createElement("path", { d: "M16.59 8.59L12 
 createSvgIcon(React.createElement("path", { d: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" }), 'Favorite');
 
 createSvgIcon(React.createElement("path", { d: "M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" }), 'FavoriteOutline');
+
+createSvgIcon(React.createElement("path", { d: "M491-339q70 0 119-45t49-109q0-57-36.5-96.5T534-629q-47 0-79.5 30T422-525q0 19 7.5 37t21.5 33l57-57q-3-2-4.5-5t-1.5-7q0-11 9-17.5t23-6.5q20 0 33 16.5t13 39.5q0 31-25.5 52.5T492-418q-47 0-79.5-38T380-549q0-29 11-55.5t31-46.5l-57-57q-32 31-49 72t-17 86q0 88 56 149.5T491-339ZM240-80v-172q-57-52-88.5-121.5T120-520q0-150 105-255t255-105q125 0 221.5 73.5T827-615l52 205q5 19-7 34.5T840-360h-80v120q0 33-23.5 56.5T680-160h-80v80h-80v-160h160v-200h108l-38-155q-23-91-98-148t-172-57q-116 0-198 81t-82 197q0 60 24.5 114t69.5 96l26 24v208h-80Zm254-360Z" }), 'Feedback', '0 -960 960 960');
 
 createSvgIcon(React.createElement("path", { d: "M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4 6 6v10c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h7zm-1 7h5.5L14 6.5V12z" }), 'FileCopy');
 
@@ -10349,6 +10355,59 @@ Dialog.Actions = Actions$2;
 Dialog.Content = Content$3;
 Dialog.Header = Header$1;
 
+/* eslint-disable react/forbid-component-props */
+function getScrollParent$1(el) {
+    var parent = el.parentElement;
+    while (parent) {
+        var _a = window.getComputedStyle(parent), overflow = _a.overflow, overflowY = _a.overflowY;
+        if (['auto', 'scroll'].includes(overflow) ||
+            ['auto', 'scroll'].includes(overflowY))
+            return parent;
+        parent = parent.parentElement;
+    }
+    return null;
+}
+function Header$2(_a) {
+    var children = _a.children;
+    var modalContext = useSlottedContext(ModalContext);
+    var onOpenChange = modalContext === null || modalContext === void 0 ? void 0 : modalContext.onOpenChange;
+    var isDismissable = modalContext === null || modalContext === void 0 ? void 0 : modalContext.isDismissable;
+    var intl = useIntl();
+    var headerRef = useRef(null);
+    var _b = useState(false), hasScrolled = _b[0], setHasScrolled = _b[1];
+    useEffect(function () {
+        var scrollParent = headerRef.current && getScrollParent$1(headerRef.current);
+        if (!scrollParent) {
+            return;
+        }
+        var handleScroll = function () { return setHasScrolled(scrollParent.scrollTop > 0); };
+        scrollParent.addEventListener('scroll', handleScroll);
+        return function () { return scrollParent.removeEventListener('scroll', handleScroll); };
+    }, []);
+    return (React.createElement("div", { className: clsx('flex items-center justify-between p-4 pl-6 shrink-0 sticky top-0 bg-white-100 z-9999 transition-shadow duration-200', hasScrolled && 'shadow-3'), ref: headerRef },
+        React.createElement(Heading, { slot: "title" }, children),
+        isDismissable ? (React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Ui.close' }), onClick: function () { return onOpenChange === null || onOpenChange === void 0 ? void 0 : onOpenChange(false); }, size: "base" },
+            React.createElement(Close, null))) : null));
+}
+
+/* eslint-disable react/forbid-component-props */
+function Drawer(_a) {
+    var ariaLabel = _a.ariaLabel, ariaLabelledBy = _a.ariaLabelledBy, _b = _a.backdrop, backdrop = _b === void 0 ? Backdrops.Dark : _b, _c = _a.backdropBlurred, backdropBlurred = _c === void 0 ? true : _c, children = _a.children, _d = _a.dismissable, dismissable = _d === void 0 ? true : _d, _e = _a.open, open = _e === void 0 ? false : _e, onOpenChange = _a.onOpenChange, panelOffset = _a.panelOffset, _f = _a.placement, placement = _f === void 0 ? 'right' : _f;
+    var overlayStyles = clsx('react-aria-drawer-overlay fixed inset-0 z-[9997]', backdrop === Backdrops.Light ? 'bg-white-45' : 'bg-black-45', backdropBlurred && 'backdrop-blur-2');
+    var drawerStyles = 'react-aria-Drawer fixed bg-white-100 overflow-y-auto shadow-16 z-[9998]';
+    var panelStyle = panelOffset !== null && panelOffset !== void 0 ? panelOffset : {};
+    return (React.createElement(ModalContext.Provider, { value: { isDismissable: dismissable, onOpenChange: onOpenChange } },
+        React.createElement(ModalOverlay, { className: overlayStyles, isKeyboardDismissDisabled: !dismissable, isOpen: open, 
+            // 👇 Needed so that interactions with elements inside the drawer, such as the Select
+            // component, do not trigger the outside click handler that would close the drawer
+            shouldCloseOnInteractOutside: function (element) {
+                return !element.closest('[id^="coconut-portal-root-"]');
+            } },
+            React.createElement(Modal, { className: drawerStyles, "data-placement": placement, style: panelStyle },
+                React.createElement(Dialog$1, { "aria-label": ariaLabel, "aria-labelledby": ariaLabelledBy }, children)))));
+}
+Drawer.Header = Header$2;
+
 var sizes$6 = {
     default: 'text-base leading-6',
     small: 'text-sm leading-5',
@@ -11463,6 +11522,7 @@ var ActionTypes$6;
     ActionTypes[ActionTypes["UpdateScrollable"] = 15] = "UpdateScrollable";
     ActionTypes[ActionTypes["UpdateDense"] = 16] = "UpdateDense";
     ActionTypes[ActionTypes["UpdateSelectable"] = 17] = "UpdateSelectable";
+    ActionTypes[ActionTypes["SyncSelections"] = 18] = "SyncSelections";
 })(ActionTypes$6 || (ActionTypes$6 = {}));
 
 function useForwardClick(ref, selector) {
@@ -11699,6 +11759,14 @@ var reducers$7 = (_a$7 = {},
     },
     _a$7[ActionTypes$6.UpdateRowActions] = function (state, action) {
         return __assign(__assign({}, state), { rowActions: action.rowActions });
+    },
+    _a$7[ActionTypes$6.SyncSelections] = function (state, action) {
+        var selectedIds = new Set(action.ids);
+        var rows = state.rows.map(function (row) { return (__assign(__assign({}, row), { selected: selectedIds.has(row.id) })); });
+        if (state.selectionsRef) {
+            state.selectionsRef.current = action.ids;
+        }
+        return __assign(__assign({}, state), { allSelected: rows.length > 0 && rows.every(function (row) { return row.selected; }), rows: rows });
     },
     _a$7[ActionTypes$6.UpdateLoading] = function (state, action) {
         return __assign(__assign({}, state), { loading: action.loading });
@@ -12020,7 +12088,7 @@ function ColumnHeaderContent(_a) {
 }
 
 function BaseTable(_a) {
-    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.loading, loading = _c === void 0 ? false : _c, rowActions = _a.rowActions, rows = _a.rows, _d = _a.scrollable, scrollable = _d === void 0 ? true : _d, _e = _a.selectable, selectable = _e === void 0 ? false : _e, storageKey = _a.storageKey, total = _a.total;
+    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.loading, loading = _c === void 0 ? false : _c, rowActions = _a.rowActions, rows = _a.rows, _d = _a.scrollable, scrollable = _d === void 0 ? true : _d, _e = _a.selectable, selectable = _e === void 0 ? false : _e, selectedIds = _a.selectedIds, storageKey = _a.storageKey, total = _a.total;
     var header = useRef(null);
     var tableContainer = useRef(null);
     var _f = useState(0), headerBottomPosition = _f[0], setHeaderBottomPosition = _f[1];
@@ -12146,6 +12214,15 @@ function BaseTable(_a) {
             selectable: selectable,
         });
     }, [dispatch, selectable]);
+    useEffect(function () {
+        if (selectedIds === undefined) {
+            return;
+        }
+        dispatch({
+            type: ActionTypes$6.SyncSelections,
+            ids: selectedIds,
+        });
+    }, [dispatch, selectedIds]);
     var handleKeyDown = function (event) {
         var _a, _b, _c;
         var cell = event.target;
@@ -12237,7 +12314,7 @@ function Title$3(_a) {
     return (React.createElement(Typography, { component: "h1", variant: "h5" }, children));
 }
 
-function Header$2(_a) {
+function Header$3(_a) {
     var children = _a.children;
     var state = useTable()[0];
     var components = {
@@ -12465,14 +12542,14 @@ function BasicTable(_a) {
 }
 BasicTable.BulkActions = BulkActions;
 BasicTable.GlobalActions = GlobalActions;
-BasicTable.Header = Header$2;
+BasicTable.Header = Header$3;
 BasicTable.Pagination = PaginationComponent;
 BasicTable.Search = Search;
 BasicTable.Title = Title$3;
 BasicTable.Toolbar = Toolbar;
 
 function Table(_a) {
-    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onFilterChange = _a.onFilterChange, onSelect = _a.onSelect, onSort = _a.onSort, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rowActions = _a.rowActions, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectionsRef = _a.selectionsRef, storageKey = _a.storageKey, total = _a.total;
+    var children = _a.children, initialColumns = _a.columns, _b = _a.dense, dense = _b === void 0 ? false : _b, _c = _a.limit, limit = _c === void 0 ? 50 : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, onFilterChange = _a.onFilterChange, onSelect = _a.onSelect, onSort = _a.onSort, _e = _a.pagination, pagination = _e === void 0 ? 'lengthAware' : _e, rowActions = _a.rowActions, rows = _a.rows, _f = _a.scrollable, scrollable = _f === void 0 ? true : _f, _g = _a.selectable, selectable = _g === void 0 ? false : _g, selectedIds = _a.selectedIds, selectionsRef = _a.selectionsRef, storageKey = _a.storageKey, total = _a.total;
     var initialRender = useInitialRender();
     var _h = useReducer(runReducer$7, {
         columns: partition(populate(initialColumns, initialRender, storageKey)),
@@ -12494,11 +12571,11 @@ function Table(_a) {
         total: pagination === 'lengthAware' ? total || rows.length : undefined,
     }), state = _h[0], dispatch = _h[1];
     return (React.createElement(TableContext.Provider, { value: [state, dispatch] },
-        React.createElement(BaseTable, { columns: initialColumns, dense: dense, loading: loading, rowActions: rowActions, rows: rows, scrollable: scrollable, selectable: selectable, storageKey: storageKey, total: total }, children)));
+        React.createElement(BaseTable, { columns: initialColumns, dense: dense, loading: loading, rowActions: rowActions, rows: rows, scrollable: scrollable, selectable: selectable, selectedIds: selectedIds, storageKey: storageKey, total: total }, children)));
 }
 Table.BulkActions = BulkActions;
 Table.GlobalActions = GlobalActions;
-Table.Header = Header$2;
+Table.Header = Header$3;
 Table.Pagination = PaginationComponent;
 Table.Search = Search;
 Table.Title = Title$3;
@@ -12765,5 +12842,5 @@ function Tooltip(_a) {
             arrow ? (React.createElement("div", { className: clsx('border-6 border-black-60 w-0 h-0', styles.class[arrowDirection]), ref: arrowRef, style: styles.style[arrowDirection] })) : null))));
 }
 
-export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, BasicTable, Button, ButtonGroup, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, IconButton, Link, List, Menu, MultiSelect, Pagination, Popover, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
+export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, BasicTable, Button, ButtonGroup, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, Drawer, IconButton, Link, List, Menu, MultiSelect, Pagination, Popover, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
 //# sourceMappingURL=index.es.js.map

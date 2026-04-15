@@ -60,7 +60,7 @@ export interface IconButtonProps {
     type?: IconButtonType;
 }
 type IconButtonColor = 'error' | 'default' | 'inverse' | 'primary' | 'secondary';
-type IconButtonSize = 'large' | 'medium' | 'small';
+type IconButtonSize = 'large' | 'medium' | 'base' | 'small';
 type IconButtonType = 'button' | 'reset' | 'submit';
 export declare function Component({ 'aria-label': label, 'aria-controls': controls, 'aria-expanded': expanded, 'aria-haspopup': hasPopup, children, color, dataSet, disabled, id, onClick, onKeyDown, size, tabIndex, type, }: PropsWithChildren<IconButtonProps>, ref?: Ref<HTMLButtonElement>): JSX.Element;
 declare const IconButton: React.ForwardRefExoticComponent<IconButtonProps & {
