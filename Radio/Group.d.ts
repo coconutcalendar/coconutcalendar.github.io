@@ -21,7 +21,7 @@ interface RadioGroupProps {
      */
     disabled?: boolean;
     /**
-     * Whether the radio group is in an error state
+     * Whether the radio group is in an error state. Applies aria-invalid to the radiogroup
      * @default false
      */
     error?: boolean;

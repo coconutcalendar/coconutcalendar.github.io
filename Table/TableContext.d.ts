@@ -36,6 +36,11 @@ export interface TableColumn {
      */
     key: string;
     /**
+     * The column label used to associate row actions to their row.
+     * @default false
+     */
+    primaryLabel?: boolean;
+    /**
      * Whether the column is currently visible in the table
      */
     selected: boolean;

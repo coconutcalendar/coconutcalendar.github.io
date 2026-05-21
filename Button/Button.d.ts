@@ -15,6 +15,10 @@ export interface ButtonProps {
      */
     'aria-haspopup'?: AriaAttributes['aria-haspopup'];
     /**
+     * Identifies the element (or elements) that labels the button.
+     */
+    'aria-labelledby'?: AriaAttributes['aria-labelledby'];
+    /**
      * The content to display inside the button
      */
     children?: ReactNode & {

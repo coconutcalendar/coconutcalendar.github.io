@@ -223,9 +223,9 @@ var variants = {
 };
 function ButtonComponent(_a, ref) {
     var _b;
-    var controls = _a["aria-controls"], expanded = _a["aria-expanded"], hasPopup = _a["aria-haspopup"], children = _a.children, _c = _a.color, color = _c === void 0 ? 'default' : _c, dataSet = _a.dataSet, _d = _a.disabled, disabled = _d === void 0 ? false : _d, EndAdornment = _a.endAdornment, _e = _a.fullWidth, fullWidth = _e === void 0 ? false : _e, form = _a.form, href = _a.href, id = _a.id, onClick = _a.onClick, onKeyDown = _a.onKeyDown, _f = _a.position, position = _f === void 0 ? null : _f, _g = _a.size, size = _g === void 0 ? 'medium' : _g, StartAdornment = _a.startAdornment, _h = _a.tabIndex, tabIndex = _h === void 0 ? 0 : _h, target = _a.target, _j = _a.type, type = _j === void 0 ? 'button' : _j, _k = _a.variant, variant = _k === void 0 ? 'contained' : _k;
+    var controls = _a["aria-controls"], expanded = _a["aria-expanded"], hasPopup = _a["aria-haspopup"], labelledBy = _a["aria-labelledby"], children = _a.children, _c = _a.color, color = _c === void 0 ? 'default' : _c, dataSet = _a.dataSet, _d = _a.disabled, disabled = _d === void 0 ? false : _d, EndAdornment = _a.endAdornment, _e = _a.fullWidth, fullWidth = _e === void 0 ? false : _e, form = _a.form, href = _a.href, id = _a.id, onClick = _a.onClick, onKeyDown = _a.onKeyDown, _f = _a.position, position = _f === void 0 ? null : _f, _g = _a.size, size = _g === void 0 ? 'medium' : _g, StartAdornment = _a.startAdornment, _h = _a.tabIndex, tabIndex = _h === void 0 ? 0 : _h, target = _a.target, _j = _a.type, type = _j === void 0 ? 'button' : _j, _k = _a.variant, variant = _k === void 0 ? 'contained' : _k;
     var Component = href ? 'a' : 'button';
-    return (React.createElement(Component, __assign({ "aria-controls": controls, "aria-expanded": expanded, "aria-haspopup": hasPopup, className: clsx('font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none', variants[variant][color], sizes[size].root, position ? positions[variant][color][position] : 'rounded', fullWidth && 'w-full') }, toDataSet(dataSet), { disabled: disabled, form: form, href: href, id: id, onClick: onClick, onKeyDown: onKeyDown, ref: ref, tabIndex: tabIndex }, (href ? { target: target } : { type: type })),
+    return (React.createElement(Component, __assign({ "aria-controls": controls, "aria-expanded": expanded, "aria-haspopup": hasPopup, "aria-labelledby": labelledBy, className: clsx('font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none', variants[variant][color], sizes[size].root, position ? positions[variant][color][position] : 'rounded', fullWidth && 'w-full') }, toDataSet(dataSet), { disabled: disabled, form: form, href: href, id: id, onClick: onClick, onKeyDown: onKeyDown, ref: ref, tabIndex: tabIndex }, (href ? { target: target } : { type: type })),
         React.createElement("div", { className: "flex items-center justify-center" },
             StartAdornment ? (React.createElement("span", { className: clsx('flex items-center justify-center', sizes[size].icon) },
                 React.createElement(StartAdornment, { color: "inherit" }))) : null,
@@ -2676,8 +2676,8 @@ var sizes$2 = {
     small: 'w-7 h-7 p-0.5',
 };
 function Component(_a, ref) {
-    var label = _a["aria-label"], controls = _a["aria-controls"], expanded = _a["aria-expanded"], hasPopup = _a["aria-haspopup"], children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, dataSet = _a.dataSet, _c = _a.disabled, disabled = _c === void 0 ? false : _c, id = _a.id, onClick = _a.onClick, onKeyDown = _a.onKeyDown, _d = _a.size, size = _d === void 0 ? 'small' : _d, _e = _a.tabIndex, tabIndex = _e === void 0 ? 0 : _e, _f = _a.type, type = _f === void 0 ? 'button' : _f;
-    return (React.createElement("button", __assign({ "aria-controls": controls, "aria-expanded": expanded, "aria-haspopup": hasPopup, "aria-label": label, className: clsx('shrink-0 rounded-full disabled:bg-transparent disabled:cursor-not-allowed focus:outline-none', colors$4[color], sizes$2[size]) }, toDataSet(dataSet), { disabled: disabled, id: id, onClick: onClick, onKeyDown: onKeyDown, ref: ref, tabIndex: tabIndex, type: type }), children));
+    var label = _a["aria-label"], controls = _a["aria-controls"], expanded = _a["aria-expanded"], hasPopup = _a["aria-haspopup"], labelledBy = _a["aria-labelledby"], children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, dataSet = _a.dataSet, _c = _a.disabled, disabled = _c === void 0 ? false : _c, id = _a.id, onClick = _a.onClick, onKeyDown = _a.onKeyDown, _d = _a.size, size = _d === void 0 ? 'small' : _d, _e = _a.tabIndex, tabIndex = _e === void 0 ? 0 : _e, _f = _a.type, type = _f === void 0 ? 'button' : _f;
+    return (React.createElement("button", __assign({ "aria-controls": controls, "aria-expanded": expanded, "aria-haspopup": hasPopup, "aria-label": label, "aria-labelledby": labelledBy, className: clsx('shrink-0 rounded-full disabled:bg-transparent disabled:cursor-not-allowed focus:outline-none', colors$4[color], sizes$2[size]) }, toDataSet(dataSet), { disabled: disabled, id: id, onClick: onClick, onKeyDown: onKeyDown, ref: ref, tabIndex: tabIndex, type: type }), children));
 }
 var IconButton = forwardRef(Component);
 IconButton.displayName = 'IconButton';
@@ -2697,11 +2697,11 @@ var Keys;
 })(Keys || (Keys = {}));
 
 function Button$1(_a, ref) {
-    var children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, dataSet = _a.dataSet, _c = _a.disabled, disabled = _c === void 0 ? false : _c, endAdornment = _a.endAdornment, _d = _a.icon, icon = _d === void 0 ? false : _d, _e = _a.label, label = _e === void 0 ? '' : _e, _f = _a.size, size = _f === void 0 ? 'small' : _f, startAdornment = _a.startAdornment, _g = _a.tabIndex, tabIndex = _g === void 0 ? 0 : _g, _h = _a.variant, variant = _h === void 0 ? 'text' : _h;
+    var labelledBy = _a["aria-labelledby"], children = _a.children, _b = _a.color, color = _b === void 0 ? 'default' : _b, dataSet = _a.dataSet, _c = _a.disabled, disabled = _c === void 0 ? false : _c, endAdornment = _a.endAdornment, _d = _a.icon, icon = _d === void 0 ? false : _d, _e = _a.label, label = _e === void 0 ? '' : _e, _f = _a.size, size = _f === void 0 ? 'small' : _f, startAdornment = _a.startAdornment, _g = _a.tabIndex, tabIndex = _g === void 0 ? 0 : _g, _h = _a.variant, variant = _h === void 0 ? 'text' : _h;
     var d = useDisposables();
     var _j = useMenu(), state = _j[0], dispatch = _j[1];
     var buttonRef = useSyncRefs(state.buttonRef, ref);
-    var props = __assign(__assign(__assign(__assign({ 'aria-controls': "coconut-menu-".concat(state.id), 'aria-expanded': state.show ? 'true' : undefined, 'aria-haspopup': 'true', color: color, disabled: disabled }, (icon || state.headless ? {} : { endAdornment: endAdornment })), { id: "coconut-menu-button-".concat(state.id), onClick: function (event) {
+    var props = __assign(__assign(__assign(__assign({ 'aria-controls': "coconut-menu-".concat(state.id), 'aria-expanded': state.show ? 'true' : undefined, 'aria-haspopup': 'true', 'aria-labelledby': labelledBy, color: color, disabled: disabled }, (icon || state.headless ? {} : { endAdornment: endAdornment })), { id: "coconut-menu-button-".concat(state.id), onClick: function (event) {
             if (state.show) {
                 dispatch({ type: ActionTypes.CloseMenu });
                 d.nextFrame(function () {
@@ -2784,11 +2784,35 @@ function Group(_a) {
         React.createElement("ul", { "aria-labelledby": label ? id : undefined, role: "group" }, children)));
 }
 
+var defaultState = { error: false, groupId: '' };
+var CheckboxContext = createContext([
+    defaultState,
+    function () { return undefined; },
+]);
+var useCheckbox = function () { return useContext(CheckboxContext); };
+
 function Group$1(_a) {
     var children = _a.children, ariaLabel = _a.ariaLabel, _b = _a.error, error = _b === void 0 ? false : _b, _c = _a.helperText, helperText = _c === void 0 ? '' : _c, _d = _a.direction, direction = _d === void 0 ? 'col' : _d;
-    return (React.createElement("div", null,
-        React.createElement("div", __assign({}, (ariaLabel ? { 'aria-label': ariaLabel } : {}), { className: clsx("flex flex-".concat(direction), direction === 'row' ? 'items-center' : ''), role: "group" }), children),
-        helperText ? (React.createElement("span", { "aria-live": error ? 'assertive' : 'off', className: clsx('text-xs', error ? 'text-error-main' : 'text-black-60') }, helperText)) : null));
+    var id = useId();
+    var groupId = "coconut-checkbox-group-".concat(id);
+    var _e = useState(), labelledBy = _e[0], setLabelledBy = _e[1];
+    var contextValue = [
+        {
+            error: error,
+            groupId: groupId,
+            describedBy: helperText ? "".concat(groupId, "-helper-text") : undefined,
+            labelledBy: labelledBy,
+        },
+        setLabelledBy,
+    ];
+    return (React.createElement(CheckboxContext.Provider, { value: contextValue },
+        React.createElement("div", null,
+            React.createElement("div", __assign({}, (labelledBy
+                ? { 'aria-labelledby': labelledBy }
+                : ariaLabel
+                    ? { 'aria-label': ariaLabel }
+                    : {}), { className: clsx("flex flex-".concat(direction), direction === 'row' ? 'items-center' : ''), role: "group" }), children),
+            helperText ? (React.createElement("span", { "aria-live": error ? 'assertive' : 'off', className: clsx('text-xs', error ? 'text-error-main' : 'text-black-60'), id: "".concat(groupId, "-helper-text") }, helperText)) : null)));
 }
 
 var CheckBoxChecked = createSvgIcon(React.createElement("path", { d: "M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" }), 'CheckBoxChecked');
@@ -2831,7 +2855,9 @@ var sizes$3 = {
     },
 };
 function Input(_a) {
-    var label = _a["aria-label"], children = _a.children, _b = _a.color, color = _b === void 0 ? 'primary' : _b, constrained = _a.constrained, key = _a["data-key"], _c = _a.defaultChecked, defaultChecked = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, helperText = _a.helperText, _e = _a.indeterminate, indeterminate = _e === void 0 ? false : _e, _f = _a.inputRef, inputRef = _f === void 0 ? null : _f, name = _a.name, onChange = _a.onChange, _g = _a.size, size = _g === void 0 ? 'small' : _g, tabIndex = _a.tabIndex;
+    var label = _a["aria-label"], children = _a.children, _b = _a.color, color = _b === void 0 ? 'primary' : _b, constrained = _a.constrained, key = _a["data-key"], _c = _a.defaultChecked, defaultChecked = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, _f = _a.indeterminate, indeterminate = _f === void 0 ? false : _f, _g = _a.inputRef, inputRef = _g === void 0 ? null : _g, name = _a.name, onChange = _a.onChange, _h = _a.size, size = _h === void 0 ? 'small' : _h, tabIndex = _a.tabIndex, value = _a.value;
+    var _j = useCheckbox()[0], groupError = _j.error, describedBy = _j.describedBy;
+    var resolvedError = groupError || error;
     var initialStatus;
     if (indeterminate) {
         initialStatus = 'indeterminate';
@@ -2841,7 +2867,7 @@ function Input(_a) {
     }
     var initialRender = useInitialRender();
     var ref = useRef(null);
-    var _h = useState(false), focused = _h[0], setFocused = _h[1];
+    var _k = useState(false), focused = _k[0], setFocused = _k[1];
     var checkboxRef = useSyncRefs(ref, inputRef);
     var handleChange = function (event) {
         if (onChange) {
@@ -2872,13 +2898,13 @@ function Input(_a) {
     }, [indeterminate]);
     return (React.createElement("label", { className: clsx('checkbox flex flex-col font-sans', disabled ? 'cursor-not-allowed' : 'cursor-pointer') },
         React.createElement("div", { className: "flex items-center" },
-            React.createElement("span", { className: clsx('shrink-0 rounded-full focus:outline-none relative', disabled ? colors$5[color].disabled : colors$5[color].default, focused ? colors$5[color].focused : null, constrained ? sizes$3.constrained[size] : sizes$3.default[size]) },
-                React.createElement("input", { "aria-label": label, className: clsx('absolute inset-0 w-full h-full p-0 m-0 opacity-0', disabled ? 'cursor-not-allowed' : 'cursor-pointer'), "data-key": key, defaultChecked: initialStatus === 'checked', disabled: disabled, name: name, onBlur: handleBlur, onChange: handleChange, onFocus: handleFocus, ref: checkboxRef, tabIndex: tabIndex, type: "checkbox" }),
-                React.createElement("span", { className: clsx('status-active w-full h-full', disabled ? colors$5[color].disabled : colors$5[color].color) },
+            React.createElement("span", { className: clsx('shrink-0 rounded-full focus:outline-none relative transition-colors duration-150 ease-out', disabled ? colors$5[color].disabled : colors$5[color].default, focused ? colors$5[color].focused : null, constrained ? sizes$3.constrained[size] : sizes$3.default[size]) },
+                React.createElement("input", { "aria-describedby": describedBy, "aria-invalid": resolvedError, "aria-label": label, className: clsx('absolute inset-0 w-full h-full p-0 m-0 opacity-0', disabled ? 'cursor-not-allowed' : 'cursor-pointer'), "data-key": key, defaultChecked: initialStatus === 'checked', disabled: disabled, name: name, onBlur: handleBlur, onChange: handleChange, onFocus: handleFocus, ref: checkboxRef, tabIndex: tabIndex, type: "checkbox", value: value }),
+                React.createElement("span", { className: clsx('status-active absolute inset-0', constrained ? null : 'p-2', disabled ? colors$5[color].disabled : colors$5[color].color) },
                     React.createElement(CheckBoxChecked, null)),
-                React.createElement("span", { className: clsx('status-indeterminate w-full h-full', disabled ? colors$5[color].disabled : colors$5[color].color) },
+                React.createElement("span", { className: clsx('status-indeterminate absolute inset-0', constrained ? null : 'p-2', disabled ? colors$5[color].disabled : colors$5[color].color) },
                     React.createElement(CheckBoxIndeterminate, null)),
-                React.createElement("span", { className: clsx('status-inactive w-full h-full', disabled ? colors$5[color].disabled : colors$5[color].unchecked) },
+                React.createElement("span", { className: clsx('status-inactive absolute inset-0', constrained ? null : 'p-2', disabled ? colors$5[color].disabled : colors$5[color].unchecked) },
                     React.createElement(CheckBoxUnchecked, null))),
             children ? (React.createElement("div", { className: clsx('text-sm font-normal select-none', disabled ? 'text-black-45' : 'text-black-90', constrained ? 'pl-2' : '') }, children)) : null),
         children ? (React.createElement("div", { className: clsx('text-xs font-normal tracking-wid', disabled ? 'text-black-30' : 'text-black-60') }, helperText ? helperText : null)) : null));
@@ -2886,7 +2912,10 @@ function Input(_a) {
 
 function Label(_a) {
     var children = _a.children;
-    return React.createElement(Typography, { variant: "subtitle2" }, children);
+    var _b = useCheckbox(), groupId = _b[0].groupId, setLabelledBy = _b[1];
+    var id = "".concat(groupId, "-label");
+    useEffect(function () { return setLabelledBy(id); }, [id, setLabelledBy]);
+    return (React.createElement(Typography, { id: id, variant: "subtitle2" }, children));
 }
 
 var Checkbox = { Group: Group$1, Input: Input, Label: Label };
@@ -2920,7 +2949,7 @@ var useSubmenu = function () {
 function Item(_a, ref) {
     var _b;
     var _c;
-    var _d = _a.action, action = _d === void 0 ? false : _d, applyFocusRef = _a.applyFocusRef, label = _a["aria-label"], checkbox = _a.checkbox, children = _a.children, _e = _a.color, color = _e === void 0 ? 'primary' : _e, key = _a["data-key"], dataSet = _a.dataSet, _f = _a.defaultChecked, defaultChecked = _f === void 0 ? false : _f, _g = _a.disabled, disabled = _g === void 0 ? false : _g, endAdornment = _a.endAdornment, _h = _a.inset, inset = _h === void 0 ? false : _h, onChange = _a.onChange, onClick = _a.onClick, _j = _a.selectable, selectable = _j === void 0 ? true : _j, selected = _a.selected, StartAdornment = _a.startAdornment, value = _a.value, _k = _a.wrapText, wrapText = _k === void 0 ? false : _k;
+    var _d = _a.action, action = _d === void 0 ? false : _d, applyFocusRef = _a.applyFocusRef, label = _a["aria-label"], labelledBy = _a["aria-labelledby"], checkbox = _a.checkbox, children = _a.children, _e = _a.color, color = _e === void 0 ? 'primary' : _e, key = _a["data-key"], dataSet = _a.dataSet, _f = _a.defaultChecked, defaultChecked = _f === void 0 ? false : _f, _g = _a.disabled, disabled = _g === void 0 ? false : _g, endAdornment = _a.endAdornment, _h = _a.inset, inset = _h === void 0 ? false : _h, onChange = _a.onChange, onClick = _a.onClick, _j = _a.selectable, selectable = _j === void 0 ? true : _j, selected = _a.selected, StartAdornment = _a.startAdornment, value = _a.value, _k = _a.wrapText, wrapText = _k === void 0 ? false : _k;
     var autocomplete = useAutocomplete();
     var d = useDisposables();
     var _l = useMenu(), state = _l[0], dispatch = _l[1];
@@ -3103,7 +3132,7 @@ function Item(_a, ref) {
             // child elements will have the appropriate role so this takes the <li> out of the accessibility tree
             // and solves issues where certain ARIA roles must be contained by particular parents (and other WCAG violations)
             role: "presentation" },
-            React.createElement("button", __assign({ "aria-checked": isCheckbox ? checked : undefined, "aria-label": label, "aria-selected": state.listbox && selected ? 'true' : undefined, 
+            React.createElement("button", __assign({ "aria-checked": isCheckbox ? checked : undefined, "aria-label": label, "aria-labelledby": labelledBy, "aria-selected": state.listbox && selected ? 'true' : undefined, 
                 // TODO: It may be worth refactoring this component.
                 // We never apply color to the item.
                 // The parameter `action` is ruining the whole style and is never used in the core app.
@@ -3818,6 +3847,8 @@ createSvgIcon(React.createElement("path", { d: "M15.9 5c-.17 0-.32.09-.41.23l-.0
 
 createSvgIcon(React.createElement("path", { d: "M23 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L23 12zm-10 5h-2v-2h2v2zm0-4h-2V7h2v6z" }), 'NewReleases');
 
+createSvgIcon(React.createElement("path", { d: "m440-260 160-160-160-160-56 56 104 104-104 104 56 56ZM160-120q-33 0-56.5-23.5T80-200v-440q0-33 23.5-56.5T160-720h160v-80q0-33 23.5-56.5T400-880h160q33 0 56.5 23.5T640-800v80h160q33 0 56.5 23.5T880-640v440q0 33-23.5 56.5T800-120H160Zm0-80h640v-440H160v440Zm240-520h160v-80H400v80ZM160-200v-440 440Z" }), 'NextWeek', '0 -960 960 960');
+
 createSvgIcon(React.createElement("path", { d: "M10.94 8.12L7.48 4.66L9 3h6l1.83 2H20c1.1 0 2 0.9 2 2v12c0 0.05-0.01 0.1-0.02 0.16l-5.1-5.1C16.96 13.71 17 13.36 17 13 c0-2.76-2.24-5-5-5C11.64 8 11.29 8.04 10.94 8.12z M20.49 23.31L18.17 21H4c-1.1 0-2-0.9-2-2V7c0-0.59 0.27-1.12 0.68-1.49l-2-2 L2.1 2.1l19.8 19.8L20.49 23.31z M14.49 17.32l-1.5-1.5C12.67 15.92 12.35 16 12 16c-1.66 0-3-1.34-3-3c0-0.35 0.08-0.67 0.19-0.98 l-1.5-1.5C7.25 11.24 7 12.09 7 13c0 2.76 2.24 5 5 5C12.91 18 13.76 17.75 14.49 17.32z" }), 'NoPhotography');
 
 createSvgIcon(React.createElement("path", { d: "M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z" }), 'Notes');
@@ -3889,6 +3920,10 @@ createSvgIcon(React.createElement(React.Fragment, null,
     React.createElement("path", { d: "M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" })), 'Schedule');
 
 createSvgIcon(React.createElement("path", { d: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" }), 'Search');
+
+createSvgIcon(React.createElement(React.Fragment, null,
+    React.createElement("path", { d: "M11 20H4C3.45 20 2.975001 19.8083 2.575001 19.425C2.191667 19.025 2 18.55 2 18V7H4V18H11V20ZM7.5 6C6.95 6 6.475 5.80833 6.075 5.425C5.69167 5.025 5.5 4.55 5.5 4C5.5 3.45 5.69167 2.983333 6.075 2.599999C6.475 2.2 6.95 2 7.5 2C8.05 2 8.51667 2.2 8.9 2.599999C9.3 2.983333 9.5 3.45 9.5 4C9.5 4.55 9.3 5.025 8.9 5.425C8.51667 5.80833 8.05 6 7.5 6ZM12 22V17H7C6.45 17 5.975 16.8083 5.575 16.425C5.19167 16.025 5 15.55 5 15V9.5C5 8.8 5.24167 8.20833 5.725 7.725C6.20833 7.24167 6.8 7 7.5 7C8.2 7 8.79167 7.24167 9.275 7.725C9.75833 8.20833 10 8.8 10 9.5V14H12C12.55 14 13.0167 14.2 13.4 14.6C13.8 14.9833 14 15.45 14 16V22H12Z" }),
+    React.createElement("path", { d: "M21.9999 11V13H18.9999V22H16.9999V13L14 13V11C14 11 19.7123 11 21.9999 11Z" })), 'Seating');
 
 createSvgIcon(React.createElement("path", { d: "M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" }), 'Send');
 
@@ -4907,6 +4942,7 @@ var TextInput = forwardRef(function (_a, ref) {
         'aria-describedby': helperText ? "helper-text-".concat(id) : undefined,
         'aria-expanded': extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-expanded'],
         'aria-haspopup': extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-haspopup'],
+        'aria-invalid': error || undefined,
         'aria-labelledby': (extraProps === null || extraProps === void 0 ? void 0 : extraProps['aria-labelledby']) || "label-".concat((extraProps === null || extraProps === void 0 ? void 0 : extraProps.id) || id),
         autoFocus: autoFocus,
         className: clsx(baseClasses.input, inputVariants[status][color], multiline
@@ -5628,12 +5664,14 @@ var variants$6 = {
             default: "border border-transparent bg-black-5 text-black-90",
             primary: "border border-transparent bg-primary-main text-white-100",
             secondary: "border border-transparent bg-secondary-main text-white-100",
+            error: "border border-transparent bg-error-main text-white-100",
             disabled: "border border-transparent bg-black-15 text-black-30",
         },
         outlined: {
             default: "border border-black-25 text-black-90 ",
             primary: "border border-primary-main text-primary-main",
             secondary: "border border-secondary-main text-secondary-main",
+            error: "border border-error-main text-error-main",
             disabled: "border border-black-15 text-black-30",
         },
     },
@@ -5642,12 +5680,14 @@ var variants$6 = {
             default: "border border-transparent bg-black-5 text-black-90 disabled:bg-black-15 disabled:text-black-30 active:bg-black-25 focus:bg-black-15 hover:bg-black-15",
             primary: "border border-transparent bg-primary-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-primary-darker focus:bg-primary-dark hover:bg-primary-dark",
             secondary: "border border-transparent bg-secondary-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-secondary-darker focus:bg-secondary-dark hover:bg-secondary-dark",
+            error: "border border-transparent bg-error-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-error-darker focus:bg-error-dark hover:bg-error-dark",
             disabled: "border border-transparent bg-black-15 text-black-30 cursor-not-allowed",
         },
         outlined: {
             default: "border border-black-25 text-black-90 disabled:bg-black-15 disabled:text-black-30 active:bg-black-25 focus:bg-black-15 hover:bg-black-15",
             primary: "border border-primary-main text-primary-main disabled:bg-black-15 disabled:text-black-30 active:bg-primary-20 focus:bg-primary-10 hover:bg-primary-10",
             secondary: "border border-secondary-main text-secondary-main disabled:bg-black-15 disabled:text-black-30 active:bg-secondary-20 focus:bg-secondary-10 hover:bg-secondary-10",
+            error: "border border-error-main text-error-main disabled:bg-black-15 disabled:text-black-30 active:bg-error-20 focus:bg-error-10 hover:bg-error-10",
             disabled: "border border-black-15 text-black-30 cursor-not-allowed",
         },
     },
@@ -5656,12 +5696,14 @@ var variants$6 = {
             default: "border border-transparent bg-black-5 text-black-90 active:bg-black-15 focus:bg-black-15",
             primary: "border border-transparent bg-primary-main text-white-100 active:bg-primary-dark focus:bg-primary-dark",
             secondary: "border border-transparent bg-secondary-main text-white-100 active:bg-secondary-dark focus:bg-secondary-dark",
+            error: "border border-transparent bg-error-main text-white-100 active:bg-error-dark focus:bg-error-dark",
             disabled: "border border-transparent bg-black-15 text-black-30",
         },
         outlined: {
             default: "border border-black-25 text-black-90 active:bg-black-15 focus:bg-black-15",
             primary: "border border-primary-main text-primary-main active:bg-primary-10 focus:bg-primary-10",
             secondary: "border border-secondary-main text-secondary-main active:bg-secondary-10 focus:bg-secondary-10",
+            error: "border border-error-main text-error-main active:bg-error-10 focus:bg-error-10",
             disabled: "border border-black-15 text-black-30",
         },
     },
@@ -5671,12 +5713,14 @@ var iconColors = {
         default: "text-black-90 bg-black-15",
         primary: "text-white-100 bg-primary-dark",
         secondary: "text-white-100 bg-secondary-dark",
+        error: "text-white-100 bg-error-dark",
         disabled: 'text-black-30 bg-black-15',
     },
     cancel: {
         default: "text-black-45 active:text-black-90 hover:text-black-60 focused:text-black-60 disabled:text-black-30 disabled:cursor-not-allowed",
         primary: "text-primary-main hover:text-primary-dark focused:text-primary-dark active:text-primary-darker  disabled:text-black-30 disabled:cursor-not-allowed",
         secondary: "text-secondary-main hover:text-secondary-dark focused:text-secondary-dark active:text-secondary-darker disabled:text-black-30 disabled:cursor-not-allowed",
+        error: "text-error-main hover:text-error-dark focused:text-error-dark active:text-error-darker disabled:text-black-30 disabled:cursor-not-allowed",
     },
 };
 var sizes$5 = {
@@ -5739,7 +5783,9 @@ function Chip(_a) {
         onDelete ? (React.createElement("div", __assign({ "aria-label": intl.formatMessage({ id: 'Chip.remove' }), className: clsx('focus:outline-none', sizes$5[size].cancel, sizes$5[size].cancelPadding, disabled
                 ? 'cursor-not-allowed'
                 : variant === 'contained'
-                    ? iconColors.cancel.default
+                    ? color === 'default'
+                        ? iconColors.cancel.default
+                        : 'text-white-100 hover:text-white-90 active:text-white-90'
                     : iconColors.cancel[color]), role: "button", tabIndex: -1 }, (disabled
             ? {}
             : {
@@ -10951,7 +10997,7 @@ function Group$3(_a) {
     };
     return (React.createElement(RadioContext.Provider, { value: [state, setValue, setLabelledBy] },
         React.createElement("div", { className: "flex flex-col" },
-            React.createElement("div", { "aria-labelledby": state.labelledBy, className: clsx("flex flex-".concat(direction), direction === 'row' ? 'items-center' : ''), role: "radiogroup" }, children),
+            React.createElement("div", { "aria-invalid": error, "aria-labelledby": state.labelledBy, className: clsx("flex flex-".concat(direction), direction === 'row' ? 'items-center' : ''), role: "radiogroup" }, children),
             helperText ? (React.createElement("span", { "aria-live": error ? 'assertive' : 'off', className: clsx('text-xs', error ? 'text-error-main' : 'text-black-60') }, helperText)) : null)));
 }
 
@@ -11006,13 +11052,13 @@ function Input$1(_a) {
         setFocused(true);
     };
     return (React.createElement("label", { className: clsx('radio font-sans inline-flex items-center group', disabled ? 'cursor-not-allowed' : 'cursor-pointer') },
-        React.createElement("span", { className: clsx('rounded-full focus:outline-none relative flex', disabled ? null : colors$8[color].background.default, focused ? colors$8[color].background.focused : null, sizes$8[size]) },
+        React.createElement("span", { className: clsx('rounded-full focus:outline-none relative', disabled ? null : colors$8[color].background.default, focused ? colors$8[color].background.focused : null, sizes$8[size]) },
             React.createElement("input", { "aria-label": label, className: clsx('absolute inset-0 w-full h-full p-0 m-0 opacity-0', disabled ? 'cursor-not-allowed' : 'cursor-pointer'), defaultChecked: checked, disabled: disabled, name: passedName || name, onBlur: handleBlur, onChange: handleChange, onFocus: handleFocus, ref: inputRef, type: "radio", value: value }),
-            React.createElement("span", { className: clsx('status-active rounded-full w-full h-full', disabled
+            React.createElement("span", { className: clsx('status-active absolute inset-0 rounded-full p-2', disabled
                     ? colors$8[color].foreground.disabled
                     : colors$8[color].foreground.active) },
                 React.createElement(RadioActive, null)),
-            React.createElement("span", { className: clsx('status-inactive rounded-full w-full h-full', disabled
+            React.createElement("span", { className: clsx('status-inactive absolute inset-0 rounded-full p-2', disabled
                     ? colors$8[color].foreground.disabled
                     : colors$8[color].foreground.inactive) },
                 React.createElement(RadioInactive, null))),
@@ -11484,7 +11530,7 @@ function Tab(_a) {
             onClick ? onClick(event) : groupClick === null || groupClick === void 0 ? void 0 : groupClick(event);
         }
     };
-    return (React.createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx('min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide disabled:cursor-not-allowed focus:outline-none disabled:border-b-2 disabled:border-solid disabled:bg-transparent disabled:text-black-25', groupAlign === 'stretch' ? 'flex-grow' : null, isSelected
+    return (React.createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx('min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide transition-colors duration-300 ease-out disabled:cursor-not-allowed focus:outline-none disabled:border-b-2 disabled:border-solid disabled:bg-transparent disabled:text-black-25', groupAlign === 'stretch' ? 'flex-grow' : null, isSelected
             ? variants$9[color !== null && color !== void 0 ? color : groupColor].selected
             : variants$9[color !== null && color !== void 0 ? color : groupColor].unselected, sizes$a[size !== null && size !== void 0 ? size : groupSize].root), disabled: isDisabled, id: id, onClick: handleSelectTab, role: "tab", value: value },
         React.createElement("div", { className: clsx('flex justify-center items-center', adornmentPosition === 'vertical' ? 'flex-col' : '') },
@@ -11602,6 +11648,12 @@ var populate = function (defaultColumns, initialRender, storageKey) {
                 if (defaultColumn === null || defaultColumn === void 0 ? void 0 : defaultColumn.filter) {
                     column.filter = __spreadArray([], defaultColumn.filter, true);
                 }
+                if ((defaultColumn === null || defaultColumn === void 0 ? void 0 : defaultColumn.primaryLabel) !== undefined) {
+                    column.primaryLabel = defaultColumn.primaryLabel;
+                }
+                else {
+                    delete column.primaryLabel;
+                }
                 return column;
             })
                 .concat(newColumns);
@@ -11636,7 +11688,7 @@ var reducers$7 = (_a$7 = {},
                     });
                 }
                 return column;
-            })) });
+            })), page: 1 });
     },
     _a$7[ActionTypes$6.FirstPage] = function (state) { return (__assign(__assign({}, state), { page: 1 })); },
     _a$7[ActionTypes$6.MoveColumn] = function (state, action) {
@@ -11885,9 +11937,9 @@ function Cell(_a) {
 }
 
 function Body() {
-    var _a;
+    var _a, _b;
     var intl = useIntl();
-    var _b = useTable(), state = _b[0], dispatch = _b[1];
+    var _c = useTable(), state = _c[0], dispatch = _c[1];
     if (state.selectable) {
         var column_1 = state.columns.selected.find(function (column) { return column.key !== 'checkbox'; });
         state.rows = state.rows.map(function (row) {
@@ -11902,6 +11954,7 @@ function Body() {
         });
     }
     var hasRowActions = (_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.length;
+    var rowActionLabelKey = (_b = __spreadArray(__spreadArray([], state.columns.selected, true), state.columns.unselected, true).find(function (column) { return (column === null || column === void 0 ? void 0 : column.primaryLabel) === true; })) === null || _b === void 0 ? void 0 : _b.key;
     return (React.createElement("tbody", null, state.loading ? (React.createElement("tr", { className: "absolute inset-0 flex items-center justify-center mt-32" },
         React.createElement("td", null,
             React.createElement(Progress, { variant: "circular" },
@@ -11910,6 +11963,8 @@ function Body() {
         var _a, _b, _c;
         var showRowAction = hasRowActions &&
             ((_a = state.rowActions) === null || _a === void 0 ? void 0 : _a.some(function (action) { return action.enabled === undefined || action.enabled(row); }));
+        var rowLabelId = "".concat(row.id, "-label");
+        var moreButtonLabelId = "".concat(row.id, "-button-label");
         return (React.createElement("tr", { "aria-selected": state.selectable
                 ? (row === null || row === void 0 ? void 0 : row.selected)
                     ? 'true'
@@ -11917,20 +11972,27 @@ function Body() {
                 : undefined, className: "border-b border-black-10 last:border-b-0 group", key: row.id },
             state.columns.selected.map(function (column) { return (React.createElement(Cell, { key: column.key, selected: row === null || row === void 0 ? void 0 : row.selected }, row[column.key] ? (row[column.key]) : (React.createElement("span", { className: "text-black-60" }, "\u2014")))); }),
             state.staticColumns && !hasRowActions ? null : (React.createElement(Cell, { selected: row === null || row === void 0 ? void 0 : row.selected, sticky: true }, showRowAction ? (React.createElement(Menu, { placement: "bottom-end" },
-                React.createElement(Menu.Button, { icon: true, label: intl.formatMessage({ id: 'Table.more_actions' }) },
+                rowActionLabelKey ? (React.createElement("span", { className: "hidden", id: rowLabelId }, ", ".concat(row[rowActionLabelKey]))) : null,
+                React.createElement(Menu.Button, { "aria-labelledby": rowActionLabelKey
+                        ? "".concat(moreButtonLabelId, " ").concat(rowLabelId)
+                        : undefined, icon: true, label: intl.formatMessage({ id: 'Table.more_actions' }) },
+                    React.createElement("span", { className: "hidden", id: moreButtonLabelId }, intl.formatMessage({ id: 'Table.more_actions' })),
                     React.createElement(MoreVert, null)),
                 React.createElement(Menu.Items, null, (_c = (_b = state.rowActions) === null || _b === void 0 ? void 0 : _b.filter(function (action) {
                     if (action.enabled) {
                         return action.enabled(row);
                     }
                     return true;
-                })) === null || _c === void 0 ? void 0 : _c.map(function (action) {
+                })) === null || _c === void 0 ? void 0 : _c.map(function (action, actionIndex) {
                     var onClick = function () {
                         action.handler(row);
                     };
+                    var actionLabelId = "".concat(actionIndex, "-action-label");
                     return (React.createElement("div", { className: "text-black-60", key: "".concat(row.id, "-").concat(action.label) },
-                        React.createElement(Menu.Item, { onClick: onClick, startAdornment: action.startAdornment },
-                            React.createElement("div", { className: "text-black-90" }, action.label))));
+                        React.createElement(Menu.Item, { "aria-labelledby": rowActionLabelKey
+                                ? "".concat(actionLabelId, " ").concat(rowLabelId)
+                                : undefined, onClick: onClick, startAdornment: action.startAdornment },
+                            React.createElement("div", { className: "text-black-90", id: actionLabelId }, action.label))));
                 })))) : null))));
     }))));
 }

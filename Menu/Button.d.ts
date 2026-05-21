@@ -1,4 +1,4 @@
-import type { ReactNode, Ref } from 'react';
+import type { AriaAttributes, ReactNode, Ref } from 'react';
 import type { ButtonSize, ButtonVariant } from '../Button/Button';
 import type SvgIcon from '../SvgIcon/SvgIcon';
 export type ButtonProps = {
@@ -38,6 +38,10 @@ export type ButtonProps = {
      * Required when icon is true and ignored otherwise
      */
     label: string;
+    /**
+     * Identifies the element (or elements) that labels the button.
+     */
+    'aria-labelledby'?: AriaAttributes['aria-labelledby'];
     /**
      * Size of the button
      * @default 'small'
@@ -97,6 +101,10 @@ export type ButtonProps = {
      */
     label?: never;
     /**
+     * Identifies the element (or elements) that labels the button.
+     */
+    'aria-labelledby'?: AriaAttributes['aria-labelledby'];
+    /**
      * Size of the button
      * @default 'small'
      */
@@ -118,5 +126,5 @@ export type ButtonProps = {
     variant?: ButtonVariant;
 };
 type MenuButtonColor = 'error' | 'default' | 'inverse' | 'primary' | 'secondary';
-declare function Button({ children, color, dataSet, disabled, endAdornment, icon, label, size, startAdornment, tabIndex, variant, }: ButtonProps, ref: Ref<HTMLButtonElement>): JSX.Element;
+declare function Button({ 'aria-labelledby': labelledBy, children, color, dataSet, disabled, endAdornment, icon, label, size, startAdornment, tabIndex, variant, }: ButtonProps, ref: Ref<HTMLButtonElement>): JSX.Element;
 export default Button;

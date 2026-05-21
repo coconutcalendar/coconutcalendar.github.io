@@ -19,6 +19,10 @@ export interface IconButtonProps {
      */
     'aria-haspopup'?: AriaAttributes['aria-haspopup'];
     /**
+     * Identifies the element (or elements) that labels the button.
+     */
+    'aria-labelledby'?: AriaAttributes['aria-labelledby'];
+    /**
      * The color scheme of the icon button
      * @default 'default'
      */
@@ -62,7 +66,7 @@ export interface IconButtonProps {
 type IconButtonColor = 'error' | 'default' | 'inverse' | 'primary' | 'secondary';
 type IconButtonSize = 'large' | 'medium' | 'base' | 'small';
 type IconButtonType = 'button' | 'reset' | 'submit';
-export declare function Component({ 'aria-label': label, 'aria-controls': controls, 'aria-expanded': expanded, 'aria-haspopup': hasPopup, children, color, dataSet, disabled, id, onClick, onKeyDown, size, tabIndex, type, }: PropsWithChildren<IconButtonProps>, ref?: Ref<HTMLButtonElement>): JSX.Element;
+export declare function Component({ 'aria-label': label, 'aria-controls': controls, 'aria-expanded': expanded, 'aria-haspopup': hasPopup, 'aria-labelledby': labelledBy, children, color, dataSet, disabled, id, onClick, onKeyDown, size, tabIndex, type, }: PropsWithChildren<IconButtonProps>, ref?: Ref<HTMLButtonElement>): JSX.Element;
 declare const IconButton: React.ForwardRefExoticComponent<IconButtonProps & {
     children?: React.ReactNode;
 } & React.RefAttributes<HTMLButtonElement>>;

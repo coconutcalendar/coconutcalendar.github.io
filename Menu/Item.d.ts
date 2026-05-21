@@ -70,6 +70,11 @@ export type ItemProps = {
      */
     'aria-label'?: string;
     /**
+     * ID(s) of element(s) whose text content labels this menu item for screen readers.
+     * When provided, overrides the button's computed accessible name.
+     */
+    'aria-labelledby'?: string;
+    /**
      * Used for column filters in Table component
      */
     'data-key'?: string;
@@ -129,5 +134,5 @@ export type MenuItemDataRef = MutableRefObject<{
     hasSubmenu: boolean;
     textValue?: string;
 }>;
-declare function Item({ action, applyFocusRef, 'aria-label': label, checkbox, children, color, 'data-key': key, dataSet, defaultChecked, disabled, endAdornment, inset, onChange, onClick, selectable, selected, startAdornment: StartAdornment, value, wrapText, }: PropsWithChildren<ItemProps>, ref: Ref<HTMLButtonElement>): JSX.Element;
+declare function Item({ action, applyFocusRef, 'aria-label': label, 'aria-labelledby': labelledBy, checkbox, children, color, 'data-key': key, dataSet, defaultChecked, disabled, endAdornment, inset, onChange, onClick, selectable, selected, startAdornment: StartAdornment, value, wrapText, }: PropsWithChildren<ItemProps>, ref: Ref<HTMLButtonElement>): JSX.Element;
 export default Item;

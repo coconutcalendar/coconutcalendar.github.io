@@ -29,6 +29,11 @@ export interface CheckboxProps {
      */
     disabled?: boolean;
     /**
+     * If true, sets aria-invalid on the checkbox
+     * @default: false
+     */
+    error?: boolean;
+    /**
      * Additional descriptive text to display below the checkbox label
      */
     helperText?: string;
@@ -56,8 +61,13 @@ export interface CheckboxProps {
      * Tab order index for keyboard navigation
      */
     tabIndex?: number;
+    /**
+     * The value of the checkbox.
+     * Submitted with the checkbox's name when the form is submitted
+     */
+    value?: string;
 }
 type CheckboxColor = 'error' | 'primary' | 'secondary';
 type CheckboxSize = 'medium' | 'small';
-declare function Input({ 'aria-label': label, children, color, constrained, 'data-key': key, defaultChecked, disabled, helperText, indeterminate, inputRef, name, onChange, size, tabIndex, }: PropsWithChildren<CheckboxProps>): JSX.Element;
+declare function Input({ 'aria-label': label, children, color, constrained, 'data-key': key, defaultChecked, disabled, error, helperText, indeterminate, inputRef, name, onChange, size, tabIndex, value, }: PropsWithChildren<CheckboxProps>): JSX.Element;
 export default Input;

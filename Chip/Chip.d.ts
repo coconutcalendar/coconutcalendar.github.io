@@ -39,7 +39,7 @@ export interface ChipsProps {
      */
     variant?: ChipVariant;
 }
-type ChipColor = 'default' | 'primary' | 'secondary';
+type ChipColor = 'default' | 'primary' | 'secondary' | 'error';
 type ChipSize = 'medium' | 'small';
 type ChipVariant = 'contained' | 'outlined';
 declare function Chip({ color, disabled, label, onClick, onDelete, size, startAdornment, variant, }: ChipsProps): JSX.Element;

@@ -265,6 +265,8 @@ var NetworkCheck = createSvgIcon(React__default['default'].createElement("path",
 
 var NewReleases = createSvgIcon(React__default['default'].createElement("path", { d: "M23 12l-2.44-2.78.34-3.68-3.61-.82-1.89-3.18L12 3 8.6 1.54 6.71 4.72l-3.61.81.34 3.68L1 12l2.44 2.78-.34 3.69 3.61.82 1.89 3.18L12 21l3.4 1.46 1.89-3.18 3.61-.82-.34-3.68L23 12zm-10 5h-2v-2h2v2zm0-4h-2V7h2v6z" }), 'NewReleases');
 
+var NextWeek = createSvgIcon(React__default['default'].createElement("path", { d: "m440-260 160-160-160-160-56 56 104 104-104 104 56 56ZM160-120q-33 0-56.5-23.5T80-200v-440q0-33 23.5-56.5T160-720h160v-80q0-33 23.5-56.5T400-880h160q33 0 56.5 23.5T640-800v80h160q33 0 56.5 23.5T880-640v440q0 33-23.5 56.5T800-120H160Zm0-80h640v-440H160v440Zm240-520h160v-80H400v80ZM160-200v-440 440Z" }), 'NextWeek', '0 -960 960 960');
+
 var NoPhotography = createSvgIcon(React__default['default'].createElement("path", { d: "M10.94 8.12L7.48 4.66L9 3h6l1.83 2H20c1.1 0 2 0.9 2 2v12c0 0.05-0.01 0.1-0.02 0.16l-5.1-5.1C16.96 13.71 17 13.36 17 13 c0-2.76-2.24-5-5-5C11.64 8 11.29 8.04 10.94 8.12z M20.49 23.31L18.17 21H4c-1.1 0-2-0.9-2-2V7c0-0.59 0.27-1.12 0.68-1.49l-2-2 L2.1 2.1l19.8 19.8L20.49 23.31z M14.49 17.32l-1.5-1.5C12.67 15.92 12.35 16 12 16c-1.66 0-3-1.34-3-3c0-0.35 0.08-0.67 0.19-0.98 l-1.5-1.5C7.25 11.24 7 12.09 7 13c0 2.76 2.24 5 5 5C12.91 18 13.76 17.75 14.49 17.32z" }), 'NoPhotography');
 
 var Notes = createSvgIcon(React__default['default'].createElement("path", { d: "M3 18h12v-2H3v2zM3 6v2h18V6H3zm0 7h18v-2H3v2z" }), 'Notes');
@@ -338,6 +340,10 @@ var Schedule = createSvgIcon(React__default['default'].createElement(React__defa
     React__default['default'].createElement("path", { d: "M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" })), 'Schedule');
 
 var Search = createSvgIcon(React__default['default'].createElement("path", { d: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" }), 'Search');
+
+var Seating = createSvgIcon(React__default['default'].createElement(React__default['default'].Fragment, null,
+    React__default['default'].createElement("path", { d: "M11 20H4C3.45 20 2.975001 19.8083 2.575001 19.425C2.191667 19.025 2 18.55 2 18V7H4V18H11V20ZM7.5 6C6.95 6 6.475 5.80833 6.075 5.425C5.69167 5.025 5.5 4.55 5.5 4C5.5 3.45 5.69167 2.983333 6.075 2.599999C6.475 2.2 6.95 2 7.5 2C8.05 2 8.51667 2.2 8.9 2.599999C9.3 2.983333 9.5 3.45 9.5 4C9.5 4.55 9.3 5.025 8.9 5.425C8.51667 5.80833 8.05 6 7.5 6ZM12 22V17H7C6.45 17 5.975 16.8083 5.575 16.425C5.19167 16.025 5 15.55 5 15V9.5C5 8.8 5.24167 8.20833 5.725 7.725C6.20833 7.24167 6.8 7 7.5 7C8.2 7 8.79167 7.24167 9.275 7.725C9.75833 8.20833 10 8.8 10 9.5V14H12C12.55 14 13.0167 14.2 13.4 14.6C13.8 14.9833 14 15.45 14 16V22H12Z" }),
+    React__default['default'].createElement("path", { d: "M21.9999 11V13H18.9999V22H16.9999V13L14 13V11C14 11 19.7123 11 21.9999 11Z" })), 'Seating');
 
 var Send = createSvgIcon(React__default['default'].createElement("path", { d: "M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" }), 'Send');
 
@@ -513,6 +519,7 @@ exports.MicOff = MicOff;
 exports.MoreVert = MoreVert;
 exports.NetworkCheck = NetworkCheck;
 exports.NewReleases = NewReleases;
+exports.NextWeek = NextWeek;
 exports.NoPhotography = NoPhotography;
 exports.Notes = Notes;
 exports.NotesDownload = NotesDownload;
@@ -544,6 +551,7 @@ exports.Save = Save;
 exports.SaveAlt = SaveAlt;
 exports.Schedule = Schedule;
 exports.Search = Search;
+exports.Seating = Seating;
 exports.Send = Send;
 exports.Serve = Serve;
 exports.Settings = Settings;
