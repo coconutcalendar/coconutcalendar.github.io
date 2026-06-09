@@ -1,5 +1,5 @@
 import type SvgIcon from '../SvgIcon/SvgIcon';
-import type { UtilityColor } from '../utilities/colors';
+import type { AllColors } from '../utilities/colors';
 export interface TagProps {
     /**
      * The color scheme of the tag
@@ -21,9 +21,14 @@ export interface TagProps {
     startAdornment?: typeof SvgIcon;
 }
 type TagSize = 'large' | 'medium' | 'small';
-type TagColor = UtilityColor | 'grey';
+type TagColor = AllColors;
+type TagColorStyles = {
+    root: string;
+    text: string;
+    icon: string;
+};
 type TagColors = {
-    [key in TagColor]: string;
+    [key in TagColor]: TagColorStyles;
 };
 export declare const colors: TagColors;
 declare function Tag({ color, label, size, startAdornment: StartAdornment, }: TagProps): JSX.Element;

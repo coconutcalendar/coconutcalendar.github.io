@@ -5359,6 +5359,7 @@ Autocomplete.Suggestion = Suggestion$1;
 
 // TODO: Make shared values for these utility colors
 var colors$6 = {
+    // --- Legacy / Backwards Compatibility Colors ---
     default: 'bg-zinc-100 text-zinc-800',
     primary: 'bg-primary-10 text-primary-darker',
     secondary: 'bg-secondary-10 text-secondary-darker',
@@ -5372,6 +5373,13 @@ var colors$6 = {
     teal: 'bg-teal-100 text-teal-800',
     warning: 'bg-yellow-100 text-yellow-800',
     yellow: 'bg-amber-100 text-amber-800',
+    // --- New Semantic Color Tokens ---
+    grey: 'bg-gray-200 text-gray-800',
+    info: 'bg-info-50 text-info-800',
+    success: 'bg-success-50 text-success-800',
+    neutral: 'bg-neutral-50 text-neutral-800',
+    muted: 'bg-muted-50 text-muted-800',
+    intelligence: 'bg-intelligence-50 text-intelligence-800',
 };
 var variants$4 = {
     circle: 'rounded-full',
@@ -12662,23 +12670,106 @@ var sizes$b = {
 };
 // TODO: Make shared values for these utility colors
 var colors$b = {
-    blue: 'border border-sky-300 bg-sky-100 text-sky-800',
-    default: "border border-zinc-300 bg-zinc-100 text-zinc-800",
-    grey: "border border-gray-400 bg-gray-200 text-gray-800",
-    indigo: 'border border-violet-300 bg-violet-100 text-violet-700',
-    pink: 'border border-pink-300 bg-pink-100 text-pink-700',
-    purple: 'border border-fuchsia-300 bg-fuchsia-100 text-fuchsia-700',
-    red: 'border border-rose-300 bg-rose-100 text-rose-700',
-    teal: 'border border-teal-300 bg-teal-100 text-teal-800',
-    yellow: 'border border-amber-300 bg-amber-100 text-amber-800',
+    // --- Legacy / Backwards Compatibility Colors ---
+    blue: {
+        root: 'border border-sky-300 bg-sky-100',
+        text: 'text-sky-800',
+        icon: 'text-sky-800',
+    },
+    default: {
+        root: 'border border-zinc-300 bg-zinc-100',
+        text: 'text-zinc-800',
+        icon: 'text-zinc-800',
+    },
+    grey: {
+        root: 'border border-gray-400 bg-gray-200',
+        text: 'text-gray-800',
+        icon: 'text-gray-800',
+    },
+    indigo: {
+        root: 'border border-violet-300 bg-violet-100',
+        text: 'text-violet-700',
+        icon: 'text-violet-700',
+    },
+    pink: {
+        root: 'border border-pink-300 bg-pink-100',
+        text: 'text-pink-700',
+        icon: 'text-pink-700',
+    },
+    purple: {
+        root: 'border border-fuchsia-300 bg-fuchsia-100',
+        text: 'text-fuchsia-700',
+        icon: 'text-fuchsia-700',
+    },
+    red: {
+        root: 'border border-rose-300 bg-rose-100',
+        text: 'text-rose-700',
+        icon: 'text-rose-700',
+    },
+    teal: {
+        root: 'border border-teal-300 bg-teal-100',
+        text: 'text-teal-800',
+        icon: 'text-teal-800',
+    },
+    yellow: {
+        root: 'border border-amber-300 bg-amber-100',
+        text: 'text-amber-800',
+        icon: 'text-amber-800',
+    },
+    // --- New Semantic Color Tokens ---
+    neutral: {
+        root: 'border border-neutral-300 border-opacity-25 bg-neutral-50',
+        text: 'text-neutral-800',
+        icon: 'text-neutral-600',
+    },
+    muted: {
+        root: 'border border-muted-300 border-opacity-25 bg-muted-50',
+        text: 'text-muted-800',
+        icon: 'text-muted-600',
+    },
+    primary: {
+        root: 'border border-primary-300 border-opacity-25 bg-primary-50',
+        text: 'text-primary-800',
+        icon: 'text-primary-600',
+    },
+    secondary: {
+        root: 'border border-secondary-300 border-opacity-25 bg-secondary-50',
+        text: 'text-secondary-800',
+        icon: 'text-secondary-600',
+    },
+    info: {
+        root: 'border border-info-300 border-opacity-25 bg-info-50',
+        text: 'text-info-800',
+        icon: 'text-info-600',
+    },
+    warning: {
+        root: 'border border-warning-300 border-opacity-25 bg-warning-50',
+        text: 'text-warning-800',
+        icon: 'text-warning-600',
+    },
+    error: {
+        root: 'border border-error-300 border-opacity-25 bg-error-50',
+        text: 'text-error-800',
+        icon: 'text-error-600',
+    },
+    success: {
+        root: 'border border-success-300 border-opacity-25 bg-success-50',
+        text: 'text-success-800',
+        icon: 'text-success-600',
+    },
+    intelligence: {
+        root: 'border border-intelligence-300 border-opacity-25 bg-intelligence-50',
+        text: 'text-intelligence-800',
+        icon: 'text-intelligence-600',
+    },
 };
 function Tag(_a) {
     var _b = _a.color, color = _b === void 0 ? 'default' : _b, label = _a.label, _c = _a.size, size = _c === void 0 ? 'medium' : _c, StartAdornment = _a.startAdornment;
-    return (React.createElement("span", { className: clsx('rounded-sm inline-flex cursor-default', colors$b[color], sizes$b[size].root) },
+    return (React.createElement("span", { className: clsx('rounded-sm inline-flex cursor-default', colors$b[color].root, sizes$b[size].root) },
         React.createElement("span", { className: "flex items-center" },
-            StartAdornment ? (React.createElement("span", { className: clsx(sizes$b[size].icon) },
+            StartAdornment ? (React.createElement("span", { className: clsx(sizes$b[size].icon, colors$b[color].icon) },
                 React.createElement(StartAdornment, null))) : null,
-            React.createElement("span", { className: clsx('w-full', sizes$b[size].text) }, label))));
+            React.createElement("span", { className: clsx('w-full', sizes$b[size].text, colors$b[color].text) }, label))));
 }
 
 function useIsMounted() {
