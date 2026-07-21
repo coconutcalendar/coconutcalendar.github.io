@@ -3873,6 +3873,8 @@ createSvgIcon(React__default['default'].createElement("path", { d: "M21 19C21 19
 
 createSvgIcon(React__default['default'].createElement("path", { d: "M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" }), 'People');
 
+createSvgIcon(React__default['default'].createElement("path", { d: "M7.5 11C6.53333 11 5.70833 10.6583 5.025 9.975C4.34167 9.29167 4 8.46667 4 7.5C4 6.53333 4.34167 5.70833 5.025 5.025C5.70833 4.34167 6.53333 4 7.5 4C8.46667 4 9.29167 4.34167 9.975 5.025C10.6583 5.70833 11 6.53333 11 7.5C11 8.46667 10.6583 9.29167 9.975 9.975C9.29167 10.6583 8.46667 11 7.5 11ZM7.5 9C7.91667 9 8.26667 8.85833 8.55 8.575C8.85 8.275 9 7.91667 9 7.5C9 7.08333 8.85 6.73333 8.55 6.45C8.26667 6.15 7.91667 6 7.5 6C7.08333 6 6.725 6.15 6.425 6.45C6.14167 6.73333 6 7.08333 6 7.5C6 7.91667 6.14167 8.275 6.425 8.575C6.725 8.85833 7.08333 9 7.5 9ZM16.5 20C15.5333 20 14.7083 19.6583 14.025 18.975C13.3417 18.2917 13 17.4667 13 16.5C13 15.5333 13.3417 14.7083 14.025 14.025C14.7083 13.3417 15.5333 13 16.5 13C17.4667 13 18.2917 13.3417 18.975 14.025C19.6583 14.7083 20 15.5333 20 16.5C20 17.4667 19.6583 18.2917 18.975 18.975C18.2917 19.6583 17.4667 20 16.5 20ZM16.5 18C16.9167 18 17.2667 17.8583 17.55 17.575C17.85 17.275 18 16.9167 18 16.5C18 16.0833 17.85 15.7333 17.55 15.45C17.2667 15.15 16.9167 15 16.5 15C16.0833 15 15.725 15.15 15.425 15.45C15.1417 15.7333 15 16.0833 15 16.5C15 16.9167 15.1417 17.275 15.425 17.575C15.725 17.8583 16.0833 18 16.5 18ZM5.4 20L4 18.6L18.6 4L20 5.4L5.4 20Z" }), 'Percent');
+
 createSvgIcon(React__default['default'].createElement("path", { d: "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" }), 'Person');
 
 createSvgIcon(React__default['default'].createElement("path", { d: "M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" }), 'PersonAdd');
@@ -5367,26 +5369,26 @@ Autocomplete.Suggestion = Suggestion$1;
 // TODO: Make shared values for these utility colors
 var colors$6 = {
     // --- Legacy / Backwards Compatibility Colors ---
-    default: 'bg-zinc-100 text-zinc-800',
-    primary: 'bg-primary-10 text-primary-darker',
-    secondary: 'bg-secondary-10 text-secondary-darker',
-    blue: 'bg-sky-100 text-sky-800',
-    error: 'bg-red-100 text-red-800',
-    green: 'bg-lime-100 text-lime-800',
-    indigo: 'bg-violet-100 text-violet-700',
-    pink: 'bg-pink-100 text-pink-700',
-    purple: 'bg-fuchsia-100 text-fuchsia-700',
-    red: 'bg-rose-100 text-rose-700',
-    teal: 'bg-teal-100 text-teal-800',
-    warning: 'bg-yellow-100 text-yellow-800',
-    yellow: 'bg-amber-100 text-amber-800',
+    default: 'bg-zinc-100 text-zinc-800 border-zinc-200',
+    primary: 'bg-primary-10 text-primary-darker border-primary-20',
+    secondary: 'bg-secondary-10 text-secondary-darker border-secondary-20',
+    blue: 'bg-sky-100 text-sky-800 border-sky-200',
+    error: 'bg-red-100 text-red-800 border-red-200',
+    green: 'bg-lime-100 text-lime-800 border-lime-200',
+    indigo: 'bg-violet-100 text-violet-700 border-violet-200',
+    pink: 'bg-pink-100 text-pink-700 border-pink-200',
+    purple: 'bg-fuchsia-100 text-fuchsia-700 border-fuchsia-200',
+    red: 'bg-rose-100 text-rose-700 border-rose-200',
+    teal: 'bg-teal-100 text-teal-800 border-teal-200',
+    warning: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+    yellow: 'bg-amber-100 text-amber-800 border-amber-200',
     // --- New Semantic Color Tokens ---
-    grey: 'bg-gray-200 text-gray-800',
-    info: 'bg-info-50 text-info-800',
-    success: 'bg-success-50 text-success-800',
-    neutral: 'bg-neutral-50 text-neutral-800',
-    muted: 'bg-muted-50 text-muted-800',
-    intelligence: 'bg-intelligence-50 text-intelligence-800',
+    grey: 'bg-gray-200 text-gray-800 border-gray-300',
+    info: 'bg-info-50 text-info-800 border-info-300',
+    success: 'bg-success-50 text-success-800 border-success-300',
+    neutral: 'bg-neutral-50 text-neutral-800 border-neutral-300',
+    muted: 'bg-muted-50 text-muted-800 border-muted-300',
+    intelligence: 'bg-intelligence-50 text-intelligence-800 border-intelligence-300',
 };
 var variants$4 = {
     circle: 'rounded-full',
@@ -5396,7 +5398,7 @@ var variants$4 = {
 function Avatar(_a) {
     var _b, _c;
     var label = _a["aria-label"], children = _a.children, _d = _a.color, color = _d === void 0 ? 'default' : _d, name = _a.name, _e = _a.variant, variant = _e === void 0 ? 'circle' : _e;
-    return (React__default['default'].createElement("div", { "aria-label": label || name, className: clsx__default['default']('justify-center items-center text-xl inline-flex w-10 h-10 p-2', colors$6[color], variants$4[variant]), role: "img" }, name !== undefined
+    return (React__default['default'].createElement("div", { "aria-label": label || name, className: clsx__default['default']('justify-center items-center text-xl inline-flex shrink-0 w-10 h-10 p-2 border', colors$6[color], variants$4[variant]), role: "img" }, name !== undefined
         ? ((_c = (_b = name.match(/[A-Z]/g)) === null || _b === void 0 ? void 0 : _b.slice(0, 2)) === null || _c === void 0 ? void 0 : _c.join('')) ||
             name
                 .split(' ')
@@ -5653,7 +5655,7 @@ function Header(_a) {
         components.title || components.subtitle ? (React__default['default'].createElement("div", { className: "flex flex-col" },
             components.title,
             components.subtitle)) : null,
-        React__default['default'].createElement("div", null,
+        React__default['default'].createElement("div", { className: "flex flex-row" },
             collapsable ? React__default['default'].createElement(CollapseButton, null) : null,
             components.action)));
 }
