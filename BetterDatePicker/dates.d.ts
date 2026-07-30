@@ -15,6 +15,12 @@ export declare function toCalendarDate(date: Date, timezone: string): CalendarDa
  * provided timezone
  */
 export declare function toNativeDate(value: DateValue, timezone: string): Date;
+/**
+ * Renormalizes a Date to local midnight on the calendar day it falls on in
+ * the given timezone, so local-time formatters (date-fns, Intl without a
+ * timeZone) render the same day the calendar highlights and the form submits
+ */
+export declare function toLocalDay(date: Date, timezone: string): Date;
 export interface CalendarConstraintProps {
     isDateUnavailable?: (date: DateValue) => boolean;
     maxValue?: CalendarDate;

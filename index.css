@@ -4232,6 +4232,15 @@ input[type=number] {
   box-shadow: 0 0 0 4px black;
 }
 
+[data-focus-visible]:focus>.\[\[data-focus-visible\]\:focus\>\&\]\:ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  outline: 2px solid white !important;
+  outline-offset: 0 !important;
+  box-shadow: 0 0 0 4px black;
+}
+
 td:first-child .\[td\:first-child_\&\]\:rounded-l-full {
   border-top-left-radius: 9999px;
   border-bottom-left-radius: 9999px;
@@ -4247,6 +4256,10 @@ tr:active .\[tr\:active_\&\]\:bg-primary-20 {
 }
 
 tr:has(:focus-visible) .\[tr\:has\(\:focus-visible\)_\&\]\:bg-primary-20 {
+  background-color: var(--color-primary-20);
+}
+
+tr:has([data-focus-visible]:focus) .\[tr\:has\(\[data-focus-visible\]\:focus\)_\&\]\:bg-primary-20 {
   background-color: var(--color-primary-20);
 }
 

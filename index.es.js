@@ -5818,9 +5818,13 @@ function CalendarCells(_a) {
                 // date for keyboard users. Driven by the native :focus-visible
                 // pseudo-class rather than React Aria's data-focus-visible
                 // attribute, which is removed a frame before focus moves and made
-                // the highlight flicker on every keystroke
+                // the highlight flicker on every keystroke. Firefox does not
+                // carry keyboard modality into the programmatic focus() React
+                // Aria uses to move between cells, so :focus-visible never
+                // matches there — the data-focus-visible + :focus fallback
+                // restores the highlight for it
                 week && !selectedWeekDay
-                    ? '[tr:hover_&]:bg-primary-20 [tr:active_&]:bg-primary-20 [tr:has(:focus-visible)_&]:bg-primary-20'
+                    ? '[tr:hover_&]:bg-primary-20 [tr:active_&]:bg-primary-20 [tr:has(:focus-visible)_&]:bg-primary-20 [tr:has([data-focus-visible]:focus)_&]:bg-primary-20'
                     : null, (isDisabled && !selectableOutsideDay) || isUnavailable
                     ? 'cursor-not-allowed opacity-60'
                     : 'cursor-pointer');
@@ -5838,8 +5842,12 @@ function CalendarCells(_a) {
                 // focus. React Aria's isFocusVisible render prop clears one
                 // render before focus actually moves to the next cell, which
                 // painted a ring-less frame on every keystroke (and briefly
-                // ringed the wrong cell when crossing months)
-                '[:focus-visible>&]:ring', 
+                // ringed the wrong cell when crossing months). Firefox does
+                // not carry keyboard modality into the programmatic focus()
+                // React Aria uses to move between cells, so :focus-visible
+                // never matches there — the data-focus-visible + :focus
+                // fallback restores the ring for it
+                '[:focus-visible>&]:ring [[data-focus-visible]:focus>&]:ring', 
                 // Hover and focus tints are skipped on the selected day so
                 // the solid selected fill shows immediately after clicking,
                 // while the cell is still hovered and focused
@@ -5887,6 +5895,15 @@ function toCalendarDate(date, timezone) {
  */
 function toNativeDate(value, timezone) {
     return value.toDate(timezone);
+}
+/**
+ * Renormalizes a Date to local midnight on the calendar day it falls on in
+ * the given timezone, so local-time formatters (date-fns, Intl without a
+ * timeZone) render the same day the calendar highlights and the form submits
+ */
+function toLocalDay(date, timezone) {
+    var calendarDate = toCalendarDate(date, timezone);
+    return new Date(calendarDate.year, calendarDate.month - 1, calendarDate.day);
 }
 /**
  * Builds the shared date-constraint props that both the segmented field and the
@@ -6344,16 +6361,21 @@ function TextTriggerField(_a) {
                 ? weekFormatter.formatRange(start, end)
                 : "".concat(weekFormatter.format(start), " \u2014 ").concat(weekFormatter.format(end));
         }
+        // Range and single dates are renormalized to local midnight on their day
+        // in the configured timezone so the local-time formatters below cannot
+        // drift a day from the calendar highlight and the emitted value
         if (Array.isArray(displayedValue)) {
+            var start = toLocalDay(displayedValue[0], timezone);
+            var end = toLocalDay(displayedValue[1], timezone);
             return anchor
                 ? new Intl.DateTimeFormat(intl.locale, {
                     day: 'numeric',
                     month: 'short',
                     year: 'numeric',
-                }).formatRange(displayedValue[0], displayedValue[1])
-                : "".concat(formatDateLocal(displayedValue[0]), " \u2014 ").concat(formatDateLocal(displayedValue[1]));
+                }).formatRange(start, end)
+                : "".concat(formatDateLocal(start), " \u2014 ").concat(formatDateLocal(end));
         }
-        return formatDateLocal(displayedValue);
+        return formatDateLocal(toLocalDay(displayedValue, timezone));
     })();
     var handleChange = function (next) {
         if (!controlled) {
@@ -6437,7 +6459,7 @@ function TextTriggerField(_a) {
                                 : 'flex-1 min-w-0 px-3 text-sm truncate text-black-90', id: valueId }, anchor === 'text' && !displayedText ? label : displayedText),
                     anchor === 'icon' ? (React.createElement("span", { className: "w-6" },
                         React.createElement(CalendarDay, { day: displayedValue && !Array.isArray(displayedValue)
-                                ? displayedValue.getDate()
+                                ? toCalendarDate(displayedValue, timezone).day
                                 : undefined }))) : null,
                     anchor === 'text' ? (React.createElement("span", { "aria-hidden": "true", className: "w-5" },
                         React.createElement(ExpandMore, null))) : null,
