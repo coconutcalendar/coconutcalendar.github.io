@@ -20,10 +20,24 @@ export interface PopoverProps {
      */
     children: ReactNode;
     /**
-     * Whether the popover is currently open
-     * @default false
+     * Whether the popover is non-modal, allowing elements outside of it to be
+     * interacted with while it is open
+     */
+    isNonModal?: boolean;
+    /**
+     * Whether the popover is open. When omitted it defaults to closed, unless
+     * `contextDriven` is set — in which case the open state comes from the
+     * surrounding React Aria trigger context
      */
     isOpen?: boolean;
+    /**
+     * Defer the open state and trigger anchoring to a surrounding React Aria
+     * trigger context (e.g. DatePicker or DialogTrigger) rather than managing
+     * them here. Leave this off (the default) for a standalone popover so it
+     * stays closed until `isOpen` is set and never inherits an unrelated
+     * overlay context such as a Drawer's
+     */
+    contextDriven?: boolean;
     /**
      * The distance in pixels between the trigger element and the popover
      * @default 8
@@ -43,5 +57,5 @@ export interface PopoverProps {
      */
     triggerRef?: React.RefObject<HTMLElement>;
 }
-declare function Popover({ 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby, 'aria-describedby': ariaDescribedby, children, isOpen, offset, onOpenChange, placement, triggerRef, }: PopoverProps): JSX.Element;
+declare const Popover: React.ForwardRefExoticComponent<PopoverProps & React.RefAttributes<HTMLDivElement>>;
 export default Popover;

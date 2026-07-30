@@ -52,5 +52,11 @@ export declare enum Modes {
     Week = 1,
     Range = 2
 }
+/**
+ * @deprecated Use `BetterDatePicker` instead. `DatePicker` is deprecated and is
+ * planned for complete removal. See the BetterDatePicker docs for the prop
+ * mapping (`initialDate` → `defaultValue`/`value`, `initialTimezone` →
+ * `timezone`, `Modes.*` → `mode`, and a plain value in `onChange`).
+ */
 declare function DatePicker({ clearRef, condensed, initialDate, initialTimezone, inputRef, inputValueRef, mode, onChange, open, }: DatePickerProps): JSX.Element;
 export default DatePicker;

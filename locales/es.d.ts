@@ -5,6 +5,8 @@ declare const _default: {
     "Chip.remove": string;
     "DatePicker.next": string;
     "DatePicker.previous": string;
+    "DatePicker.select_week": string;
+    "DatePicker.week_of": string;
     "Pagination.first": string;
     "Pagination.go_to_page_number": string;
     "Pagination.go_to_page": string;

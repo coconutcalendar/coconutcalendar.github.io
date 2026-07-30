@@ -24,7 +24,7 @@ export interface AlertProps {
     variant?: AlertVariant;
 }
 type AlertVariant = 'filled' | 'minimal';
-type AlertSeverity = 'info' | 'error' | 'loading' | 'success' | 'warning';
+type AlertSeverity = 'info' | 'error' | 'loading' | 'neutral' | 'success' | 'warning';
 declare function Alert({ children, icon, role, severity, variant, }: PropsWithChildren<AlertProps>): JSX.Element;
 declare namespace Alert {
     var Button: typeof AlertButton;

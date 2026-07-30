@@ -99,6 +99,20 @@ var BlurSlightly = createSvgIcon(React.createElement("path", { d: "M8.72727 7.09
 
 var Calendar = createSvgIcon(React.createElement("path", { d: "M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20ZM9 14H7V12H9V14ZM13 14H11V12H13V14ZM17 14H15V12H17V14ZM9 18H7V16H9V18ZM13 18H11V16H13V18ZM17 18H15V16H17V18Z" }), 'Calendar');
 
+/**
+ * The Calendar glyph with the date grid replaced by an open well showing a
+ * day of the month, e.g. for a date picker anchor that reflects the
+ * selected date, or a question mark when no day is provided. Keep the
+ * rendered size at 24px or larger so two digit days stay legible
+ */
+function CalendarDay(_a) {
+    var day = _a.day;
+    return (React.createElement(SvgIcon, null,
+        React.createElement("path", { d: "M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20Z" }),
+        React.createElement("text", { fontFamily: "inherit", fontSize: "9", fontWeight: "600", textAnchor: "middle", x: "12", y: "18.2" }, day !== null && day !== void 0 ? day : '?')));
+}
+CalendarDay.uiName = 'SvgIcon';
+
 var Call = createSvgIcon(React.createElement("path", { d: "M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" }), 'Call');
 
 var CallEnd = createSvgIcon(React.createElement("path", { d: "M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.7 0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28-.79-.74-1.69-1.36-2.67-1.85-.33-.16-.56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" }), 'CallEnd');
@@ -145,6 +159,8 @@ var DateRange = createSvgIcon(React.createElement("path", { d: "M9 11H7v2h2v-2zm
 var DayView = createSvgIcon(React.createElement("path", { d: "M3 20v-2h18v2ZM3 6V4h18v2Zm2 10q-.825 0-1.413-.588Q3 14.825 3 14v-4q0-.825.587-1.413Q4.175 8 5 8h14q.825 0 1.413.587Q21 9.175 21 10v4q0 .825-.587 1.412Q19.825 16 19 16Z" }), 'DayView');
 
 var Delete = createSvgIcon(React.createElement("path", { d: "M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" }), 'Delete');
+
+var DeleteOutline = createSvgIcon(React.createElement("path", { d: "M5.2 13.6C4.86667 13.6 4.58333 13.4833 4.35 13.25C4.11667 13.0167 4 12.7333 4 12.4V4.4H3.2V3.2H6.4V2.4H9.6V3.2H12.8V4.4H12V12.4C12 12.7333 11.8833 13.0167 11.65 13.25C11.4167 13.4833 11.1333 13.6 10.8 13.6H5.2ZM10.8 4.4H5.2V12.4H10.8V4.4ZM6.4 11.2H7.6V5.6H6.4V11.2ZM8.4 11.2H9.6V5.6H8.4V11.2ZM5.2 4.4V12.4V4.4Z" }), 'DeleteOutline', '0 0 16 16');
 
 var Description = createSvgIcon(React.createElement("path", { d: "M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" }), 'Description');
 
@@ -418,5 +434,5 @@ var ZoomIn = createSvgIcon(React.createElement(React.Fragment, null,
 
 var ZoomOut = createSvgIcon(React.createElement("path", { d: "M15.5 14H14.71L14.43 13.73C15.41 12.59 16 11.11 16 9.5C16 5.91 13.09 3 9.5 3C5.91 3 3 5.91 3 9.5C3 13.09 5.91 16 9.5 16C11.11 16 12.59 15.41 13.73 14.43L14 14.71V15.5L19 20.49L20.49 19L15.5 14ZM9.5 14C7.01 14 5 11.99 5 9.5C5 7.01 7.01 5 9.5 5C11.99 5 14 7.01 14 9.5C14 11.99 11.99 14 9.5 14ZM7 9H12V10H7V9Z" }), 'ZoomOut');
 
-export { AISearch, Add, AddTask, AddToWorkflow, Alarm, Analytics, ArrowBack, ArrowBackIos, ArrowDownward, ArrowForwardIos, ArrowRightAlt, ArrowUpward, Article, AssignmentIndicator, AudioDownload, BarChart, Block, Blur, BlurSlightly, Calendar, Call, CallEnd, Cancel, CancelOutline, CancelPresentation, Category, Chat, ChatBubbleOutline, ChatDownload, CheckCircleOutline, ChevronLeft, ChevronRight, Close, ClosedCaption, Columns, Compass, Contacts, Database, DateRange, DayView, Delete, Description, DesktopUIDownload, Domain, Done, Draw, Edit, _Error as Error, ErrorOutline, Event, EventBusy, EventNote, ExitToApp, ExpandLess, ExpandMore, Favorite, FavoriteOutline, Feedback, FileCopy, FileMissing, Files, FilterList, FilterListOff, FirstPage, Folder, FormatListBulleted, Fullscreen, Globe, GroupWork, HelpOutline, Home, HourglassEmpty, Image, Info, KeyboardArrowDown, KeyboardArrowUp, Language, LastPage, Launch, Link, LinkOff, ListAlt, Lock, LockOpen, Lunch, Mail, _Map as Map, Merge, Message, Mic, MicOff, MoreVert, NetworkCheck, NewReleases, NextWeek, NoPhotography, Notes, NotesDownload, OpenInBrowser, PanelClose, PanelOpen, People, Percent, Person, PersonAdd, PersonOff, PhoneLink, PhotoCamera, Place, Portrait, PresentToAll, PrivateNotes, QrCode, QuestionAnswer, RadioActive, RadioInactive, Redo, Refresh, RemoveCircle, Repeat, ReportProblem, Room, Rows, Save, SaveAlt, Schedule, Search, Seating, Send, Serve, Settings, SignDocument, Speaker, SplitscreenAdd, Star, StarHalf, StarOutline, Support, SupportAgent, SyncAlt, Target, TaskComplete, Timelapse, Tune, TurnRight, Undo, UnverifiedUser, VerifiedUser, VideoCam, VideoCamOff, Visibility, VisibilityOff, VolumeDown, VolumeMute, VolumeUp, Walk, Warning, Web, WebAsset, WeekView, Workflow, Workforce, ZoomIn, ZoomOut };
+export { AISearch, Add, AddTask, AddToWorkflow, Alarm, Analytics, ArrowBack, ArrowBackIos, ArrowDownward, ArrowForwardIos, ArrowRightAlt, ArrowUpward, Article, AssignmentIndicator, AudioDownload, BarChart, Block, Blur, BlurSlightly, Calendar, CalendarDay, Call, CallEnd, Cancel, CancelOutline, CancelPresentation, Category, Chat, ChatBubbleOutline, ChatDownload, CheckCircleOutline, ChevronLeft, ChevronRight, Close, ClosedCaption, Columns, Compass, Contacts, Database, DateRange, DayView, Delete, DeleteOutline, Description, DesktopUIDownload, Domain, Done, Draw, Edit, _Error as Error, ErrorOutline, Event, EventBusy, EventNote, ExitToApp, ExpandLess, ExpandMore, Favorite, FavoriteOutline, Feedback, FileCopy, FileMissing, Files, FilterList, FilterListOff, FirstPage, Folder, FormatListBulleted, Fullscreen, Globe, GroupWork, HelpOutline, Home, HourglassEmpty, Image, Info, KeyboardArrowDown, KeyboardArrowUp, Language, LastPage, Launch, Link, LinkOff, ListAlt, Lock, LockOpen, Lunch, Mail, _Map as Map, Merge, Message, Mic, MicOff, MoreVert, NetworkCheck, NewReleases, NextWeek, NoPhotography, Notes, NotesDownload, OpenInBrowser, PanelClose, PanelOpen, People, Percent, Person, PersonAdd, PersonOff, PhoneLink, PhotoCamera, Place, Portrait, PresentToAll, PrivateNotes, QrCode, QuestionAnswer, RadioActive, RadioInactive, Redo, Refresh, RemoveCircle, Repeat, ReportProblem, Room, Rows, Save, SaveAlt, Schedule, Search, Seating, Send, Serve, Settings, SignDocument, Speaker, SplitscreenAdd, Star, StarHalf, StarOutline, Support, SupportAgent, SyncAlt, Target, TaskComplete, Timelapse, Tune, TurnRight, Undo, UnverifiedUser, VerifiedUser, VideoCam, VideoCamOff, Visibility, VisibilityOff, VolumeDown, VolumeMute, VolumeUp, Walk, Warning, Web, WebAsset, WeekView, Workflow, Workforce, ZoomIn, ZoomOut };
 //# sourceMappingURL=icons.es.js.map

@@ -89,7 +89,19 @@ type SingleDateChangeEvent = {
 type WeekPickerInputProps = {
     onChange?: (event: MultiDateChangeEvent) => void;
 } & Omit<DatePickerInputProps, 'onChange'>;
+/**
+ * @deprecated Use `BetterDatePicker` (with `mode="day"`) instead. Deprecated and
+ * planned for complete removal. See the BetterDatePicker docs for migration.
+ */
 declare function DayPickerInput({ clearRef, condensed, disabled, error, helperText, initialDate, initialTimezone, inputRef, label, name, onChange, size, variant, }: DayPickerInputProps): JSX.Element;
+/**
+ * @deprecated Use `BetterDatePicker` (with `mode="range"`) instead. Deprecated
+ * and planned for complete removal. See the BetterDatePicker docs for migration.
+ */
 declare function RangePickerInput({ clearRef, condensed, disabled, error, helperText, initialDate, initialTimezone, inputRef, label, name, onChange, size, variant, }: RangePickerInputProps): JSX.Element;
+/**
+ * @deprecated Use `BetterDatePicker` (with `mode="week"`) instead. Deprecated
+ * and planned for complete removal. See the BetterDatePicker docs for migration.
+ */
 declare function WeekPickerInput({ clearRef, condensed, disabled, error, helperText, initialDate, initialTimezone, inputRef, label, name, onChange, size, variant, }: WeekPickerInputProps): JSX.Element;
 export { DayPickerInput, RangePickerInput, WeekPickerInput };

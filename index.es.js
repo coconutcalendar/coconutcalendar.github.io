@@ -2,9 +2,10 @@ import clsx from 'clsx';
 import React, { forwardRef, useState, createContext, useContext, useEffect, useCallback, useRef, Children, isValidElement, cloneElement, useReducer, useMemo, useLayoutEffect, createRef, createElement, Fragment as Fragment$1, PureComponent } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { createPortal } from 'react-dom';
-import { format as format$1, parse as parse$1, setDate, startOfWeek, endOfWeek, isValid, isAfter, isSameWeek, isSameDay, isSameMonth, isToday, isWeekend, startOfMonth, addDays, endOfMonth, differenceInCalendarDays, addMonths, subDays, subMonths, isWithinInterval, fromUnixTime } from 'date-fns';
+import { startOfWeek, isWeekend, isToday, toCalendarDate as toCalendarDate$1, fromDate, Time, today, endOfWeek, toCalendarDateTime } from '@internationalized/date';
+import { Popover as Popover$1, CalendarGrid, CalendarGridHeader, CalendarHeaderCell, CalendarGridBody, CalendarStateContext, RangeCalendarStateContext, CalendarCell, I18nProvider, RangeCalendar, Calendar as Calendar$1, Text as Text$4, FieldError, DateRangePicker, Group as Group$6, Label as Label$2, DateInput, DateSegment, Button as Button$3, DatePicker as DatePicker$1, Dialog as Dialog$1, DialogTrigger, useSlottedContext, ModalContext, Heading, ModalOverlay, Modal } from 'react-aria-components';
+import { format as format$1, parse as parse$1, setDate, startOfWeek as startOfWeek$1, endOfWeek as endOfWeek$1, isValid, isAfter, isSameWeek, isSameDay, isSameMonth, isToday as isToday$1, isWeekend as isWeekend$1, startOfMonth, addDays, endOfMonth, differenceInCalendarDays, addMonths, subDays, subMonths, isWithinInterval, fromUnixTime } from 'date-fns';
 import { enUS, es, fr, ko, pl, ptBR, ru, zhCN } from 'date-fns/locale';
-import { useSlottedContext, ModalContext, Heading, ModalOverlay, Modal, Dialog as Dialog$1, Popover as Popover$1 } from 'react-aria-components';
 
 /******************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -476,6 +477,7 @@ var colors$3 = {
             info: 'bg-info-main text-white-100',
             error: 'bg-error-main text-white-100',
             loading: 'bg-info-main text-white-100',
+            neutral: 'bg-dark-grey-dark text-white-100',
             success: 'bg-success-main text-white-100',
             warning: 'bg-warning-main text-white-100',
         },
@@ -483,6 +485,7 @@ var colors$3 = {
             info: 'text-white-100',
             error: 'text-white-100',
             loading: 'text-white-100',
+            neutral: 'text-black-10-hex',
             success: 'text-white-100',
             warning: 'text-white-100',
         },
@@ -492,6 +495,7 @@ var colors$3 = {
             info: 'bg-info-lighter text-black-90',
             error: 'bg-error-lighter text-black-90',
             loading: 'bg-info-lighter text-black-90',
+            neutral: 'bg-light-grey-light text-black-90',
             success: 'bg-success-lighter text-black-90',
             warning: 'bg-warning-lighter text-black-90',
         },
@@ -499,6 +503,7 @@ var colors$3 = {
             info: 'text-info-main',
             error: 'text-error-main',
             loading: 'text-info-main',
+            neutral: 'text-dark-grey-main',
             success: 'text-success-main',
             warning: 'text-warning-main',
         },
@@ -508,6 +513,7 @@ var icons = {
     info: React.createElement(Info, null),
     loading: React.createElement(Progress, { color: "info", size: "medium", variant: "circular" }),
     error: React.createElement(ErrorOutline, null),
+    neutral: React.createElement(Info, null),
     success: React.createElement(CheckCircleOutline, null),
     warning: React.createElement(ReportProblem, null),
 };
@@ -3700,6 +3706,20 @@ createSvgIcon(React.createElement("path", { d: "M8.72727 7.09091C7.74545 7.09091
 
 createSvgIcon(React.createElement("path", { d: "M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20ZM9 14H7V12H9V14ZM13 14H11V12H13V14ZM17 14H15V12H17V14ZM9 18H7V16H9V18ZM13 18H11V16H13V18ZM17 18H15V16H17V18Z" }), 'Calendar');
 
+/**
+ * The Calendar glyph with the date grid replaced by an open well showing a
+ * day of the month, e.g. for a date picker anchor that reflects the
+ * selected date, or a question mark when no day is provided. Keep the
+ * rendered size at 24px or larger so two digit days stay legible
+ */
+function CalendarDay(_a) {
+    var day = _a.day;
+    return (React.createElement(SvgIcon, null,
+        React.createElement("path", { d: "M19 4H18V2H16V4H8V2H6V4H5C3.89 4 3.01 4.9 3.01 6L3 20C3 21.1 3.89 22 5 22H19C20.1 22 21 21.1 21 20V6C21 4.9 20.1 4 19 4ZM19 20H5V10H19V20Z" }),
+        React.createElement("text", { fontFamily: "inherit", fontSize: "9", fontWeight: "600", textAnchor: "middle", x: "12", y: "18.2" }, day !== null && day !== void 0 ? day : '?')));
+}
+CalendarDay.uiName = 'SvgIcon';
+
 createSvgIcon(React.createElement("path", { d: "M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" }), 'Call');
 
 createSvgIcon(React.createElement("path", { d: "M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.7 0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.11-.7-.28-.79-.74-1.69-1.36-2.67-1.85-.33-.16-.56-.5-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" }), 'CallEnd');
@@ -3742,6 +3762,8 @@ var DateRange = createSvgIcon(React.createElement("path", { d: "M9 11H7v2h2v-2zm
 createSvgIcon(React.createElement("path", { d: "M3 20v-2h18v2ZM3 6V4h18v2Zm2 10q-.825 0-1.413-.588Q3 14.825 3 14v-4q0-.825.587-1.413Q4.175 8 5 8h14q.825 0 1.413.587Q21 9.175 21 10v4q0 .825-.587 1.412Q19.825 16 19 16Z" }), 'DayView');
 
 createSvgIcon(React.createElement("path", { d: "M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" }), 'Delete');
+
+createSvgIcon(React.createElement("path", { d: "M5.2 13.6C4.86667 13.6 4.58333 13.4833 4.35 13.25C4.11667 13.0167 4 12.7333 4 12.4V4.4H3.2V3.2H6.4V2.4H9.6V3.2H12.8V4.4H12V12.4C12 12.7333 11.8833 13.0167 11.65 13.25C11.4167 13.4833 11.1333 13.6 10.8 13.6H5.2ZM10.8 4.4H5.2V12.4H10.8V4.4ZM6.4 11.2H7.6V5.6H6.4V11.2ZM8.4 11.2H9.6V5.6H8.4V11.2ZM5.2 4.4V12.4V4.4Z" }), 'DeleteOutline', '0 0 16 16');
 
 createSvgIcon(React.createElement("path", { d: "M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" }), 'Description');
 
@@ -5483,6 +5505,949 @@ Banner.Description.displayName = 'Banner.Description';
 // @ts-ignore
 Banner.StartAdornment.displayName = 'Banner.StartAdornment';
 
+var locales = {
+    en: enUS,
+    es: es,
+    fr: fr,
+    ko: ko,
+    pl: pl,
+    pt: ptBR,
+    ru: ru,
+    zh: zhCN,
+};
+function useDateFormatters() {
+    var locale = useIntl().locale;
+    var format = useCallback(function (date, format) {
+        return format$1(date, format, {
+            locale: locales[locale] || locales.en,
+        });
+    }, [locale]);
+    return useMemo(function () { return ({
+        formatDateLocal: function (date) { return format(date, 'PP'); },
+        formatDateLong: function (date) { return format(date, 'PPP'); },
+        formatDayOfMonth: function (date) { return format(date, 'd'); },
+        formatDayOfWeek: function (date) { return format(date, 'EEEEEE'); },
+        formatISODate: function (date) { return format(date, 'yyyy-MM-dd'); },
+        formatMonthLong: function (date) { return format(date, 'MMMM'); },
+        formatMonthAndYearLong: function (date) { return format(date, 'MMMM yyyy'); },
+        formatWeekOfYear: function (date) { return format(date, 'w'); },
+        formatYearAndMonth: function (date) { return format(date, 'yyyy-MM'); },
+    }); }, [format]);
+}
+
+var CENTER_PLACEMENT_EDGE_THRESHOLD = 20; // pixels from the edge of the viewport
+var Popover = React.forwardRef(function Popover(_a, forwardedRef) {
+    var ariaLabel = _a["aria-label"], ariaLabelledby = _a["aria-labelledby"], ariaDescribedby = _a["aria-describedby"], children = _a.children, _b = _a.contextDriven, contextDriven = _b === void 0 ? false : _b, isNonModal = _a.isNonModal, isOpen = _a.isOpen, _c = _a.offset, offset = _c === void 0 ? 8 : _c, onOpenChange = _a.onOpenChange, _d = _a.placement, placement = _d === void 0 ? 'bottom' : _d, triggerRef = _a.triggerRef;
+    var popoverRef = React.useRef(null);
+    // A standalone popover defaults to closed so it never inherits an unrelated
+    // overlay context (e.g. a Drawer's) and renders with no triggerRef; a
+    // context-driven popover forwards nothing and defers to that context
+    var resolvedIsOpen = contextDriven ? undefined : isOpen !== null && isOpen !== void 0 ? isOpen : false;
+    // Stable across renders so React does not detach and reattach the popover
+    // node every time the parent re-renders
+    var setRefs = useCallback(function (node) {
+        popoverRef.current = node;
+        if (typeof forwardedRef === 'function') {
+            forwardedRef(node);
+        }
+        else if (forwardedRef) {
+            forwardedRef.current = node;
+        }
+    }, [forwardedRef]);
+    var _e = useState(false), isNearEdge = _e[0], setIsNearEdge = _e[1];
+    var isCenterPlacement = placement === 'center';
+    useEffect(function useCenterPlacementOffset() {
+        var popover = popoverRef.current;
+        if (!popover || !isCenterPlacement)
+            return;
+        var updateCenterOffset = function () {
+            var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
+            var popoverStyles = getComputedStyle(popover);
+            var popoverHeight = popoverStyles
+                .getPropertyValue('--trigger-anchor-point')
+                .replace(/px/g, '')
+                .split(' ')[1];
+            if (trigger && popoverHeight) {
+                var triggerStyles = getComputedStyle(trigger);
+                var borderWidth = parseFloat(triggerStyles.borderWidth) || 0;
+                var totalHeight = trigger.clientHeight + borderWidth * 2;
+                popover.style.setProperty('--center-offset', Number(popoverHeight) / 2 + totalHeight / 2 + offset + 'px');
+            }
+        };
+        if (isOpen) {
+            requestAnimationFrame(updateCenterOffset);
+        }
+    }, [isCenterPlacement, isOpen, offset, triggerRef]);
+    useEffect(function useEdgeProximityDetection() {
+        var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
+        if (!trigger || !isCenterPlacement || !isOpen) {
+            return;
+        }
+        var checkEdgeProximity = function () {
+            var rect = trigger.getBoundingClientRect();
+            var threshold = CENTER_PLACEMENT_EDGE_THRESHOLD;
+            var nearTop = rect.top < threshold;
+            var nearBottom = window.innerHeight - rect.bottom < threshold;
+            var nearLeft = rect.left < threshold;
+            var nearRight = window.innerWidth - rect.right < threshold;
+            var isNear = nearTop || nearBottom || nearLeft || nearRight;
+            setIsNearEdge(isNear);
+        };
+        requestAnimationFrame(function () {
+            requestAnimationFrame(checkEdgeProximity);
+        });
+        var resizeTimeout;
+        var debouncedCheckEdgeProximity = function () {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(checkEdgeProximity, 100);
+        };
+        window.addEventListener('resize', debouncedCheckEdgeProximity);
+        return function () {
+            window.removeEventListener('resize', debouncedCheckEdgeProximity);
+            clearTimeout(resizeTimeout);
+            // reset after animation completes
+            setTimeout(function () {
+                setIsNearEdge(false);
+            }, 300);
+        };
+    }, [isCenterPlacement, isOpen, triggerRef]);
+    // Open state, trigger, and modality props are only forwarded when provided
+    // so a surrounding React Aria trigger context stays in control otherwise
+    return (React.createElement(Popover$1, __assign({ "aria-describedby": ariaDescribedby, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledby, className: clsx('react-aria-Popover focus-visible:ring', isCenterPlacement && !isNearEdge && 'center-placement'), offset: offset, placement: isCenterPlacement ? 'top' : placement, ref: setRefs }, (isNonModal !== undefined && { isNonModal: isNonModal }), (resolvedIsOpen !== undefined && { isOpen: resolvedIsOpen }), (onOpenChange && { onOpenChange: onOpenChange }), (triggerRef && { triggerRef: triggerRef })), children));
+});
+
+function getStartOfWeek(locale) {
+    var _a;
+    var locales = {
+        fr: {
+            'fr-CA': 0,
+        },
+    };
+    return (_a = locales === null || locales === void 0 ? void 0 : locales[locale]) === null || _a === void 0 ? void 0 : _a[window.navigator.language];
+}
+
+var calendarContainerClasses = 'max-w-xs p-6 font-sans rounded bg-white-100 shadow-1';
+/**
+ * Determines the first day of the week for the calendar. An explicit
+ * override always wins, otherwise the legacy behavior is preserved where
+ * specific navigator languages (e.g. fr-CA) start the week on Sunday even
+ * though the base locale does not. Returning undefined defers to the
+ * locale's default
+ */
+function useFirstDayOfWeek(override) {
+    var intl = useIntl();
+    return override !== null && override !== void 0 ? override : (getStartOfWeek(intl.locale) === 0 ? 'sun' : undefined);
+}
+/**
+ * Reads the calendar state from React Aria's context, so a component works
+ * inside both Calendar and RangeCalendar
+ */
+function useAnyCalendarState() {
+    var calendarState = useContext(CalendarStateContext);
+    var rangeCalendarState = useContext(RangeCalendarStateContext);
+    return calendarState !== null && calendarState !== void 0 ? calendarState : rangeCalendarState;
+}
+/**
+ * The month navigation header shared between the day, week and range
+ * calendars. When condensed, the previous/next buttons page one week at a
+ * time (by moving the focused date) instead of one month, since the grid only
+ * shows a single week
+ */
+function CalendarHeader(_a) {
+    var _b = _a.condensed, condensed = _b === void 0 ? false : _b;
+    var intl = useIntl();
+    var _c = useDateFormatters(), formatMonthAndYearLong = _c.formatMonthAndYearLong, formatYearAndMonth = _c.formatYearAndMonth;
+    var state = useAnyCalendarState();
+    if (!state) {
+        throw new Error('CalendarHeader must be rendered inside a Calendar or RangeCalendar');
+    }
+    var focusedDate = state.focusedDate;
+    // Use a date in the middle of the month to avoid timezone related shifts
+    // when formatting, mirroring the legacy DatePicker implementation
+    var month = new Date(focusedDate.year, focusedDate.month - 1, 15);
+    var focusPrevious = function () {
+        if (condensed) {
+            state.setFocusedDate(state.focusedDate.subtract({ weeks: 1 }));
+        }
+        else {
+            state.focusPreviousPage();
+        }
+    };
+    var focusNext = function () {
+        if (condensed) {
+            state.setFocusedDate(state.focusedDate.add({ weeks: 1 }));
+        }
+        else {
+            state.focusNextPage();
+        }
+    };
+    // Disable the paging buttons once the adjacent month falls entirely outside
+    // minValue/maxValue. These helpers reflect the month visible range, so they
+    // only apply to the (month-paging) non-condensed calendar; condensed week
+    // paging is left always-enabled
+    var isPreviousDisabled = !condensed && state.isPreviousVisibleRangeInvalid();
+    var isNextDisabled = !condensed && state.isNextVisibleRangeInvalid();
+    return (React.createElement("div", { className: "flex items-center justify-between" },
+        React.createElement("time", { "aria-hidden": "true", className: "text-sm font-medium leading-4", dateTime: formatYearAndMonth(month) }, formatMonthAndYearLong(month)),
+        React.createElement("div", { className: "flex items-center justify-between w-16" },
+            React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'DatePicker.previous' }), disabled: isPreviousDisabled, onClick: focusPrevious },
+                React.createElement(ChevronLeft, null)),
+            React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'DatePicker.next' }), disabled: isNextDisabled, onClick: focusNext },
+                React.createElement(ChevronRight, null)))));
+}
+/**
+ * A visually hidden live region that announces the week containing the
+ * focused date (e.g. "Week of January 12th, 2020") as the user navigates in
+ * week mode. React Aria labels each cell with its own date only, so without
+ * this a screen reader user never hears which week their keystroke landed on.
+ * The text only changes when focus crosses into a different week, so moving
+ * between days of the same week stays silent
+ */
+function WeekAnnouncement(_a) {
+    var firstDayOfWeek = _a.firstDayOfWeek;
+    var intl = useIntl();
+    var formatDateLong = useDateFormatters().formatDateLong;
+    var state = useAnyCalendarState();
+    if (!state) {
+        throw new Error('WeekAnnouncement must be rendered inside a Calendar or RangeCalendar');
+    }
+    var weekStart = startOfWeek(state.focusedDate, intl.locale, firstDayOfWeek);
+    return (React.createElement("div", { "aria-atomic": "true", "aria-live": "polite", className: "sr-only" }, intl.formatMessage({ id: 'DatePicker.week_of' }, {
+        // Constructed in local time purely for formatting, mirroring the
+        // month heading above
+        date: formatDateLong(new Date(weekStart.year, weekStart.month - 1, weekStart.day)),
+    })));
+}
+/**
+ * React Aria's CalendarGridBody always renders every week of the visible
+ * month, so a condensed calendar renders its own single row containing only
+ * the dates within the currently visible week
+ */
+function CondensedGridBody(_a) {
+    var children = _a.children;
+    var state = useAnyCalendarState();
+    if (!state) {
+        throw new Error('CondensedGridBody must be rendered inside a Calendar or RangeCalendar');
+    }
+    return (React.createElement("tbody", null,
+        React.createElement("tr", null, state.getDatesInWeek(0, state.focusedDate).map(function (date, index) {
+            return date ? (React.createElement(React.Fragment, { key: date.toString() }, children(date))) : (
+            // eslint-disable-next-line react/no-array-index-key
+            React.createElement("td", { key: index }));
+        }))));
+}
+/**
+ * The weekday header row and date cells shared between the day, week and
+ * range calendars
+ */
+function CalendarCells(_a) {
+    var _b = _a.condensed, condensed = _b === void 0 ? false : _b, mode = _a.mode, _c = _a.selectedWeek, selectedWeek = _c === void 0 ? null : _c, timezone = _a.timezone;
+    var intl = useIntl();
+    var state = useAnyCalendarState();
+    // Selecting a day from an adjacent month happens in two steps: the click
+    // moves focus, paging the calendar to that day's month, and this effect
+    // completes the selection once the day is inside the visible range.
+    // react-stately validates selections against the visible range, so
+    // selecting straight from the click would be silently dropped
+    var pendingOutsideDay = useRef(null);
+    useEffect(function () {
+        var date = pendingOutsideDay.current;
+        if (state &&
+            date &&
+            date.compare(state.visibleRange.start) >= 0 &&
+            date.compare(state.visibleRange.end) <= 0) {
+            pendingOutsideDay.current = null;
+            state.selectDate(date);
+        }
+    });
+    if (!state) {
+        throw new Error('CalendarCells must be rendered inside a Calendar or RangeCalendar');
+    }
+    var week = mode === 'week';
+    var dayOrRange = mode === 'day' || mode === 'range';
+    var inSelectedWeek = function (date) {
+        return selectedWeek !== null &&
+            date.compare(selectedWeek.start) >= 0 &&
+            date.compare(selectedWeek.end) <= 0;
+    };
+    // React Aria hard-disables the adjacent-month days that pad the grid's
+    // first and last weeks. Per design they stay selectable as long as they
+    // satisfy the calendar's own constraints (bounds, availability)
+    var isSelectableOutsideDay = function (date) {
+        return (date.compare(state.visibleRange.start) < 0 ||
+            date.compare(state.visibleRange.end) > 0) &&
+            !state.isDisabled &&
+            !state.isReadOnly &&
+            !state.isInvalid(date) &&
+            !state.isCellUnavailable(date);
+    };
+    var selectOutsideDay = function (date) {
+        pendingOutsideDay.current = date;
+        state.setFocusedDate(date);
+    };
+    var renderCell = function (date) {
+        var selectableOutsideDay = isSelectableOutsideDay(date);
+        return (React.createElement(CalendarCell, { className: function (_a) {
+                var isDisabled = _a.isDisabled, isOutsideMonth = _a.isOutsideMonth, isSelected = _a.isSelected, isSelectionEnd = _a.isSelectionEnd, isSelectionStart = _a.isSelectionStart, isUnavailable = _a.isUnavailable;
+                var selectedWeekDay = week && inSelectedWeek(date);
+                // Locale-aware: weekend days vary by locale (e.g. Fri/Sat in some
+                // regions) and this respects the calendar system rather than
+                // assuming a Gregorian Sat/Sun
+                var weekend = isWeekend(date, intl.locale);
+                return clsx('flex justify-center outline-none text-center', dayOrRange && 'group', 
+                // Text colors
+                dayOrRange &&
+                    isSelected &&
+                    (mode === 'day' || isSelectionStart || isSelectionEnd)
+                    ? 'text-white-100'
+                    : null, dayOrRange && !isSelected && !weekend && !isOutsideMonth
+                    ? 'text-black-90'
+                    : null, dayOrRange && !isSelected && isOutsideMonth && !condensed
+                    ? 'text-black-60'
+                    : null, dayOrRange && !isSelected && weekend ? 'text-black-60' : null, week && weekend && !selectedWeekDay ? 'text-black-60' : null, 
+                // Range selection highlight, including the hover preview
+                // while the user is picking the end of the range
+                mode === 'range' && isSelected
+                    ? 'bg-primary-20 [td:first-child_&]:rounded-l-full [td:last-child_&]:rounded-r-full'
+                    : null, mode === 'range' && isSelectionStart ? 'rounded-l-full' : null, mode === 'range' && isSelectionEnd ? 'rounded-r-full' : null, 
+                // Week mode highlights the entire row
+                week &&
+                    '[td:first-child_&]:rounded-l-full [td:last-child_&]:rounded-r-full', week && selectedWeekDay ? 'bg-primary-main text-white-100' : null, 
+                // Preview the week that would be selected: on the hovered row for
+                // pointer users, and on the row containing the keyboard-focused
+                // date for keyboard users. Driven by the native :focus-visible
+                // pseudo-class rather than React Aria's data-focus-visible
+                // attribute, which is removed a frame before focus moves and made
+                // the highlight flicker on every keystroke
+                week && !selectedWeekDay
+                    ? '[tr:hover_&]:bg-primary-20 [tr:active_&]:bg-primary-20 [tr:has(:focus-visible)_&]:bg-primary-20'
+                    : null, (isDisabled && !selectableOutsideDay) || isUnavailable
+                    ? 'cursor-not-allowed opacity-60'
+                    : 'cursor-pointer');
+            }, date: date }, function (_a) {
+            var formattedDate = _a.formattedDate, isSelected = _a.isSelected, isSelectionEnd = _a.isSelectionEnd, isSelectionStart = _a.isSelectionStart;
+            var selectedDay = (mode === 'day' && isSelected) ||
+                (mode === 'range' &&
+                    isSelected &&
+                    (isSelectionStart || isSelectionEnd));
+            var selectedWeekDay = week && inSelectedWeek(date);
+            var today = isToday(date, timezone);
+            return (React.createElement("time", __assign({ className: clsx('flex items-center justify-center w-8 h-8 text-sm leading-4 rounded-full', 
+                // Keyboard focus indicator, driven by the parent cell's
+                // native :focus-visible so the ring moves atomically with DOM
+                // focus. React Aria's isFocusVisible render prop clears one
+                // render before focus actually moves to the next cell, which
+                // painted a ring-less frame on every keystroke (and briefly
+                // ringed the wrong cell when crossing months)
+                '[:focus-visible>&]:ring', 
+                // Hover and focus tints are skipped on the selected day so
+                // the solid selected fill shows immediately after clicking,
+                // while the cell is still hovered and focused
+                dayOrRange &&
+                    !selectedDay &&
+                    'group-active:bg-primary-20 group-focus:bg-primary-20 group-hover:bg-primary-20', selectedDay ? 'bg-primary-main' : null, today && !selectedDay && dayOrRange ? 'bg-black-10' : null, today && week && !selectedWeekDay
+                    ? 'bg-black-10 group-active:bg-primary-20'
+                    : null, today && week && selectedWeekDay ? 'bg-primary-dark' : null), dateTime: date.toString() }, (selectableOutsideDay && {
+                onClick: function () { return selectOutsideDay(date); },
+            })), formattedDate));
+        }));
+    };
+    return (React.createElement(CalendarGrid, { className: "w-full mt-4 table-fixed border-separate border-spacing-y-2", weekdayStyle: "short" },
+        React.createElement(CalendarGridHeader, null, function (day) { return (React.createElement(CalendarHeaderCell, { className: "text-xs font-normal leading-4 text-center text-black-90" }, day)); }),
+        condensed ? (React.createElement(CondensedGridBody, null, renderCell)) : (React.createElement(CalendarGridBody, null, renderCell))));
+}
+
+/**
+ * Returns the given IANA timezone when it is valid, falling back to the
+ * system timezone otherwise
+ */
+function resolveTimezone(timezone) {
+    if (timezone) {
+        try {
+            Intl.DateTimeFormat(undefined, { timeZone: timezone });
+            return timezone;
+        }
+        catch (e) {
+            // Invalid timezone — fall through to the system timezone
+        }
+    }
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+/**
+ * Converts a native Date into a CalendarDate as read in the given timezone.
+ * This is the inverse of toNativeDate, so echoing an onChange value back into
+ * the controlled value prop round-trips to the same day rather than drifting.
+ */
+function toCalendarDate(date, timezone) {
+    return toCalendarDate$1(fromDate(date, timezone));
+}
+/**
+ * Converts a CalendarDate back into a native Date at midnight in the
+ * provided timezone
+ */
+function toNativeDate(value, timezone) {
+    return value.toDate(timezone);
+}
+/**
+ * Builds the shared date-constraint props that both the segmented field and the
+ * standalone Calendar hand to react-aria: the min/max bounds (converted into
+ * the given timezone) and the unavailable-date predicate (wrapped to receive a
+ * native Date). Inverted bounds are swapped rather than passed through, because
+ * handing react-stately a minValue greater than its maxValue throws the
+ * focused-date constraint into a render-phase update loop ("too many
+ * re-renders"). Keys are omitted when their source is undefined, so the result
+ * is safe to spread directly onto the calendar props.
+ */
+function calendarConstraints(_a, timezone) {
+    var isDateUnavailable = _a.isDateUnavailable, maxDate = _a.maxDate, minDate = _a.minDate;
+    var rawMin = minDate ? toCalendarDate(minDate, timezone) : undefined;
+    var rawMax = maxDate ? toCalendarDate(maxDate, timezone) : undefined;
+    var inverted = rawMin && rawMax && rawMin.compare(rawMax) > 0;
+    var minValue = inverted ? rawMax : rawMin;
+    var maxValue = inverted ? rawMin : rawMax;
+    return __assign(__assign(__assign({}, (minValue && { minValue: minValue })), (maxValue && { maxValue: maxValue })), (isDateUnavailable && {
+        isDateUnavailable: function (date) {
+            return isDateUnavailable(toNativeDate(date, timezone));
+        },
+    }));
+}
+
+var END_OF_DAY = new Time(23, 59, 59, 999);
+function firstDate(value) {
+    return Array.isArray(value) ? value[0] : value;
+}
+function Calendar(props) {
+    var ariaLabel = props["aria-label"], _a = props.autoFocus, autoFocus = _a === void 0 ? false : _a, className = props.className, _b = props.condensed, condensed = _b === void 0 ? false : _b, firstDayOfWeekProp = props.firstDayOfWeek, id = props.id, isDateUnavailable = props.isDateUnavailable, _c = props.isDisabled, isDisabled = _c === void 0 ? false : _c, maxDate = props.maxDate, minDate = props.minDate, _d = props.mode, mode = _d === void 0 ? 'day' : _d, timezone = props.timezone;
+    var intl = useIntl();
+    var firstDayOfWeek = useFirstDayOfWeek(firstDayOfWeekProp);
+    var resolvedTimezone = useMemo(function () { return resolveTimezone(timezone); }, [timezone]);
+    var snapToWeek = function (date) { return ({
+        end: endOfWeek(date, intl.locale, firstDayOfWeek),
+        start: startOfWeek(date, intl.locale, firstDayOfWeek),
+    }); };
+    var _e = useState(function () {
+        var _a;
+        if (mode !== 'week') {
+            return null;
+        }
+        var initial = firstDate((_a = props.defaultValue) !== null && _a !== void 0 ? _a : null);
+        return initial ? toCalendarDate(initial, resolvedTimezone) : null;
+    }), internalWeekAnchor = _e[0], setInternalWeekAnchor = _e[1];
+    var constraints = calendarConstraints({ isDateUnavailable: isDateUnavailable, maxDate: maxDate, minDate: minDate }, resolvedTimezone);
+    // The bounds are read back out for week-mode clamping below (clampWeekValue)
+    var maxValue = constraints.maxValue, minValue = constraints.minValue;
+    var sharedProps = __assign(__assign(__assign({ autoFocus: autoFocus, className: clsx(calendarContainerClasses, className), 
+        // The month stays the visible duration even when condensed; the condensed
+        // grid renders a single week itself (CondensedGridBody) and the header
+        // pages by week. A one-week visibleDuration cannot honor firstDayOfWeek
+        // (react-stately's range alignment ignores it), which misaligns the row
+        firstDayOfWeek: firstDayOfWeek, isDisabled: isDisabled }, (ariaLabel && { 'aria-label': ariaLabel })), (id && { id: id })), constraints);
+    if (mode === 'range') {
+        var _f = props, allowsNonContiguousRanges = _f.allowsNonContiguousRanges, defaultValue_1 = _f.defaultValue, onChange_1 = _f.onChange, value_1 = _f.value;
+        var rangeProps = __assign(__assign(__assign(__assign(__assign(__assign({}, sharedProps), (allowsNonContiguousRanges && { allowsNonContiguousRanges: allowsNonContiguousRanges })), (defaultValue_1 !== undefined && {
+            defaultValue: defaultValue_1 && {
+                end: toCalendarDate(defaultValue_1[1], resolvedTimezone),
+                start: toCalendarDate(defaultValue_1[0], resolvedTimezone),
+            },
+        })), (value_1 !== undefined && {
+            value: value_1 && {
+                end: toCalendarDate(value_1[1], resolvedTimezone),
+                start: toCalendarDate(value_1[0], resolvedTimezone),
+            },
+        })), { onChange: function (range) {
+                return onChange_1 === null || onChange_1 === void 0 ? void 0 : onChange_1([
+                    toNativeDate(range.start, resolvedTimezone),
+                    toNativeDate(range.end, resolvedTimezone),
+                ]);
+            } }), (!value_1 &&
+            !defaultValue_1 && { defaultFocusedValue: today(resolvedTimezone) }));
+        return (React.createElement(I18nProvider, { locale: intl.locale },
+            React.createElement(RangeCalendar, __assign({}, rangeProps),
+                React.createElement(CalendarHeader, { condensed: condensed }),
+                React.createElement(CalendarCells, { condensed: condensed, mode: "range", timezone: resolvedTimezone }))));
+    }
+    if (mode === 'week') {
+        var _g = props, onChange_2 = _g.onChange, value_2 = _g.value;
+        var controlled_1 = value_2 !== undefined;
+        var anchorDate = controlled_1
+            ? (function () {
+                var date = firstDate(value_2 !== null && value_2 !== void 0 ? value_2 : null);
+                return date ? toCalendarDate(date, resolvedTimezone) : null;
+            })()
+            : internalWeekAnchor;
+        var selectedWeek = anchorDate ? snapToWeek(anchorDate) : null;
+        // The week start can fall before minValue (or after maxValue) when a bound
+        // lands mid-week; clamp the value handed to the calendar into range so the
+        // whole calendar is not marked invalid. The full-week highlight comes from
+        // CalendarCells' selectedWeek, independent of this single value
+        var clampWeekValue = function (date) {
+            if (minValue && date.compare(minValue) < 0) {
+                return minValue;
+            }
+            if (maxValue && date.compare(maxValue) > 0) {
+                return maxValue;
+            }
+            return date;
+        };
+        var weekProps = __assign(__assign(__assign({}, sharedProps), { 
+            // React Aria appends the visible month, so assistive technology hears
+            // "Select a week, January 2020" and knows a press picks the whole week
+            'aria-label': ariaLabel !== null && ariaLabel !== void 0 ? ariaLabel : intl.formatMessage({ id: 'DatePicker.select_week' }), value: selectedWeek ? clampWeekValue(selectedWeek.start) : null, onChange: function (date) {
+                var week = snapToWeek(date);
+                if (!controlled_1) {
+                    setInternalWeekAnchor(week.start);
+                }
+                onChange_2 === null || onChange_2 === void 0 ? void 0 : onChange_2([
+                    toNativeDate(week.start, resolvedTimezone),
+                    toCalendarDateTime(week.end, END_OF_DAY).toDate(resolvedTimezone),
+                ]);
+            } }), (!selectedWeek && { defaultFocusedValue: today(resolvedTimezone) }));
+        return (React.createElement(I18nProvider, { locale: intl.locale },
+            React.createElement(Calendar$1, __assign({}, weekProps),
+                React.createElement(CalendarHeader, { condensed: condensed }),
+                React.createElement(CalendarCells, { condensed: condensed, mode: "week", selectedWeek: selectedWeek, timezone: resolvedTimezone }),
+                React.createElement(WeekAnnouncement, { firstDayOfWeek: firstDayOfWeek }))));
+    }
+    var _h = props, defaultValue = _h.defaultValue, onChange = _h.onChange, value = _h.value;
+    var dayProps = __assign(__assign(__assign(__assign(__assign({}, sharedProps), (defaultValue !== undefined && {
+        defaultValue: defaultValue && toCalendarDate(defaultValue, resolvedTimezone),
+    })), (value !== undefined && {
+        value: value && toCalendarDate(value, resolvedTimezone),
+    })), { onChange: function (date) { return onChange === null || onChange === void 0 ? void 0 : onChange(toNativeDate(date, resolvedTimezone)); } }), (!value &&
+        !defaultValue && { defaultFocusedValue: today(resolvedTimezone) }));
+    return (React.createElement(I18nProvider, { locale: intl.locale },
+        React.createElement(Calendar$1, __assign({}, dayProps),
+            React.createElement(CalendarHeader, { condensed: condensed }),
+            React.createElement(CalendarCells, { condensed: condensed, mode: "day", timezone: resolvedTimezone }))));
+}
+
+function useFieldStyles(size, status, variant, open) {
+    // Memoized so the styles object keeps a stable identity across renders that
+    // don't change size/status/variant/open, avoiding needless child re-renders
+    return useMemo(function () {
+        return {
+            button: 'flex items-center justify-center shrink-0 w-6 h-6 mr-2 rounded-full outline-none text-black-60 hover:bg-black-10 focus-visible:ring disabled:text-black-30',
+            error: clsx(baseClasses.help, 'text-error-main'),
+            group: clsx('group items-center', variant === 'filled' ? 'pt-3' : null, baseClasses.inputWrapper, parentSizes[variant][size], 
+            // While the calendar is open the field keeps its focused look even
+            // though DOM focus may be inside the popover, matching the legacy
+            // DatePickerInput (TextInput's appearFocused)
+            open
+                ? appearFocusedStyles[variant][status].default
+                : variants$3[variant][status].default, focusedStyles[variant][status].default),
+            // Description text stays neutral (dimmed when disabled); error text is
+            // carried by `error` (styled red) so a description is never mistaken
+            // for an error
+            help: clsx(baseClasses.help, status === 'disabled' ? 'text-black-30' : 'text-black-60'),
+            icon: clsx('shrink-0 flex items-center ml-3 w-5', status === 'disabled' ? 'text-black-30' : 'text-black-60'),
+            // Reuse TextInput's base label classes so the max-width (and therefore
+            // truncation) and transition match the rest of the field family
+            label: clsx(baseClasses.label, labels.value[variant], 
+            // The label matches the field: focused color while the calendar is
+            // open, value color otherwise
+            open
+                ? labelColors.focused[variant][status].default
+                : labelColors.value[variant][status].default, labelSpacing.focused[variant][size], status === 'error'
+                ? 'group-focus-within:text-error-main'
+                : 'group-focus-within:text-primary-main'),
+            segment: function (_a) {
+                var isDisabled = _a.isDisabled, isPlaceholder = _a.isPlaceholder, type = _a.type;
+                return clsx(
+                // py-0.5 lifts the ~20px line box to a 24px tap target (WCAG 2.5.8)
+                'px-0.5 py-0.5 text-sm leading-5 tabular-nums rounded-sm outline-none focus:bg-primary-main focus:text-white-100 caret-transparent', isDisabled
+                    ? 'text-black-30'
+                    : // Literal separators (e.g. "/") and placeholders share the muted
+                        // tone so a separator never reads darker than the value it sits by
+                        type === 'literal' || isPlaceholder
+                            ? 'text-black-60'
+                            : 'text-black-90');
+            },
+        };
+    }, [open, size, status, variant]);
+}
+/**
+ * The calendar inside the popover, wrapped in a Dialog only when the popover
+ * is modal (button and keyboard opens), for its focus trap and accessible
+ * name. The segment-opened non-modal popover renders without a Dialog because
+ * React Aria's Dialog focuses itself on mount whenever focus is outside it,
+ * which would pull focus out of the segments the user just clicked
+ */
+function CalendarPopoverContent(_a) {
+    var children = _a.children, modal = _a.modal;
+    return modal ? React.createElement(Dialog$1, { className: "outline-none" }, children) : children;
+}
+function BetterDatePicker(props) {
+    var _a = props.condensed, condensed = _a === void 0 ? false : _a, _b = props.disabled, disabled = _b === void 0 ? false : _b, _c = props.error, error = _c === void 0 ? false : _c, errorMessage = props.errorMessage, firstDayOfWeekProp = props.firstDayOfWeek, helperText = props.helperText, isDateUnavailable = props.isDateUnavailable, label = props.label, maxDate = props.maxDate, minDate = props.minDate, _d = props.mode, mode = _d === void 0 ? 'day' : _d, name = props.name, _e = props.required, required = _e === void 0 ? false : _e, _f = props.size, size = _f === void 0 ? 'medium' : _f, timezone = props.timezone, _g = props.trigger, trigger = _g === void 0 ? 'field' : _g, _h = props.validationBehavior, validationBehavior = _h === void 0 ? 'aria' : _h, _j = props.variant, variant = _j === void 0 ? 'outlined' : _j;
+    // displayFormat only exists for day and range; week always renders as text
+    var _k = props.displayFormat, displayFormat = _k === void 0 ? 'segments' : _k;
+    var intl = useIntl();
+    var firstDayOfWeek = useFirstDayOfWeek(firstDayOfWeekProp);
+    var resolvedTimezone = useMemo(function () { return resolveTimezone(timezone); }, [timezone]);
+    var status = disabled ? 'disabled' : error ? 'error' : 'default';
+    // Segments mode opens the calendar when the segment area is clicked, in
+    // addition to the calendar button and the built-in Alt+ArrowDown shortcut.
+    // A segment click renders the popover non-modal so focus stays in the
+    // segments and typing keeps working while the calendar is visible; the
+    // button and keyboard paths keep the default modal popover, which moves
+    // focus into the calendar grid
+    var _l = useState(false), open = _l[0], setOpen = _l[1];
+    var styles = useFieldStyles(size, status, variant, open);
+    var _m = useState(false), openedFromSegments = _m[0], setOpenedFromSegments = _m[1];
+    // Remounts the calendar while the non-modal popover is open so its visible
+    // month follows the date being typed into the segments
+    var _o = useState(0), calendarKey = _o[0], setCalendarKey = _o[1];
+    var groupRef = useRef(null);
+    var popoverRef = useRef(null);
+    // Tracks deferred state updates so they can be cancelled on unmount,
+    // avoiding setState-on-an-unmounted-component warnings
+    var deferredTimeouts = useRef([]);
+    var defer = function (callback) {
+        deferredTimeouts.current.push(window.setTimeout(callback, 0));
+    };
+    useEffect(function () { return function () {
+        deferredTimeouts.current.forEach(function (id) { return window.clearTimeout(id); });
+    }; }, []);
+    var openFromSegments = function (event) {
+        // Ignore right/middle-button releases so a context-menu or secondary
+        // press does not pop the calendar open (button > 0 is a secondary button;
+        // the primary button, and environments that omit it, report 0). Skip when
+        // already open so a stray pointerup cannot flip a modal popover non-modal
+        if (disabled || open || event.button > 0) {
+            return;
+        }
+        setOpenedFromSegments(true);
+        // Deferred so the click event that follows pointerup finishes first;
+        // the non-modal popover would otherwise see that click as an outside
+        // interaction and immediately close again
+        defer(function () { return setOpen(true); });
+    };
+    var handleOpenChange = function (isOpen) {
+        setOpen(isOpen);
+        if (!isOpen) {
+            setOpenedFromSegments(false);
+        }
+    };
+    var closeFromSegments = function () {
+        setOpen(false);
+        setOpenedFromSegments(false);
+    };
+    // The non-modal popover keeps focus in the segments, which means the
+    // popover's own Escape and outside interaction handling never engage, so
+    // both are reimplemented here for the segment opened state
+    var handleFieldKeyDown = function (event) {
+        if (event.key === 'Escape' && open && openedFromSegments) {
+            closeFromSegments();
+        }
+    };
+    useEffect(function () {
+        if (!open || !openedFromSegments) {
+            return undefined;
+        }
+        var handlePointerDown = function (event) {
+            var _a, _b;
+            var target = event.target;
+            if (((_a = groupRef.current) === null || _a === void 0 ? void 0 : _a.contains(target)) ||
+                ((_b = popoverRef.current) === null || _b === void 0 ? void 0 : _b.contains(target))) {
+                return;
+            }
+            closeFromSegments();
+        };
+        document.addEventListener('pointerdown', handlePointerDown, true);
+        return function () {
+            return document.removeEventListener('pointerdown', handlePointerDown, true);
+        };
+    }, [open, openedFromSegments]);
+    var syncCalendarToTypedValue = function () {
+        if (open && openedFromSegments) {
+            // Deferred so the remount samples the picker state after the segment
+            // edit that triggered the change has fully settled
+            defer(function () { return setCalendarKey(function (key) { return key + 1; }); });
+        }
+    };
+    var sharedFieldProps = __assign({ firstDayOfWeek: firstDayOfWeek, granularity: 'day', isDisabled: disabled, isInvalid: error || undefined, isRequired: required, validationBehavior: validationBehavior }, calendarConstraints({ isDateUnavailable: isDateUnavailable, maxDate: maxDate, minDate: minDate }, resolvedTimezone));
+    var helperTextElement = helperText ? (React.createElement(Text$4, { className: styles.help, slot: "description" }, helperText)) : null;
+    // FieldError self-shows only while the field is invalid (error === true) and
+    // is auto-associated as the field's error message for assistive technology
+    var errorElement = errorMessage ? (React.createElement(FieldError, { className: styles.error }, errorMessage)) : null;
+    // The segmented AriaDatePicker field is used only when a field trigger
+    // shows editable segments. Every other trigger, the text display format,
+    // and week mode render through TextTriggerField
+    var useSegmentedField = mode !== 'week' && trigger === 'field' && displayFormat === 'segments';
+    if (!useSegmentedField) {
+        return (React.createElement(TextTriggerField, __assign({}, props, { condensed: condensed, firstDayOfWeek: firstDayOfWeek, mode: mode, timezone: resolvedTimezone, trigger: trigger })));
+    }
+    if (mode === 'range') {
+        var _p = props, allowsNonContiguousRanges = _p.allowsNonContiguousRanges, defaultValue_1 = _p.defaultValue, onChange_1 = _p.onChange, value_1 = _p.value;
+        var handleRangeChange = function (range) {
+            syncCalendarToTypedValue();
+            onChange_1 === null || onChange_1 === void 0 ? void 0 : onChange_1(range && [
+                toNativeDate(range.start, resolvedTimezone),
+                toNativeDate(range.end, resolvedTimezone),
+            ]);
+        };
+        return (React.createElement(I18nProvider, { locale: intl.locale },
+            React.createElement(DateRangePicker, __assign({}, sharedFieldProps, { className: baseClasses.container, isOpen: open, onOpenChange: handleOpenChange }, (allowsNonContiguousRanges && { allowsNonContiguousRanges: allowsNonContiguousRanges }), (name && { endName: "".concat(name, "-end"), startName: "".concat(name, "-start") }), (defaultValue_1 !== undefined && {
+                defaultValue: defaultValue_1 && {
+                    end: toCalendarDate(defaultValue_1[1], resolvedTimezone),
+                    start: toCalendarDate(defaultValue_1[0], resolvedTimezone),
+                },
+            }), (value_1 !== undefined && {
+                value: value_1 && {
+                    end: toCalendarDate(value_1[1], resolvedTimezone),
+                    start: toCalendarDate(value_1[0], resolvedTimezone),
+                },
+            }), { onChange: handleRangeChange }),
+                React.createElement(Group$6, { className: styles.group, onKeyDown: handleFieldKeyDown, ref: groupRef },
+                    React.createElement(Label$2, { className: styles.label }, label),
+                    React.createElement("span", { className: styles.icon },
+                        React.createElement(DateRange, null)),
+                    React.createElement("div", { className: "flex items-center flex-1 min-w-0 px-3 overflow-x-auto", onPointerUp: openFromSegments },
+                        React.createElement(DateInput, { className: "flex", slot: "start" }, function (segment) { return (React.createElement(DateSegment, { className: styles.segment, segment: segment })); }),
+                        React.createElement("span", { "aria-hidden": "true", className: "px-1 text-sm text-black-60" }, "\u2014"),
+                        React.createElement(DateInput, { className: "flex", slot: "end" }, function (segment) { return (React.createElement(DateSegment, { className: styles.segment, segment: segment })); })),
+                    React.createElement(Button$3, { className: styles.button },
+                        React.createElement("span", { className: "w-5" },
+                            React.createElement(ExpandMore, null)))),
+                helperTextElement,
+                errorElement,
+                React.createElement(Popover, { contextDriven: true, isNonModal: openedFromSegments, ref: popoverRef },
+                    React.createElement(CalendarPopoverContent, { modal: !openedFromSegments },
+                        React.createElement(RangeCalendar, __assign({ className: calendarContainerClasses, key: calendarKey }, (openedFromSegments && { autoFocus: false })),
+                            React.createElement(CalendarHeader, { condensed: condensed }),
+                            React.createElement(CalendarCells, { condensed: condensed, mode: "range", timezone: resolvedTimezone })))))));
+    }
+    var _q = props, defaultValue = _q.defaultValue, onChange = _q.onChange, value = _q.value;
+    var handleDayChange = function (date) {
+        syncCalendarToTypedValue();
+        onChange === null || onChange === void 0 ? void 0 : onChange(date && toNativeDate(date, resolvedTimezone));
+    };
+    return (React.createElement(I18nProvider, { locale: intl.locale },
+        React.createElement(DatePicker$1, __assign({}, sharedFieldProps, { className: baseClasses.container, isOpen: open, onOpenChange: handleOpenChange }, (name && { name: name }), (defaultValue !== undefined && {
+            defaultValue: defaultValue && toCalendarDate(defaultValue, resolvedTimezone),
+        }), (value !== undefined && {
+            value: value && toCalendarDate(value, resolvedTimezone),
+        }), { onChange: handleDayChange }),
+            React.createElement(Group$6, { className: styles.group, onKeyDown: handleFieldKeyDown, ref: groupRef },
+                React.createElement(Label$2, { className: styles.label }, label),
+                React.createElement("span", { className: styles.icon },
+                    React.createElement(EventIcon, null)),
+                React.createElement("div", { className: "flex items-center flex-1 min-w-0 px-3", onPointerUp: openFromSegments },
+                    React.createElement(DateInput, { className: "flex items-center" }, function (segment) { return (React.createElement(DateSegment, { className: styles.segment, segment: segment })); })),
+                React.createElement(Button$3, { className: styles.button },
+                    React.createElement("span", { className: "w-5" },
+                        React.createElement(ExpandMore, null)))),
+            helperTextElement,
+            errorElement,
+            React.createElement(Popover, { contextDriven: true, isNonModal: openedFromSegments, ref: popoverRef },
+                React.createElement(CalendarPopoverContent, { modal: !openedFromSegments },
+                    React.createElement(Calendar$1, __assign({ className: calendarContainerClasses, key: calendarKey }, (openedFromSegments && { autoFocus: false })),
+                        React.createElement(CalendarHeader, { condensed: condensed }),
+                        React.createElement(CalendarCells, { condensed: condensed, mode: "day", timezone: resolvedTimezone })))))));
+}
+/**
+ * A field-styled trigger button showing the selected value as localized text,
+ * with the calendar in a popover. Used for every mode when displayFormat is
+ * 'text', and always for week mode since week selection is not natively
+ * supported by React Aria's DatePicker
+ */
+function TextTriggerField(_a) {
+    var allowsNonContiguousRanges = _a.allowsNonContiguousRanges, _b = _a.condensed, condensed = _b === void 0 ? false : _b, defaultValue = _a.defaultValue, _c = _a.disabled, disabled = _c === void 0 ? false : _c, _d = _a.error, error = _d === void 0 ? false : _d, errorMessage = _a.errorMessage, firstDayOfWeek = _a.firstDayOfWeek, helperText = _a.helperText, isDateUnavailable = _a.isDateUnavailable, label = _a.label, maxDate = _a.maxDate, minDate = _a.minDate, mode = _a.mode, name = _a.name, onChange = _a.onChange, _e = _a.size, size = _e === void 0 ? 'medium' : _e, timezone = _a.timezone, trigger = _a.trigger, value = _a.value, _f = _a.variant, variant = _f === void 0 ? 'outlined' : _f;
+    // A function trigger renders a caller supplied element; the string presets
+    // map to the built-in anchor treatments ('field' being the full-width
+    // field, rendered when anchor is null)
+    var customTrigger = typeof trigger === 'function' ? trigger : null;
+    var anchor = trigger === 'icon' && mode === 'day'
+        ? 'icon'
+        : trigger === 'icon' || trigger === 'text'
+            ? 'text'
+            : null;
+    var intl = useIntl();
+    var labelId = useId();
+    var valueId = useId();
+    var triggerId = useId();
+    var helpId = useId();
+    var errorId = useId();
+    // The error message shows, and is associated, only while error is true
+    var showError = error && Boolean(errorMessage);
+    var describedBy = [helperText ? helpId : null, showError ? errorId : null]
+        .filter(Boolean)
+        .join(' ') || undefined;
+    var formatDateLocal = useDateFormatters().formatDateLocal;
+    // Serializes a Date as an ISO day read in the configured timezone, so the
+    // submitted value matches the day shown rather than the runner's local day
+    var isoDate = function (date) {
+        var calendarDate = toCalendarDate(date, timezone);
+        return "".concat(calendarDate.year, "-").concat(String(calendarDate.month).padStart(2, '0'), "-").concat(String(calendarDate.day).padStart(2, '0'));
+    };
+    // A custom trigger renders outside a DialogTrigger, so the popover is
+    // controlled and anchored to the caller's element through this ref
+    var triggerRef = useRef(null);
+    var setTriggerRef = useCallback(function (element) {
+        triggerRef.current = element;
+    }, []);
+    var _g = useState(false), open = _g[0], setOpen = _g[1];
+    var wasOpen = useRef(false);
+    var status = disabled ? 'disabled' : error ? 'error' : 'default';
+    // Computed here rather than passed from the parent so the field keeps its
+    // focused look while this trigger's own popover is open
+    var styles = useFieldStyles(size, status, variant, open);
+    var _h = useState(defaultValue !== null && defaultValue !== void 0 ? defaultValue : null), internalValue = _h[0], setInternalValue = _h[1];
+    var controlled = value !== undefined;
+    var selectedValue = controlled
+        ? value !== null && value !== void 0 ? value : null
+        : internalValue;
+    // Canonical selected week as CalendarDates — the single source for the
+    // displayed text, the hidden form value and triggerState in week mode. Uses
+    // the same startOfWeek/endOfWeek (locale + firstDayOfWeek) as the calendar's
+    // onChange, so what is shown, submitted and emitted always describe the same
+    // week rather than being re-derived independently
+    var weekRange = (function () {
+        if (mode !== 'week') {
+            return null;
+        }
+        var weekAnchor = Array.isArray(selectedValue)
+            ? selectedValue[0]
+            : selectedValue;
+        if (!weekAnchor) {
+            return null;
+        }
+        var anchorDate = toCalendarDate(weekAnchor, timezone);
+        return {
+            end: endOfWeek(anchorDate, intl.locale, firstDayOfWeek),
+            start: startOfWeek(anchorDate, intl.locale, firstDayOfWeek),
+        };
+    })();
+    var displayedValue = mode === 'week'
+        ? weekRange && [
+            toNativeDate(weekRange.start, timezone),
+            toNativeDate(weekRange.end, timezone),
+        ]
+        : selectedValue;
+    // The anchor display condenses ranges so the month and year are not
+    // repeated when both dates share them, e.g. "Jun 19 – 25, 2026"
+    var displayedText = (function () {
+        if (!displayedValue) {
+            return '';
+        }
+        // Week text is formatted from the canonical CalendarDates with the
+        // configured timezone so it cannot drift by a day from the emitted value
+        if (mode === 'week' && weekRange) {
+            var start = toNativeDate(weekRange.start, timezone);
+            var end = toNativeDate(weekRange.end, timezone);
+            var weekFormatter = new Intl.DateTimeFormat(intl.locale, {
+                day: 'numeric',
+                month: 'short',
+                timeZone: timezone,
+                year: 'numeric',
+            });
+            return anchor
+                ? weekFormatter.formatRange(start, end)
+                : "".concat(weekFormatter.format(start), " \u2014 ").concat(weekFormatter.format(end));
+        }
+        if (Array.isArray(displayedValue)) {
+            return anchor
+                ? new Intl.DateTimeFormat(intl.locale, {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                }).formatRange(displayedValue[0], displayedValue[1])
+                : "".concat(formatDateLocal(displayedValue[0]), " \u2014 ").concat(formatDateLocal(displayedValue[1]));
+        }
+        return formatDateLocal(displayedValue);
+    })();
+    var handleChange = function (next) {
+        if (!controlled) {
+            setInternalValue(next);
+        }
+        setOpen(false);
+        onChange === null || onChange === void 0 ? void 0 : onChange(next);
+    };
+    // A custom trigger renders outside a DialogTrigger and the standalone
+    // popover has no focus scope, so nothing returns focus to the trigger when
+    // the calendar closes. Restore it here on close, matching how a
+    // DialogTrigger returns focus to its trigger
+    useEffect(function () {
+        var _a;
+        if (customTrigger && wasOpen.current && !open) {
+            (_a = triggerRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+        }
+        wasOpen.current = open;
+    }, [customTrigger, open]);
+    var triggerState = {
+        displayedText: displayedText,
+        isDisabled: disabled,
+        isOpen: open,
+        value: displayedValue,
+    };
+    // The calendar dialog is identical for every trigger; only the surrounding
+    // trigger/popover wiring differs
+    var calendar = (React.createElement(Dialog$1, { "aria-labelledby": labelId, className: "outline-none" },
+        React.createElement(Calendar
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        , __assign({ 
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus: true, condensed: condensed, firstDayOfWeek: firstDayOfWeek, isDateUnavailable: isDateUnavailable, maxDate: maxDate, minDate: minDate, mode: mode, onChange: handleChange, timezone: timezone, value: selectedValue }, (allowsNonContiguousRanges && { allowsNonContiguousRanges: allowsNonContiguousRanges })))));
+    var footer = (React.createElement(React.Fragment, null,
+        helperText ? (React.createElement("span", { className: styles.help, id: helpId }, helperText)) : null,
+        showError ? (React.createElement("span", { className: styles.error, id: errorId }, errorMessage)) : null,
+        name && mode === 'day' ? (React.createElement("input", { name: name, type: "hidden", value: displayedValue && !Array.isArray(displayedValue)
+                ? isoDate(displayedValue)
+                : '' })) : null,
+        name && mode === 'range' ? (React.createElement(React.Fragment, null,
+            React.createElement("input", { name: "".concat(name, "-start"), type: "hidden", value: Array.isArray(displayedValue) ? isoDate(displayedValue[0]) : '' }),
+            React.createElement("input", { name: "".concat(name, "-end"), type: "hidden", value: Array.isArray(displayedValue) ? isoDate(displayedValue[1]) : '' }))) : null,
+        name && mode === 'week' ? (React.createElement("input", { name: name, type: "hidden", value: Array.isArray(displayedValue)
+                ? "".concat(isoDate(displayedValue[0]), "/").concat(isoDate(displayedValue[1]))
+                : '' })) : null));
+    // A custom trigger renders the caller's element and spreads triggerProps
+    // onto it. The popover is controlled here (rather than through a
+    // DialogTrigger) and anchored to the element via triggerRef; passing
+    // triggerRef also excludes the element from the popover's outside-press
+    // dismissal, so its onClick can toggle the calendar open and closed
+    if (customTrigger) {
+        var triggerProps = __assign(__assign({ 'aria-expanded': open, 'aria-haspopup': 'dialog', 
+            // Self-referencing id so assistive tech announces the field label
+            // followed by the element's own text (the displayed value)
+            'aria-labelledby': "".concat(labelId, " ").concat(triggerId), id: triggerId }, (describedBy && { 'aria-describedby': describedBy })), { onClick: function () {
+                if (!disabled) {
+                    setOpen(function (previous) { return !previous; });
+                }
+            }, ref: setTriggerRef });
+        return (React.createElement(I18nProvider, { locale: intl.locale },
+            React.createElement("div", { className: "inline-flex flex-col font-sans" },
+                React.createElement("span", { className: "sr-only", id: labelId }, label),
+                customTrigger(triggerState, triggerProps),
+                React.createElement(Popover, { isOpen: open, onOpenChange: setOpen, placement: "bottom start", triggerRef: triggerRef }, calendar),
+                footer)));
+    }
+    return (React.createElement(I18nProvider, { locale: intl.locale },
+        React.createElement("div", { className: anchor ? 'inline-flex flex-col font-sans' : baseClasses.container },
+            React.createElement(DialogTrigger, { isOpen: open, onOpenChange: setOpen },
+                React.createElement(Button$3, __assign({ "aria-labelledby": anchor && !displayedText ? labelId : "".concat(labelId, " ").concat(valueId), className: anchor === 'icon'
+                        ? 'inline-flex items-center justify-center self-start w-8 h-8 rounded outline-none text-black-90 active:bg-black-10 focus:bg-black-5 focus-visible:ring hover:bg-black-5 disabled:bg-transparent disabled:text-black-30'
+                        : anchor === 'text'
+                            ? 'inline-flex items-center gap-1 self-start min-h-8 px-2 text-base font-semibold rounded outline-none text-black-90 active:bg-black-10 focus:bg-black-5 focus-visible:ring hover:bg-black-5 disabled:bg-transparent disabled:text-black-30'
+                            : clsx(styles.group, 'w-full text-left outline-none'), isDisabled: disabled }, (describedBy && { 'aria-describedby': describedBy })),
+                    React.createElement("span", { className: anchor ? 'sr-only' : styles.label, id: labelId }, label),
+                    anchor ? null : (React.createElement("span", { className: styles.icon }, mode === 'day' ? React.createElement(EventIcon, null) : React.createElement(DateRange, null))),
+                    React.createElement("span", { className: anchor === 'icon'
+                            ? 'sr-only'
+                            : anchor === 'text'
+                                ? 'truncate'
+                                : 'flex-1 min-w-0 px-3 text-sm truncate text-black-90', id: valueId }, anchor === 'text' && !displayedText ? label : displayedText),
+                    anchor === 'icon' ? (React.createElement("span", { className: "w-6" },
+                        React.createElement(CalendarDay, { day: displayedValue && !Array.isArray(displayedValue)
+                                ? displayedValue.getDate()
+                                : undefined }))) : null,
+                    anchor === 'text' ? (React.createElement("span", { "aria-hidden": "true", className: "w-5" },
+                        React.createElement(ExpandMore, null))) : null,
+                    anchor ? null : (React.createElement("span", { className: clsx(styles.button, 'pointer-events-none'), role: "presentation" },
+                        React.createElement("span", { className: "w-5" },
+                            React.createElement(ExpandMore, null))))),
+                React.createElement(Popover, { contextDriven: true, placement: "bottom start" }, calendar)),
+            footer)));
+}
+
 function ButtonGroup(_a) {
     var children = _a.children, _b = _a.color, groupColor = _b === void 0 ? 'default' : _b, _c = _a.disabled, groupDisabled = _c === void 0 ? false : _c, _d = _a.size, groupSize = _d === void 0 ? 'medium' : _d, _e = _a.variant, groupVariant = _e === void 0 ? 'contained' : _e;
     var elements = Children.toArray(children);
@@ -6273,35 +7238,6 @@ function tzName(tz, date) {
  */
 const tz = timeZone => value => TZDate.tz(timeZone, +new Date(value));
 
-var locales = {
-    en: enUS,
-    es: es,
-    fr: fr,
-    ko: ko,
-    pl: pl,
-    pt: ptBR,
-    ru: ru,
-    zh: zhCN,
-};
-function useDateFormatters() {
-    var locale = useIntl().locale;
-    var format = useCallback(function (date, format) {
-        return format$1(date, format, {
-            locale: locales[locale] || locales.en,
-        });
-    }, [locale]);
-    return useMemo(function () { return ({
-        formatDateLocal: function (date) { return format(date, 'PP'); },
-        formatDayOfMonth: function (date) { return format(date, 'd'); },
-        formatDayOfWeek: function (date) { return format(date, 'EEEEEE'); },
-        formatISODate: function (date) { return format(date, 'yyyy-MM-dd'); },
-        formatMonthLong: function (date) { return format(date, 'MMMM'); },
-        formatMonthAndYearLong: function (date) { return format(date, 'MMMM yyyy'); },
-        formatWeekOfYear: function (date) { return format(date, 'w'); },
-        formatYearAndMonth: function (date) { return format(date, 'yyyy-MM'); },
-    }); }, [format]);
-}
-
 var locales$1 = {
     en: enUS,
     es: es,
@@ -6342,16 +7278,6 @@ function getCurrentLocale(locale) {
     return locales$2[locale] || locales$2.en;
 }
 
-function getStartOfWeek(locale) {
-    var _a;
-    var locales = {
-        fr: {
-            'fr-CA': 0,
-        },
-    };
-    return (_a = locales === null || locales === void 0 ? void 0 : locales[locale]) === null || _a === void 0 ? void 0 : _a[window.navigator.language];
-}
-
 var Modes;
 (function (Modes) {
     Modes[Modes["Day"] = 0] = "Day";
@@ -6365,15 +7291,15 @@ function calendarize(_a) {
     var i = 0;
     var dates = [];
     var current = condensed
-        ? startOfWeek(date, { locale: locale, weekStartsOn: weekStartsOn, in: tz(timezone) })
-        : startOfWeek(startOfMonth(date), {
+        ? startOfWeek$1(date, { locale: locale, weekStartsOn: weekStartsOn, in: tz(timezone) })
+        : startOfWeek$1(startOfMonth(date), {
             locale: locale,
             weekStartsOn: weekStartsOn,
             in: tz(timezone),
         });
     var final = condensed
-        ? addDays(endOfWeek(date, { locale: locale, weekStartsOn: weekStartsOn }), 1)
-        : addDays(endOfWeek(endOfMonth(date), { locale: locale, weekStartsOn: weekStartsOn, in: tz(timezone) }), 1);
+        ? addDays(endOfWeek$1(date, { locale: locale, weekStartsOn: weekStartsOn }), 1)
+        : addDays(endOfWeek$1(endOfMonth(date), { locale: locale, weekStartsOn: weekStartsOn, in: tz(timezone) }), 1);
     var difference = differenceInCalendarDays(final, current, { in: tz(timezone) }) / 7;
     for (i; i < difference; i++) {
         var o = 0;
@@ -6386,6 +7312,12 @@ function calendarize(_a) {
     }
     return dates;
 }
+/**
+ * @deprecated Use `BetterDatePicker` instead. `DatePicker` is deprecated and is
+ * planned for complete removal. See the BetterDatePicker docs for the prop
+ * mapping (`initialDate` → `defaultValue`/`value`, `initialTimezone` →
+ * `timezone`, `Modes.*` → `mode`, and a plain value in `onChange`).
+ */
 function DatePicker(_a) {
     var clearRef = _a.clearRef, _b = _a.condensed, condensed = _b === void 0 ? false : _b, _c = _a.initialDate, initialDate = _c === void 0 ? new Date() : _c, initialTimezone = _a.initialTimezone, inputRef = _a.inputRef, inputValueRef = _a.inputValueRef, _d = _a.mode, mode = _d === void 0 ? Modes.Day : _d, onChange = _a.onChange, open = _a.open;
     var intl = useIntl();
@@ -6434,12 +7366,12 @@ function DatePicker(_a) {
             var locale = getCurrentLocale(intl.locale);
             var weekStartsOn = getStartOfWeek(intl.locale);
             var start = mode === Modes.Week
-                ? startOfWeek(parseDateLocal(dates[0]), {
+                ? startOfWeek$1(parseDateLocal(dates[0]), {
                     locale: locale,
                     weekStartsOn: weekStartsOn,
                 })
                 : parseDateLocal(dates[0]);
-            var end = mode === Modes.Week ? endOfWeek(start) : parseDateLocal(dates[1]);
+            var end = mode === Modes.Week ? endOfWeek$1(start) : parseDateLocal(dates[1]);
             if (!isValid(start) || !isValid(end)) {
                 return [];
             }
@@ -6543,9 +7475,9 @@ function DatePicker(_a) {
                 setCurrentDate(function (date) {
                     switch (key_1) {
                         case 'ArrowDown':
-                            return startOfWeek(addDays(date, 7));
+                            return startOfWeek$1(addDays(date, 7));
                         case 'ArrowUp':
-                            return startOfWeek(subDays(date, 7));
+                            return startOfWeek$1(subDays(date, 7));
                         default:
                             return date;
                     }
@@ -6664,8 +7596,8 @@ function DatePicker(_a) {
                         ? isSameDay(day, selectedDate, { in: tz(timezone) })
                         : false
                     : isSameRangedDay(day);
-                var today = isToday(day, { in: tz(timezone) });
-                var weekend = isWeekend(day, { in: tz(timezone) });
+                var today = isToday$1(day, { in: tz(timezone) });
+                var weekend = isWeekend$1(day, { in: tz(timezone) });
                 var _a = inRange(day), end = _a.end, inside = _a.inside, start = _a.start;
                 return (React.createElement("button", { className: clsx('flex justify-center w-1/7 focus:outline-none', modes.dayOrRange ? 'group' : null, sameDay && modes.dayOrRange
                         ? 'text-white-100 hover:text-black-90 focus:text-black-90'
@@ -6758,8 +7690,8 @@ function DatePickerInput(_a) {
         if (mode === Modes.Week) {
             var locale = getCurrentLocale(intl.locale);
             var weekStartsOn = getStartOfWeek(intl.locale);
-            var start = startOfWeek(dates[0], { locale: locale, weekStartsOn: weekStartsOn });
-            var end = endOfWeek(dates[0], { locale: locale, weekStartsOn: weekStartsOn });
+            var start = startOfWeek$1(dates[0], { locale: locale, weekStartsOn: weekStartsOn });
+            var end = endOfWeek$1(dates[0], { locale: locale, weekStartsOn: weekStartsOn });
             return formatDateLocal(start) + ' — ' + formatDateLocal(end);
         }
         return formatDateLocal(dates[0]);
@@ -6790,8 +7722,8 @@ function DatePickerInput(_a) {
             var date = event.target.value;
             var locale = getCurrentLocale(intl.locale);
             var weekStartsOn = getStartOfWeek(intl.locale);
-            var start = startOfWeek(date, { locale: locale, weekStartsOn: weekStartsOn });
-            var end = endOfWeek(start, { locale: locale, weekStartsOn: weekStartsOn });
+            var start = startOfWeek$1(date, { locale: locale, weekStartsOn: weekStartsOn });
+            var end = endOfWeek$1(start, { locale: locale, weekStartsOn: weekStartsOn });
             event.target.value = [start, end];
         }
         onChange === null || onChange === void 0 ? void 0 : onChange(event);
@@ -6828,14 +7760,26 @@ function DatePickerInput(_a) {
             React.createElement("div", { className: clsx('z-9998', open ? '' : 'hidden'), ref: popperRef },
                 React.createElement(DatePicker, { clearRef: clearRef, condensed: condensed, initialDate: initialDate, initialTimezone: initialTimezone, inputRef: localRef, inputValueRef: inputValueRef, mode: mode, onChange: handleChange, open: open })))));
 }
+/**
+ * @deprecated Use `BetterDatePicker` (with `mode="day"`) instead. Deprecated and
+ * planned for complete removal. See the BetterDatePicker docs for migration.
+ */
 function DayPickerInput(_a) {
     var _b = _a.clearRef, clearRef = _b === void 0 ? null : _b, _c = _a.condensed, condensed = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, _f = _a.initialDate, initialDate = _f === void 0 ? new Date() : _f, initialTimezone = _a.initialTimezone, inputRef = _a.inputRef, label = _a.label, name = _a.name, onChange = _a.onChange, _g = _a.size, size = _g === void 0 ? 'medium' : _g, _h = _a.variant, variant = _h === void 0 ? 'outlined' : _h;
     return (React.createElement(DatePickerInput, { clearRef: clearRef, condensed: condensed, disabled: disabled, error: error, helperText: helperText, initialDate: initialDate, initialTimezone: initialTimezone, inputRef: inputRef, label: label, mode: Modes.Day, name: name, onChange: onChange, size: size, variant: variant }));
 }
+/**
+ * @deprecated Use `BetterDatePicker` (with `mode="range"`) instead. Deprecated
+ * and planned for complete removal. See the BetterDatePicker docs for migration.
+ */
 function RangePickerInput(_a) {
     var _b = _a.clearRef, clearRef = _b === void 0 ? null : _b, _c = _a.condensed, condensed = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, _f = _a.initialDate, initialDate = _f === void 0 ? new Date() : _f, initialTimezone = _a.initialTimezone, inputRef = _a.inputRef, label = _a.label, name = _a.name, onChange = _a.onChange, _g = _a.size, size = _g === void 0 ? 'medium' : _g, _h = _a.variant, variant = _h === void 0 ? 'outlined' : _h;
     return (React.createElement(DatePickerInput, { clearRef: clearRef, condensed: condensed, disabled: disabled, error: error, helperText: helperText, initialDate: initialDate, initialTimezone: initialTimezone, inputRef: inputRef, label: label, mode: Modes.Range, name: name, onChange: onChange, size: size, variant: variant }));
 }
+/**
+ * @deprecated Use `BetterDatePicker` (with `mode="week"`) instead. Deprecated
+ * and planned for complete removal. See the BetterDatePicker docs for migration.
+ */
 function WeekPickerInput(_a) {
     var _b = _a.clearRef, clearRef = _b === void 0 ? null : _b, _c = _a.condensed, condensed = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, _f = _a.initialDate, initialDate = _f === void 0 ? new Date() : _f, initialTimezone = _a.initialTimezone, inputRef = _a.inputRef, label = _a.label, name = _a.name, onChange = _a.onChange, _g = _a.size, size = _g === void 0 ? 'medium' : _g, _h = _a.variant, variant = _h === void 0 ? 'outlined' : _h;
     return (React.createElement(DatePickerInput, { clearRef: clearRef, condensed: condensed, disabled: disabled, error: error, helperText: helperText, initialDate: initialDate, initialTimezone: initialTimezone, inputRef: inputRef, label: label, mode: Modes.Week, name: name, onChange: onChange, size: size, variant: variant }));
@@ -10910,71 +11854,6 @@ function Pagination(_a) {
                 React.createElement(LastPage, null)))));
 }
 
-/* eslint-disable react/forbid-component-props */
-var CENTER_PLACEMENT_EDGE_THRESHOLD = 20; // pixels from the edge of the viewport
-function Popover(_a) {
-    var ariaLabel = _a["aria-label"], ariaLabelledby = _a["aria-labelledby"], ariaDescribedby = _a["aria-describedby"], children = _a.children, _b = _a.isOpen, isOpen = _b === void 0 ? false : _b, _c = _a.offset, offset = _c === void 0 ? 8 : _c, onOpenChange = _a.onOpenChange, _d = _a.placement, placement = _d === void 0 ? 'bottom' : _d, triggerRef = _a.triggerRef;
-    var popoverRef = React.useRef(null);
-    var _e = useState(false), isNearEdge = _e[0], setIsNearEdge = _e[1];
-    var isCenterPlacement = placement === 'center';
-    useEffect(function useCenterPlacementOffset() {
-        var popover = popoverRef.current;
-        if (!popover || !isCenterPlacement)
-            return;
-        var updateCenterOffset = function () {
-            var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
-            var popoverStyles = getComputedStyle(popover);
-            var popoverHeight = popoverStyles
-                .getPropertyValue('--trigger-anchor-point')
-                .replace(/px/g, '')
-                .split(' ')[1];
-            if (trigger && popoverHeight) {
-                var triggerStyles = getComputedStyle(trigger);
-                var borderWidth = parseFloat(triggerStyles.borderWidth) || 0;
-                var totalHeight = trigger.clientHeight + borderWidth * 2;
-                popover.style.setProperty('--center-offset', Number(popoverHeight) / 2 + totalHeight / 2 + offset + 'px');
-            }
-        };
-        if (isOpen) {
-            requestAnimationFrame(updateCenterOffset);
-        }
-    }, [isCenterPlacement, isOpen, offset, triggerRef]);
-    useEffect(function useEdgeProximityDetection() {
-        var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
-        if (!trigger || !isCenterPlacement || !isOpen) {
-            return;
-        }
-        var checkEdgeProximity = function () {
-            var rect = trigger.getBoundingClientRect();
-            var threshold = CENTER_PLACEMENT_EDGE_THRESHOLD;
-            var nearTop = rect.top < threshold;
-            var nearBottom = window.innerHeight - rect.bottom < threshold;
-            var nearLeft = rect.left < threshold;
-            var nearRight = window.innerWidth - rect.right < threshold;
-            var isNear = nearTop || nearBottom || nearLeft || nearRight;
-            setIsNearEdge(isNear);
-        };
-        requestAnimationFrame(function () {
-            requestAnimationFrame(checkEdgeProximity);
-        });
-        var resizeTimeout;
-        var debouncedCheckEdgeProximity = function () {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(checkEdgeProximity, 100);
-        };
-        window.addEventListener('resize', debouncedCheckEdgeProximity);
-        return function () {
-            window.removeEventListener('resize', debouncedCheckEdgeProximity);
-            clearTimeout(resizeTimeout);
-            // reset after animation completes
-            setTimeout(function () {
-                setIsNearEdge(false);
-            }, 300);
-        };
-    }, [isCenterPlacement, isOpen, triggerRef]);
-    return (React.createElement(Popover$1, { "aria-describedby": ariaDescribedby, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledby, className: clsx('react-aria-Popover focus-visible:ring', isCenterPlacement && !isNearEdge && 'center-placement'), isOpen: isOpen, offset: offset, onOpenChange: onOpenChange, placement: isCenterPlacement ? 'top' : placement, ref: popoverRef, triggerRef: triggerRef }, children));
-}
-
 var RadioContext = createContext(null);
 var useRadio = function () {
     return useContext(RadioContext);
@@ -11354,8 +12233,8 @@ function Skeleton(_a) {
 }
 
 function Snackbar(_a) {
-    var _b = _a.anchorOrigin, horizontal = _b.horizontal, vertical = _b.vertical, autoHideDuration = _a.autoHideDuration, children = _a.children, _c = _a.open, open = _c === void 0 ? true : _c, _d = _a.role, role = _d === void 0 ? AriaLiveRole.Alert : _d, _e = _a.severity, severity = _e === void 0 ? 'success' : _e;
-    var _f = useState(function () { return open; }), visible = _f[0], setVisible = _f[1];
+    var _b = _a.anchorOrigin, horizontal = _b.horizontal, vertical = _b.vertical, autoHideDuration = _a.autoHideDuration, children = _a.children, _c = _a.icon, icon = _c === void 0 ? null : _c, _d = _a.open, open = _d === void 0 ? true : _d, _e = _a.role, role = _e === void 0 ? AriaLiveRole.Alert : _e, _f = _a.severity, severity = _f === void 0 ? 'success' : _f;
+    var _g = useState(function () { return open; }), visible = _g[0], setVisible = _g[1];
     useEffect(function () {
         if (autoHideDuration !== undefined) {
             setTimeout(function () { return setVisible(false); }, autoHideDuration);
@@ -11373,7 +12252,7 @@ function Snackbar(_a) {
             : vertical === 'top'
                 ? 'top-0 mt-4 md:mt-8'
                 : 'top-half') },
-        React.createElement(Alert, { role: role, severity: severity }, children))) : null;
+        React.createElement(Alert, { icon: icon, role: role, severity: severity }, children))) : null;
 }
 function Content$4(_a) {
     var children = _a.children;
@@ -12997,5 +13876,5 @@ function Tooltip(_a) {
             arrow ? (React.createElement("div", { className: clsx('border-6 border-black-60 w-0 h-0', styles.class[arrowDirection]), ref: arrowRef, style: styles.style[arrowDirection] })) : null))));
 }
 
-export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, BasicTable, Button, ButtonGroup, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, Drawer, IconButton, Link, List, Menu, MultiSelect, Pagination, Popover, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
+export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, BasicTable, BetterDatePicker, Button, ButtonGroup, Calendar, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, Drawer, IconButton, Link, List, Menu, MultiSelect, Pagination, Popover, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
 //# sourceMappingURL=index.es.js.map

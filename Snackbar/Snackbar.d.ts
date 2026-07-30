@@ -1,6 +1,6 @@
 import type { MouseEventHandler, PropsWithChildren } from 'react';
 import { AriaLiveRole } from '../utilities/aria';
-interface SnackbarProps {
+export interface SnackbarProps {
     /**
      * The anchor position of the snackbar on the screen
      */
@@ -9,6 +9,10 @@ interface SnackbarProps {
      * The number of milliseconds to wait before automatically hiding the snackbar
      */
     autoHideDuration?: number;
+    /**
+     * Custom icon to display as a start adornment of the snackbar. If not provided, a default icon based on the severity will be used
+     */
+    icon?: JSX.Element | null;
     /**
      * Whether the snackbar is currently open/visible
      * @default true
@@ -26,14 +30,14 @@ interface SnackbarProps {
      */
     severity?: Severity;
 }
-type Severity = 'error' | 'info' | 'success' | 'warning';
+type Severity = 'error' | 'info' | 'neutral' | 'success' | 'warning';
 type HorizontalAchorOrigin = 'center' | 'left' | 'right';
 type VerticalAnchorOrigin = 'bottom' | 'center' | 'top';
 type AnchorOrigin = {
     horizontal: HorizontalAchorOrigin;
     vertical: VerticalAnchorOrigin;
 };
-declare function Snackbar({ anchorOrigin: { horizontal, vertical }, autoHideDuration, children, open, role, severity, }: PropsWithChildren<SnackbarProps>): JSX.Element | null;
+declare function Snackbar({ anchorOrigin: { horizontal, vertical }, autoHideDuration, children, icon, open, role, severity, }: PropsWithChildren<SnackbarProps>): JSX.Element | null;
 declare namespace Snackbar {
     var Actions: ({ children, }: PropsWithChildren<Record<string, unknown>>) => JSX.Element;
     var Button: ({ children, dataSet, onClick, }: PropsWithChildren<ButtonProps>) => JSX.Element;
