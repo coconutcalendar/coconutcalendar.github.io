@@ -5741,7 +5741,8 @@ function CondensedGridBody(_a) {
  * range calendars
  */
 function CalendarCells(_a) {
-    var _b = _a.condensed, condensed = _b === void 0 ? false : _b, mode = _a.mode, _c = _a.selectedWeek, selectedWeek = _c === void 0 ? null : _c, timezone = _a.timezone;
+    var _b, _c;
+    var _d = _a.condensed, condensed = _d === void 0 ? false : _d, mode = _a.mode, _e = _a.selectedWeek, selectedWeek = _e === void 0 ? null : _e, timezone = _a.timezone;
     var intl = useIntl();
     var state = useAnyCalendarState();
     // Selecting a day from an adjacent month happens in two steps: the click
@@ -5750,6 +5751,25 @@ function CalendarCells(_a) {
     // react-stately validates selections against the visible range, so
     // selecting straight from the click would be silently dropped
     var pendingOutsideDay = useRef(null);
+    // The adjacent-month day the pointer is currently over while the user is
+    // picking the end of a range. React Aria's own hover preview stops at the
+    // month boundary because those cells are inert, so the preview range is
+    // derived from this manually. Extending it through setFocusedDate instead
+    // would page the calendar to the hovered day's month
+    var _f = useState(null), previewDate = _f[0], setPreviewDate = _f[1];
+    // The anchor is the fixed end of an in-progress range selection; it is
+    // null once the range completes or is reset
+    var anchorDate = mode === 'range' && state && 'anchorDate' in state ? state.anchorDate : null;
+    var focusedDate = (_b = state === null || state === void 0 ? void 0 : state.focusedDate) !== null && _b !== void 0 ? _b : null;
+    // The preview is sticky like react-aria's own: it is never cleared on
+    // mouseout (the pointer constantly crosses the gaps between cells, and
+    // retracting there made the highlight flicker back to the last in-month
+    // day). Instead it resets whenever something else takes over: hovering or
+    // keyboard-navigating an in-month day moves the focused date, and
+    // completing or resetting the selection clears the anchor
+    useEffect(function () {
+        setPreviewDate(null);
+    }, [anchorDate, focusedDate]);
     useEffect(function () {
         var date = pendingOutsideDay.current;
         if (state &&
@@ -5770,12 +5790,15 @@ function CalendarCells(_a) {
             date.compare(selectedWeek.start) >= 0 &&
             date.compare(selectedWeek.end) <= 0;
     };
+    var isOutsideDay = function (date) {
+        return date.compare(state.visibleRange.start) < 0 ||
+            date.compare(state.visibleRange.end) > 0;
+    };
     // React Aria hard-disables the adjacent-month days that pad the grid's
     // first and last weeks. Per design they stay selectable as long as they
     // satisfy the calendar's own constraints (bounds, availability)
     var isSelectableOutsideDay = function (date) {
-        return (date.compare(state.visibleRange.start) < 0 ||
-            date.compare(state.visibleRange.end) > 0) &&
+        return isOutsideDay(date) &&
             !state.isDisabled &&
             !state.isReadOnly &&
             !state.isInvalid(date) &&
@@ -5785,31 +5808,85 @@ function CalendarCells(_a) {
         pendingOutsideDay.current = date;
         state.setFocusedDate(date);
     };
+    // React Aria never reports the adjacent-month padding days as selected
+    // because they sit outside the visible range, which visually broke a range
+    // at the month boundary. Selection state is computed manually instead: from
+    // the hovered adjacent-month day while a selection is in progress, and from
+    // the highlighted range (which also covers react-aria's own in-progress
+    // preview) otherwise, so the highlight behaves like the legacy DatePicker
+    var rangeState = mode === 'range' && 'highlightedRange' in state ? state : null;
+    var previewRange = anchorDate !== null && previewDate !== null
+        ? anchorDate.compare(previewDate) <= 0
+            ? { start: anchorDate, end: previewDate }
+            : { start: previewDate, end: anchorDate }
+        : null;
+    var manualRange = (_c = previewRange !== null && previewRange !== void 0 ? previewRange : rangeState === null || rangeState === void 0 ? void 0 : rangeState.highlightedRange) !== null && _c !== void 0 ? _c : null;
     var renderCell = function (date) {
         var selectableOutsideDay = isSelectableOutsideDay(date);
+        // The disabled/invalid/unavailable checks mirror the ones react-stately
+        // applies to in-month days
+        var manuallySelected = manualRange !== null &&
+            !state.isDisabled &&
+            !state.isInvalid(date) &&
+            !state.isCellUnavailable(date) &&
+            date.compare(manualRange.start) >= 0 &&
+            date.compare(manualRange.end) <= 0;
+        var manualSelectionStart = manuallySelected &&
+            manualRange !== null &&
+            date.compare(manualRange.start) === 0;
+        var manualSelectionEnd = manuallySelected &&
+            manualRange !== null &&
+            date.compare(manualRange.end) === 0;
         return (React.createElement(CalendarCell, { className: function (_a) {
                 var isDisabled = _a.isDisabled, isOutsideMonth = _a.isOutsideMonth, isSelected = _a.isSelected, isSelectionEnd = _a.isSelectionEnd, isSelectionStart = _a.isSelectionStart, isUnavailable = _a.isUnavailable;
                 var selectedWeekDay = week && inSelectedWeek(date);
+                // While the pointer previews across the month boundary, react-aria's
+                // own flags lag behind at the last in-month day it focused, so the
+                // manual state replaces them rather than merging with them
+                var selected = previewRange
+                    ? manuallySelected
+                    : isSelected || manuallySelected;
+                var selectionStart = previewRange
+                    ? manualSelectionStart
+                    : isSelectionStart || manualSelectionStart;
+                var selectionEnd = previewRange
+                    ? manualSelectionEnd
+                    : isSelectionEnd || manualSelectionEnd;
+                // The solid filled day: the selected day itself, or either end of a
+                // range, including when that end pads an adjacent month
+                var solidDay = selected && (mode === 'day' || selectionStart || selectionEnd);
                 // Locale-aware: weekend days vary by locale (e.g. Fri/Sat in some
                 // regions) and this respects the calendar system rather than
                 // assuming a Gregorian Sat/Sun
                 var weekend = isWeekend(date, intl.locale);
                 return clsx('flex justify-center outline-none text-center', dayOrRange && 'group', 
                 // Text colors
-                dayOrRange &&
-                    isSelected &&
-                    (mode === 'day' || isSelectionStart || isSelectionEnd)
-                    ? 'text-white-100'
-                    : null, dayOrRange && !isSelected && !weekend && !isOutsideMonth
+                dayOrRange && solidDay ? 'text-white-100' : null, dayOrRange && !isSelected && !weekend && !isOutsideMonth
                     ? 'text-black-90'
-                    : null, dayOrRange && !isSelected && isOutsideMonth && !condensed
+                    : null, dayOrRange && !solidDay && isOutsideMonth && !condensed
                     ? 'text-black-60'
-                    : null, dayOrRange && !isSelected && weekend ? 'text-black-60' : null, week && weekend && !selectedWeekDay ? 'text-black-60' : null, 
-                // Range selection highlight, including the hover preview
-                // while the user is picking the end of the range
-                mode === 'range' && isSelected
-                    ? 'bg-primary-20 [td:first-child_&]:rounded-l-full [td:last-child_&]:rounded-r-full'
-                    : null, mode === 'range' && isSelectionStart ? 'rounded-l-full' : null, mode === 'range' && isSelectionEnd ? 'rounded-r-full' : null, 
+                    : null, dayOrRange && !solidDay && !isSelected && weekend
+                    ? 'text-black-60'
+                    : null, week && weekend && !selectedWeekDay ? 'text-black-60' : null, 
+                // Range selection highlight, including the hover preview while
+                // the user is picking the end of the range. The cell is wider
+                // than the solid selected circle, so the endpoints paint only
+                // the inner half of the band; a full-width band would peek out
+                // from behind the circle, which the legacy DatePicker (whose
+                // cells matched the circle width) never showed
+                mode === 'range' && selected && !selectionStart && !selectionEnd
+                    ? 'bg-primary-20'
+                    : null, 
+                // At the row edge the half band has no neighbouring cell to
+                // connect to, so it is dropped entirely rather than left
+                // dangling beside the circle
+                mode === 'range' && selectionStart && !selectionEnd
+                    ? '[td:not(:last-child)_&]:[background-image:linear-gradient(to_right,transparent_50%,var(--color-primary-20)_50%)]'
+                    : null, mode === 'range' && selectionEnd && !selectionStart
+                    ? '[td:not(:first-child)_&]:[background-image:linear-gradient(to_left,transparent_50%,var(--color-primary-20)_50%)]'
+                    : null, mode === 'range' && selected
+                    ? '[td:first-child_&]:rounded-l-full [td:last-child_&]:rounded-r-full'
+                    : null, 
                 // Week mode highlights the entire row
                 week &&
                     '[td:first-child_&]:rounded-l-full [td:last-child_&]:rounded-r-full', week && selectedWeekDay ? 'bg-primary-main text-white-100' : null, 
@@ -5830,10 +5907,17 @@ function CalendarCells(_a) {
                     : 'cursor-pointer');
             }, date: date }, function (_a) {
             var formattedDate = _a.formattedDate, isSelected = _a.isSelected, isSelectionEnd = _a.isSelectionEnd, isSelectionStart = _a.isSelectionStart;
+            var rangeSelected = previewRange
+                ? manuallySelected
+                : isSelected || manuallySelected;
+            var rangeEndpoint = previewRange
+                ? manualSelectionStart || manualSelectionEnd
+                : isSelectionStart ||
+                    isSelectionEnd ||
+                    manualSelectionStart ||
+                    manualSelectionEnd;
             var selectedDay = (mode === 'day' && isSelected) ||
-                (mode === 'range' &&
-                    isSelected &&
-                    (isSelectionStart || isSelectionEnd));
+                (mode === 'range' && rangeSelected && rangeEndpoint);
             var selectedWeekDay = week && inSelectedWeek(date);
             var today = isToday(date, timezone);
             return (React.createElement("time", __assign({ className: clsx('flex items-center justify-center w-8 h-8 text-sm leading-4 rounded-full', 
@@ -5857,6 +5941,16 @@ function CalendarCells(_a) {
                     ? 'bg-black-10 group-active:bg-primary-20'
                     : null, today && week && selectedWeekDay ? 'bg-primary-dark' : null), dateTime: date.toString() }, (selectableOutsideDay && {
                 onClick: function () { return selectOutsideDay(date); },
+            }), (mode === 'range' &&
+                anchorDate !== null && {
+                // Hovering an adjacent-month day extends the preview to
+                // it; hovering an in-month day hands the preview back to
+                // react-aria (whose focused-date update also clears it via
+                // the effect above, covering hovers that land on the cell
+                // padding around this element)
+                onMouseOver: function () {
+                    return setPreviewDate(selectableOutsideDay ? date : null);
+                },
             })), formattedDate));
         }));
     };
@@ -11348,7 +11442,8 @@ function Dialog(_a) {
              * https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-static-element-interactions.md#case-the-event-handler-is-only-being-used-to-capture-bubbled-events
              */
             onClick: handleClick, onKeyDown: handleKeyDown, onMouseDown: handleMouseDown, ref: parentRef, role: ROLE.Dialog },
-            React.createElement(ReactRemoveScroll, { enabled: !disabled },
+            disabled ? null : React.createElement(RemoveScrollBar, { noRelative: true }),
+            React.createElement(ReactRemoveScroll, { enabled: !disabled, removeScrollBar: false },
                 React.createElement(FocusLockCombination, { disabled: disabled, returnFocus: true },
                     React.createElement("div", { className: clsx('relative flex flex-col overflow-auto font-sans rounded outline-none shadow-24 bg-white-100', constraints[constraint]) },
                         React.createElement(DialogContext.Provider, { value: [state, dispatch, onDismiss] }, children))))))) : null;

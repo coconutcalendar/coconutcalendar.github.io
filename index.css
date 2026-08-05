@@ -1115,6 +1115,10 @@ video {
   width: 75%;
 }
 
+.w-32 {
+  width: 8rem;
+}
+
 .w-4 {
   width: 1rem;
 }
@@ -4249,6 +4253,14 @@ td:first-child .\[td\:first-child_\&\]\:rounded-l-full {
 td:last-child .\[td\:last-child_\&\]\:rounded-r-full {
   border-top-right-radius: 9999px;
   border-bottom-right-radius: 9999px;
+}
+
+td:not(:first-child) .\[td\:not\(\:first-child\)_\&\]\:\[background-image\:linear-gradient\(to_left\2c transparent_50\%\2c var\(--color-primary-20\)_50\%\)\] {
+  background-image: linear-gradient(to left,transparent 50%,var(--color-primary-20) 50%);
+}
+
+td:not(:last-child) .\[td\:not\(\:last-child\)_\&\]\:\[background-image\:linear-gradient\(to_right\2c transparent_50\%\2c var\(--color-primary-20\)_50\%\)\] {
+  background-image: linear-gradient(to right,transparent 50%,var(--color-primary-20) 50%);
 }
 
 tr:active .\[tr\:active_\&\]\:bg-primary-20 {
