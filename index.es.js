@@ -5405,6 +5405,12 @@ var colors$6 = {
     muted: 'bg-muted-50 text-muted-800 border-muted-300',
     intelligence: 'bg-intelligence-50 text-intelligence-800 border-intelligence-300',
 };
+var sizes$5 = {
+    small: 'text-sm w-6 h-6 p-1',
+    medium: 'text-xl w-10 h-10 p-2',
+    large: 'text-3xl w-16 h-16 p-2',
+    xlarge: 'text-4xl w-20 h-20 p-2',
+};
 var variants$4 = {
     circle: 'rounded-full',
     square: '',
@@ -5412,8 +5418,8 @@ var variants$4 = {
 };
 function Avatar(_a) {
     var _b, _c;
-    var label = _a["aria-label"], children = _a.children, _d = _a.color, color = _d === void 0 ? 'default' : _d, name = _a.name, _e = _a.variant, variant = _e === void 0 ? 'circle' : _e;
-    return (React.createElement("div", { "aria-label": label || name, className: clsx('justify-center items-center text-xl inline-flex shrink-0 w-10 h-10 p-2 border', colors$6[color], variants$4[variant]), role: "img" }, name !== undefined
+    var label = _a["aria-label"], children = _a.children, _d = _a.color, color = _d === void 0 ? 'default' : _d, name = _a.name, _e = _a.variant, variant = _e === void 0 ? 'circle' : _e, _f = _a.size, size = _f === void 0 ? 'medium' : _f;
+    return (React.createElement("div", { "aria-label": label || name, className: clsx('justify-center items-center inline-flex shrink-0 border', colors$6[color], sizes$5[size], variants$4[variant]), role: "img" }, name !== undefined
         ? ((_c = (_b = name.match(/[A-Z]/g)) === null || _b === void 0 ? void 0 : _b.slice(0, 2)) === null || _c === void 0 ? void 0 : _c.join('')) ||
             name
                 .split(' ')
@@ -6814,7 +6820,7 @@ var iconColors = {
         error: "text-error-main hover:text-error-dark focused:text-error-dark active:text-error-darker disabled:text-black-30 disabled:cursor-not-allowed",
     },
 };
-var sizes$5 = {
+var sizes$6 = {
     medium: {
         root: 'px-3 py-1',
         rootWithAdornment: 'px-3 py-1',
@@ -6865,13 +6871,13 @@ function Chip(_a) {
             onKeyDown: onKeyDown,
         }
         : {};
-    return (React.createElement(Component, __assign({ className: clsx('rounded-full inline-flex items-center select-none focus:outline-none', startAdornment ? sizes$5[size].rootWithAdornment : sizes$5[size].root, disabled
+    return (React.createElement(Component, __assign({ className: clsx('rounded-full inline-flex items-center select-none focus:outline-none', startAdornment ? sizes$6[size].rootWithAdornment : sizes$6[size].root, disabled
             ? variants$6[chipType][variant].disabled
             : variants$6[chipType][variant][color], !onClick && 'cursor-default') }, buttonProps),
         React.createElement("label", { className: clsx('flex items-center', onClick ? (disabled ? 'cursor-not-allowed' : 'cursor-pointer') : null) },
             startAdornment ? (React.createElement(StartAdornment$1, { color: color, disabled: disabled, size: size, variant: variant }, startAdornment)) : null,
-            React.createElement("span", { className: clsx('flex', sizes$5[size].text) }, label)),
-        onDelete ? (React.createElement("div", __assign({ "aria-label": intl.formatMessage({ id: 'Chip.remove' }), className: clsx('focus:outline-none', sizes$5[size].cancel, sizes$5[size].cancelPadding, disabled
+            React.createElement("span", { className: clsx('flex', sizes$6[size].text) }, label)),
+        onDelete ? (React.createElement("div", __assign({ "aria-label": intl.formatMessage({ id: 'Chip.remove' }), className: clsx('focus:outline-none', sizes$6[size].cancel, sizes$6[size].cancelPadding, disabled
                 ? 'cursor-not-allowed'
                 : variant === 'contained'
                     ? color === 'default'
@@ -6887,15 +6893,15 @@ function Chip(_a) {
 function StartAdornment$1(_a) {
     var children = _a.children, color = _a.color, disabled = _a.disabled, size = _a.size, variant = _a.variant;
     var startAdornmentString = typeof children === 'string';
-    return (React.createElement("div", { className: clsx('flex relative', sizes$5[size].icon, sizes$5[size].iconPadding, startAdornmentString &&
+    return (React.createElement("div", { className: clsx('flex relative', sizes$6[size].icon, sizes$6[size].iconPadding, startAdornmentString &&
             clsx('rounded-full', disabled
                 ? iconColors.letter.disabled
                 : variant === 'contained'
                     ? 'bg-black-30'
                     : iconColors.letter[color])) },
         React.createElement("div", { className: clsx('absolute inset-x-0', startAdornmentString
-                ? sizes$5[size].letter
-                : 'overflow-hidden rounded-full', sizes$5[size].icon) }, children)));
+                ? sizes$6[size].letter
+                : 'overflow-hidden rounded-full', sizes$6[size].icon) }, children)));
 }
 
 var LocaleContext = createContext(null);
@@ -11525,7 +11531,7 @@ function Drawer(_a) {
 }
 Drawer.Header = Header$2;
 
-var sizes$6 = {
+var sizes$7 = {
     default: 'text-base leading-6',
     small: 'text-sm leading-5',
 };
@@ -11535,7 +11541,7 @@ function Link(_a) {
     // We actually ARE using rel: 'noreferrer' here, which is recommended, but our syntax
     // isn't being parsed by the linter so we'll ignore this line for now.
     // eslint-disable-next-line react/jsx-no-target-blank
-    React.createElement("a", __assign({ className: clsx('font-sans font-normal no-underline text-primary-main hover:text-primary-dark focus:text-primary-dark focus:outline-none focus-visible:ring active:text-primary-darker', sizes$6[size]) }, toDataSet(dataSet), { href: href, id: id, onClick: onClick, target: external ? '_blank' : '_self' }, (external && { rel: 'noreferrer' })), children));
+    React.createElement("a", __assign({ className: clsx('font-sans font-normal no-underline text-primary-main hover:text-primary-dark focus:text-primary-dark focus:outline-none focus-visible:ring active:text-primary-darker', sizes$7[size]) }, toDataSet(dataSet), { href: href, id: id, onClick: onClick, target: external ? '_blank' : '_self' }, (external && { rel: 'noreferrer' })), children));
 }
 
 var NestedListActionTypes;
@@ -11826,21 +11832,21 @@ function NavigationItem(_a) {
     var children = _a.children, color = _a.color, disabled = _a.disabled, label = _a.label, onClick = _a.onClick, size = _a.size, variant = _a.variant;
     var intl = useIntl();
     return (React.createElement("li", null,
-        React.createElement("button", { "aria-label": intl.formatMessage({ id: 'Pagination.go_to_page' }, { label: label }), className: clsx('flex items-center justify-center rounded-full text-black-60 text-sm font-normal leading-relaxed disabled:bg-transparent disabled:cursor-not-allowed disabled:text-black-25 focus:outline-none', sizes$7[size], variants$7[variant][color].unselected), disabled: disabled, onClick: onClick, type: "button" },
+        React.createElement("button", { "aria-label": intl.formatMessage({ id: 'Pagination.go_to_page' }, { label: label }), className: clsx('flex items-center justify-center rounded-full text-black-60 text-sm font-normal leading-relaxed disabled:bg-transparent disabled:cursor-not-allowed disabled:text-black-25 focus:outline-none', sizes$8[size], variants$7[variant][color].unselected), disabled: disabled, onClick: onClick, type: "button" },
             React.createElement("span", { className: "flex items-center justify-center w-4 h-4" }, children))));
 }
 
 function EllipsisItem(_a) {
     var disabled = _a.disabled, size = _a.size;
     return (React.createElement("li", null,
-        React.createElement("div", { "aria-hidden": true, className: clsx('flex justify-center items-center text-sm font-normal rounded-full leading-relaxed cursor-default', sizes$7[size], disabled ? 'text-black-25 cursor-not-allowed' : 'text-black-60') }, "\u2026")));
+        React.createElement("div", { "aria-hidden": true, className: clsx('flex justify-center items-center text-sm font-normal rounded-full leading-relaxed cursor-default', sizes$8[size], disabled ? 'text-black-25 cursor-not-allowed' : 'text-black-60') }, "\u2026")));
 }
 
 function PageItem(_a) {
     var color = _a.color, disabled = _a.disabled, index = _a.index, page = _a.page, onClick = _a.onClick, size = _a.size, variant = _a.variant;
     var intl = useIntl();
     return (React.createElement("li", null,
-        React.createElement("button", { "aria-current": page === index, "aria-label": intl.formatMessage({ id: 'Pagination.go_to_page_number' }, { index: index }), className: clsx('text-black-60 text-sm font-normal rounded-full leading-relaxed disabled:cursor-not-allowed disabled:text-black-25 focus:outline-none', sizes$7[size], page === index
+        React.createElement("button", { "aria-current": page === index, "aria-label": intl.formatMessage({ id: 'Pagination.go_to_page_number' }, { index: index }), className: clsx('text-black-60 text-sm font-normal rounded-full leading-relaxed disabled:cursor-not-allowed disabled:text-black-25 focus:outline-none', sizes$8[size], page === index
                 ? variants$7[variant][color].selected
                 : disabled
                     ? ''
@@ -11894,7 +11900,7 @@ function PageList(_a) {
         " ");
 }
 
-var sizes$7 = {
+var sizes$8 = {
     large: 'min-w-10 h-10 px-1',
     medium: 'min-w-8 h-8 px-1',
     small: 'min-w-6 h-6 px-1',
@@ -12031,7 +12037,7 @@ var colors$8 = {
         },
     },
 };
-var sizes$8 = {
+var sizes$9 = {
     medium: 'w-10 h-10 p-2',
     small: 'w-9 h-9 p-2',
 };
@@ -12058,7 +12064,7 @@ function Input$1(_a) {
         setFocused(true);
     };
     return (React.createElement("label", { className: clsx('radio font-sans inline-flex items-center group', disabled ? 'cursor-not-allowed' : 'cursor-pointer') },
-        React.createElement("span", { className: clsx('rounded-full focus:outline-none relative', disabled ? null : colors$8[color].background.default, focused ? colors$8[color].background.focused : null, sizes$8[size]) },
+        React.createElement("span", { className: clsx('rounded-full focus:outline-none relative', disabled ? null : colors$8[color].background.default, focused ? colors$8[color].background.focused : null, sizes$9[size]) },
             React.createElement("input", { "aria-label": label, className: clsx('absolute inset-0 w-full h-full p-0 m-0 opacity-0', disabled ? 'cursor-not-allowed' : 'cursor-pointer'), defaultChecked: checked, disabled: disabled, name: passedName || name, onBlur: handleBlur, onChange: handleChange, onFocus: handleFocus, ref: inputRef, type: "radio", value: value }),
             React.createElement("span", { className: clsx('status-active absolute inset-0 rounded-full p-2', disabled
                     ? colors$8[color].foreground.disabled
@@ -12421,7 +12427,7 @@ var colors$a = {
         },
     },
 };
-var sizes$9 = {
+var sizes$a = {
     medium: {
         root: 'w-11 h-6',
         thumb: 'w-5 h-5',
@@ -12465,8 +12471,8 @@ function Switch(_a) {
                             : colors$a[color].track.unfocused
                         : disabled
                             ? null
-                            : 'bg-black-45 hover:bg-black-60 focus:bg-black-60 active:bg-black-90', checked && focused ? colors$a[color].track.focused : null, !checked && focused ? 'bg-black-60' : null, disabled ? 'bg-black-15' : null, sizes$9[size].root) },
-                    React.createElement("span", { "aria-hidden": "true", className: clsx('relative transition duration-200 ease-in-out rounded-full pointer-events-none will-change-transform', checked ? sizes$9[size].transform : null, sizes$9[size].thumb) },
+                            : 'bg-black-45 hover:bg-black-60 focus:bg-black-60 active:bg-black-90', checked && focused ? colors$a[color].track.focused : null, !checked && focused ? 'bg-black-60' : null, disabled ? 'bg-black-15' : null, sizes$a[size].root) },
+                    React.createElement("span", { "aria-hidden": "true", className: clsx('relative transition duration-200 ease-in-out rounded-full pointer-events-none will-change-transform', checked ? sizes$a[size].transform : null, sizes$a[size].thumb) },
                         React.createElement("span", { className: clsx('absolute inset-0 rounded-full scale-200', focused ? colors$a[color].background.focused : null, disabled ? null : colors$a[color].background.unfocused) },
                             React.createElement("span", { className: "absolute inset-0 scale-50 rounded-full bg-white-100" }))),
                     React.createElement("input", { "aria-label": label, className: clsx('absolute inset-0 w-full h-full p-0 m-0 opacity-0', disabled ? 'cursor-not-allowed' : 'cursor-pointer'), defaultChecked: defaultChecked, disabled: disabled, name: name, onBlur: handleBlur, onChange: handleChange, onFocus: handleFocus, ref: switchRef, type: "checkbox" })),
@@ -12496,7 +12502,7 @@ function Group$5(_a) {
             } }, children)));
 }
 
-var sizes$a = {
+var sizes$b = {
     large: {
         root: 'p-4',
         icon: 'w-6 h-6 pl-1',
@@ -12538,11 +12544,11 @@ function Tab(_a) {
     };
     return (React.createElement("button", { "aria-controls": controls, "aria-selected": isSelected, className: clsx('min-w-fit font-sans text-sm font-medium leading-relaxed tracking-wide transition-colors duration-300 ease-out disabled:cursor-not-allowed focus:outline-none disabled:border-b-2 disabled:border-solid disabled:bg-transparent disabled:text-black-25', groupAlign === 'stretch' ? 'flex-grow' : null, isSelected
             ? variants$9[color !== null && color !== void 0 ? color : groupColor].selected
-            : variants$9[color !== null && color !== void 0 ? color : groupColor].unselected, sizes$a[size !== null && size !== void 0 ? size : groupSize].root), disabled: isDisabled, id: id, onClick: handleSelectTab, role: "tab", value: value },
+            : variants$9[color !== null && color !== void 0 ? color : groupColor].unselected, sizes$b[size !== null && size !== void 0 ? size : groupSize].root), disabled: isDisabled, id: id, onClick: handleSelectTab, role: "tab", value: value },
         React.createElement("div", { className: clsx('flex justify-center items-center', adornmentPosition === 'vertical' ? 'flex-col' : '') },
-            StartAdornment ? (React.createElement("span", { className: clsx('flex items-center justify-center', sizes$a[size !== null && size !== void 0 ? size : groupSize].icon) },
+            StartAdornment ? (React.createElement("span", { className: clsx('flex items-center justify-center', sizes$b[size !== null && size !== void 0 ? size : groupSize].icon) },
                 React.createElement(StartAdornment, { color: "inherit" }))) : null,
-            ((_b = children === null || children === void 0 ? void 0 : children.type) === null || _b === void 0 ? void 0 : _b.uiName) === 'SvgIcon' ? (React.createElement("span", { className: sizes$a[size !== null && size !== void 0 ? size : groupSize].icon }, children)) : (React.createElement("span", { className: size === 'small' ? 'px-1' : 'px-2' }, children)))));
+            ((_b = children === null || children === void 0 ? void 0 : children.type) === null || _b === void 0 ? void 0 : _b.uiName) === 'SvgIcon' ? (React.createElement("span", { className: sizes$b[size !== null && size !== void 0 ? size : groupSize].icon }, children)) : (React.createElement("span", { className: size === 'small' ? 'px-1' : 'px-2' }, children)))));
 }
 Tab.Group = Group$5;
 
@@ -13649,7 +13655,7 @@ Table.Search = Search;
 Table.Title = Title$3;
 Table.Toolbar = Toolbar;
 
-var sizes$b = {
+var sizes$c = {
     large: {
         icon: 'w-5 mr-1',
         root: 'p-1',
@@ -13763,11 +13769,11 @@ var colors$b = {
 };
 function Tag(_a) {
     var _b = _a.color, color = _b === void 0 ? 'default' : _b, label = _a.label, _c = _a.size, size = _c === void 0 ? 'medium' : _c, StartAdornment = _a.startAdornment;
-    return (React.createElement("span", { className: clsx('rounded-sm inline-flex cursor-default', colors$b[color].root, sizes$b[size].root) },
+    return (React.createElement("span", { className: clsx('rounded-sm inline-flex cursor-default', colors$b[color].root, sizes$c[size].root) },
         React.createElement("span", { className: "flex items-center" },
-            StartAdornment ? (React.createElement("span", { className: clsx(sizes$b[size].icon, colors$b[color].icon) },
+            StartAdornment ? (React.createElement("span", { className: clsx(sizes$c[size].icon, colors$b[color].icon) },
                 React.createElement(StartAdornment, null))) : null,
-            React.createElement("span", { className: clsx('w-full', sizes$b[size].text, colors$b[color].text) }, label))));
+            React.createElement("span", { className: clsx('w-full', sizes$c[size].text, colors$b[color].text) }, label))));
 }
 
 function useIsMounted() {

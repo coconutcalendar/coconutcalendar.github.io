@@ -25,12 +25,18 @@ export interface AvatarProps {
      * @default 'circle'
      */
     variant?: AvatarVariant;
+    /**
+     * The size of the avatar
+     * @default 'medium'
+     */
+    size?: AvatarSize;
 }
 export type AvatarColor = AllColors | 'green';
 type AvatarColors = {
     [key in AllColors | 'green']: string;
 };
 type AvatarVariant = 'circle' | 'rounded' | 'square';
+type AvatarSize = 'small' | 'medium' | 'large' | 'xlarge';
 export declare const colors: AvatarColors;
-declare function Avatar({ 'aria-label': label, children, color, name, variant, }: PropsWithChildren<AvatarProps>): JSX.Element;
+declare function Avatar({ 'aria-label': label, children, color, name, variant, size, }: PropsWithChildren<AvatarProps>): JSX.Element;
 export default Avatar;
