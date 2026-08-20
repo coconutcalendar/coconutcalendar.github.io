@@ -14,6 +14,13 @@ export interface SnackbarProps {
      */
     icon?: JSX.Element | null;
     /**
+     * Called once the snackbar has finished hiding itself after `autoHideDuration`
+     * elapses. It is not called when the snackbar is closed via the `open` prop, as
+     * the consumer already knows about that. Use it to sync the state driving `open`,
+     * otherwise the snackbar cannot be reopened
+     */
+    onClose?: () => void;
+    /**
      * Whether the snackbar is currently open/visible
      * @default true
      */
@@ -31,13 +38,13 @@ export interface SnackbarProps {
     severity?: Severity;
 }
 type Severity = 'error' | 'info' | 'neutral' | 'success' | 'warning';
-type HorizontalAchorOrigin = 'center' | 'left' | 'right';
+type HorizontalAnchorOrigin = 'center' | 'left' | 'right';
 type VerticalAnchorOrigin = 'bottom' | 'center' | 'top';
 type AnchorOrigin = {
-    horizontal: HorizontalAchorOrigin;
+    horizontal: HorizontalAnchorOrigin;
     vertical: VerticalAnchorOrigin;
 };
-declare function Snackbar({ anchorOrigin: { horizontal, vertical }, autoHideDuration, children, icon, open, role, severity, }: PropsWithChildren<SnackbarProps>): JSX.Element | null;
+declare function Snackbar({ anchorOrigin: { horizontal, vertical }, autoHideDuration, children, icon, onClose, open, role, severity, }: PropsWithChildren<SnackbarProps>): JSX.Element | null;
 declare namespace Snackbar {
     var Actions: ({ children, }: PropsWithChildren<Record<string, unknown>>) => JSX.Element;
     var Button: ({ children, dataSet, onClick, }: PropsWithChildren<ButtonProps>) => JSX.Element;

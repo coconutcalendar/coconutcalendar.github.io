@@ -3947,7 +3947,7 @@ createSvgIcon(React__default['default'].createElement("path", { d: "M21 7V19C21 
 
 createSvgIcon(React__default['default'].createElement("path", { d: "M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" }), 'SaveAlt');
 
-createSvgIcon(React__default['default'].createElement(React__default['default'].Fragment, null,
+var Schedule = createSvgIcon(React__default['default'].createElement(React__default['default'].Fragment, null,
     React__default['default'].createElement("path", { d: "M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" }),
     React__default['default'].createElement("path", { d: "M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" })), 'Schedule');
 
@@ -5629,6 +5629,62 @@ var Popover = React__default['default'].forwardRef(function Popover(_a, forwarde
     return (React__default['default'].createElement(reactAriaComponents.Popover, __assign({ "aria-describedby": ariaDescribedby, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledby, className: clsx__default['default']('react-aria-Popover focus-visible:ring', isCenterPlacement && !isNearEdge && 'center-placement'), offset: offset, placement: isCenterPlacement ? 'top' : placement, ref: setRefs }, (isNonModal !== undefined && { isNonModal: isNonModal }), (resolvedIsOpen !== undefined && { isOpen: resolvedIsOpen }), (onOpenChange && { onOpenChange: onOpenChange }), (triggerRef && { triggerRef: triggerRef })), children));
 });
 
+/**
+ * Maps React Aria's field parts (Group, Label, Text, FieldError, DateSegment)
+ * onto TextInput's tokens, so a segmented field reads as one of the family
+ * rather than a lookalike. Shared by BetterDatePicker and TimeInput.
+ *
+ * `appearFocused` keeps the field looking focused while DOM focus sits
+ * elsewhere — a picker's popover, say — mirroring TextInput's prop of the same
+ * name. Fields without a popover can leave it off.
+ */
+function useFieldStyles(size, status, variant, appearFocused) {
+    if (appearFocused === void 0) { appearFocused = false; }
+    // Memoized so the styles object keeps a stable identity across renders that
+    // don't change size/status/variant/appearFocused, avoiding needless child
+    // re-renders
+    return React.useMemo(function () {
+        return {
+            button: 'flex items-center justify-center shrink-0 w-6 h-6 mr-2 rounded-full outline-none text-black-60 hover:bg-black-10 focus-visible:ring disabled:text-black-30',
+            error: clsx__default['default'](baseClasses.help, 'text-error-main'),
+            group: clsx__default['default']('group items-center', variant === 'filled' ? 'pt-3' : null, baseClasses.inputWrapper, parentSizes[variant][size], 
+            // While a popover is open the field keeps its focused look even though
+            // DOM focus may be inside it, matching the legacy DatePickerInput
+            // (TextInput's appearFocused)
+            appearFocused
+                ? appearFocusedStyles[variant][status].default
+                : variants$3[variant][status].default, focusedStyles[variant][status].default),
+            // Description text stays neutral (dimmed when disabled); error text is
+            // carried by `error` (styled red) so a description is never mistaken
+            // for an error
+            help: clsx__default['default'](baseClasses.help, status === 'disabled' ? 'text-black-30' : 'text-black-60'),
+            icon: clsx__default['default']('shrink-0 flex items-center ml-3 w-5', status === 'disabled' ? 'text-black-30' : 'text-black-60'),
+            // Reuse TextInput's base label classes so the max-width (and therefore
+            // truncation) and transition match the rest of the field family
+            label: clsx__default['default'](baseClasses.label, labels.value[variant], 
+            // The label matches the field: focused color while a popover is open,
+            // value color otherwise
+            appearFocused
+                ? labelColors.focused[variant][status].default
+                : labelColors.value[variant][status].default, labelSpacing.focused[variant][size], status === 'error'
+                ? 'group-focus-within:text-error-main'
+                : 'group-focus-within:text-primary-main'),
+            segment: function (_a) {
+                var isDisabled = _a.isDisabled, isPlaceholder = _a.isPlaceholder, type = _a.type;
+                return clsx__default['default'](
+                // py-0.5 lifts the ~20px line box to a 24px tap target (WCAG 2.5.8)
+                'px-0.5 py-0.5 text-sm leading-5 tabular-nums rounded-sm outline-none focus:bg-primary-main focus:text-white-100 caret-transparent', isDisabled
+                    ? 'text-black-30'
+                    : // Literal separators (e.g. ":") and placeholders share the muted
+                        // tone so a separator never reads darker than the value it sits by
+                        type === 'literal' || isPlaceholder
+                            ? 'text-black-60'
+                            : 'text-black-90');
+            },
+        };
+    }, [appearFocused, size, status, variant]);
+}
+
 function getStartOfWeek(locale) {
     var _a;
     var locales = {
@@ -6145,50 +6201,6 @@ function Calendar(props) {
             React__default['default'].createElement(CalendarCells, { condensed: condensed, mode: "day", timezone: resolvedTimezone }))));
 }
 
-function useFieldStyles(size, status, variant, open) {
-    // Memoized so the styles object keeps a stable identity across renders that
-    // don't change size/status/variant/open, avoiding needless child re-renders
-    return React.useMemo(function () {
-        return {
-            button: 'flex items-center justify-center shrink-0 w-6 h-6 mr-2 rounded-full outline-none text-black-60 hover:bg-black-10 focus-visible:ring disabled:text-black-30',
-            error: clsx__default['default'](baseClasses.help, 'text-error-main'),
-            group: clsx__default['default']('group items-center', variant === 'filled' ? 'pt-3' : null, baseClasses.inputWrapper, parentSizes[variant][size], 
-            // While the calendar is open the field keeps its focused look even
-            // though DOM focus may be inside the popover, matching the legacy
-            // DatePickerInput (TextInput's appearFocused)
-            open
-                ? appearFocusedStyles[variant][status].default
-                : variants$3[variant][status].default, focusedStyles[variant][status].default),
-            // Description text stays neutral (dimmed when disabled); error text is
-            // carried by `error` (styled red) so a description is never mistaken
-            // for an error
-            help: clsx__default['default'](baseClasses.help, status === 'disabled' ? 'text-black-30' : 'text-black-60'),
-            icon: clsx__default['default']('shrink-0 flex items-center ml-3 w-5', status === 'disabled' ? 'text-black-30' : 'text-black-60'),
-            // Reuse TextInput's base label classes so the max-width (and therefore
-            // truncation) and transition match the rest of the field family
-            label: clsx__default['default'](baseClasses.label, labels.value[variant], 
-            // The label matches the field: focused color while the calendar is
-            // open, value color otherwise
-            open
-                ? labelColors.focused[variant][status].default
-                : labelColors.value[variant][status].default, labelSpacing.focused[variant][size], status === 'error'
-                ? 'group-focus-within:text-error-main'
-                : 'group-focus-within:text-primary-main'),
-            segment: function (_a) {
-                var isDisabled = _a.isDisabled, isPlaceholder = _a.isPlaceholder, type = _a.type;
-                return clsx__default['default'](
-                // py-0.5 lifts the ~20px line box to a 24px tap target (WCAG 2.5.8)
-                'px-0.5 py-0.5 text-sm leading-5 tabular-nums rounded-sm outline-none focus:bg-primary-main focus:text-white-100 caret-transparent', isDisabled
-                    ? 'text-black-30'
-                    : // Literal separators (e.g. "/") and placeholders share the muted
-                        // tone so a separator never reads darker than the value it sits by
-                        type === 'literal' || isPlaceholder
-                            ? 'text-black-60'
-                            : 'text-black-90');
-            },
-        };
-    }, [open, size, status, variant]);
-}
 /**
  * The calendar inside the popover, wrapped in a Dialog only when the popover
  * is modal (button and keyboard opens), for its focus trap and accessible
@@ -6207,7 +6219,11 @@ function BetterDatePicker(props) {
     var intl = reactIntl.useIntl();
     var firstDayOfWeek = useFirstDayOfWeek(firstDayOfWeekProp);
     var resolvedTimezone = React.useMemo(function () { return resolveTimezone(timezone); }, [timezone]);
-    var status = disabled ? 'disabled' : error ? 'error' : 'default';
+    var status = disabled
+        ? 'disabled'
+        : error
+            ? 'error'
+            : 'default';
     // Segments mode opens the calendar when the segment area is clicked, in
     // addition to the calendar button and the built-in Alt+ArrowDown shortcut.
     // A segment click renders the popover non-modal so focus stays in the
@@ -6411,7 +6427,11 @@ function TextTriggerField(_a) {
     }, []);
     var _g = React.useState(false), open = _g[0], setOpen = _g[1];
     var wasOpen = React.useRef(false);
-    var status = disabled ? 'disabled' : error ? 'error' : 'default';
+    var status = disabled
+        ? 'disabled'
+        : error
+            ? 'error'
+            : 'default';
     // Computed here rather than passed from the parent so the field keeps its
     // focused look while this trigger's own popover is open
     var styles = useFieldStyles(size, status, variant, open);
@@ -12360,18 +12380,46 @@ function Skeleton(_a) {
                 : widths.long[variant]), role: "presentation" }));
 }
 
+/**
+ * This is the same value as the snackbar-out animation in utilities.css, keeping them
+ * the same is necessary to prvent removing the element from the DOM before it's done animating
+ */
+var EXIT_DURATION = 200;
 function Snackbar(_a) {
-    var _b = _a.anchorOrigin, horizontal = _b.horizontal, vertical = _b.vertical, autoHideDuration = _a.autoHideDuration, children = _a.children, _c = _a.icon, icon = _c === void 0 ? null : _c, _d = _a.open, open = _d === void 0 ? true : _d, _e = _a.role, role = _e === void 0 ? exports.AriaLiveRole.Alert : _e, _f = _a.severity, severity = _f === void 0 ? 'success' : _f;
-    var _g = React.useState(function () { return open; }), visible = _g[0], setVisible = _g[1];
+    var _b = _a.anchorOrigin, horizontal = _b.horizontal, vertical = _b.vertical, autoHideDuration = _a.autoHideDuration, children = _a.children, _c = _a.icon, icon = _c === void 0 ? null : _c, onClose = _a.onClose, _d = _a.open, open = _d === void 0 ? true : _d, _e = _a.role, role = _e === void 0 ? exports.AriaLiveRole.Alert : _e, _f = _a.severity, severity = _f === void 0 ? 'success' : _f;
+    var _g = React.useState(function () { return open; }), shouldRender = _g[0], setShouldRender = _g[1];
+    var _h = React.useState(function () { return open; }), visible = _h[0], setVisible = _h[1];
+    var onCloseRef = React.useRef(onClose);
     React.useEffect(function () {
-        if (autoHideDuration !== undefined) {
-            setTimeout(function () { return setVisible(false); }, autoHideDuration);
+        onCloseRef.current = onClose;
+    });
+    React.useEffect(function () {
+        var disposables = createDisposables();
+        if (open) {
+            setShouldRender(true);
+            setVisible(true);
         }
-    }, [autoHideDuration]);
-    React.useEffect(function () {
-        setVisible(open);
+        else {
+            setVisible(false);
+            disposables.setTimeout(function () { return setShouldRender(false); }, EXIT_DURATION);
+        }
+        return function () { return disposables.dispose(); };
     }, [open]);
-    return visible ? (React__default['default'].createElement("div", { className: clsx__default['default']('fixed flex shadow-6 rounded-md w-full max-w-xs z-9999', horizontal === 'left'
+    // Handle auto-hiding behaviour
+    React.useEffect(function () {
+        if (!open || autoHideDuration === undefined) {
+            return;
+        }
+        var disposables = createDisposables();
+        disposables.setTimeout(function () { return setVisible(false); }, autoHideDuration);
+        disposables.setTimeout(function () {
+            var _a;
+            setShouldRender(false);
+            (_a = onCloseRef.current) === null || _a === void 0 ? void 0 : _a.call(onCloseRef);
+        }, autoHideDuration + EXIT_DURATION);
+        return function () { return disposables.dispose(); };
+    }, [autoHideDuration, open]);
+    return shouldRender ? (React__default['default'].createElement("div", { className: clsx__default['default']('snackbar fixed flex shadow-6 rounded-md w-full max-w-xs z-9999', horizontal === 'left'
             ? 'left-0 ml-4 md:ml-8'
             : horizontal === 'right'
                 ? 'right-0 mr-4 md:mr-8'
@@ -12379,7 +12427,7 @@ function Snackbar(_a) {
             ? 'bottom-0 mb-4 md:mb-8'
             : vertical === 'top'
                 ? 'top-0 mt-4 md:mt-8'
-                : 'top-half') },
+                : 'top-half'), "data-entering": visible || undefined, "data-exiting": !visible || undefined, "data-placement": vertical },
         React__default['default'].createElement(Alert, { icon: icon, role: role, severity: severity }, children))) : null;
 }
 function Content$4(_a) {
@@ -13780,6 +13828,99 @@ function Tag(_a) {
             React__default['default'].createElement("span", { className: clsx__default['default']('w-full', sizes$c[size].text, colors$b[color].text) }, label))));
 }
 
+/**
+ * "HH:mm" or "HH:mm:ss"
+ */
+var TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/;
+/**
+ * Converts a HH:mm string into the time value used by React Aria
+ *
+ * @param value
+ */
+function toTime(value) {
+    return value && TIME_PATTERN.test(value) ? date.parseTime(value) : null;
+}
+/**
+ * Converts an hour and minute back to a HH:mm string
+ *
+ * @param value
+ */
+function toTimeString(value) {
+    return value
+        ? "".concat(String(value.hour).padStart(2, '0'), ":").concat(String(value.minute).padStart(2, '0'))
+        : null;
+}
+
+var STEP_MINUTES = 5;
+function SteppedDateInput(_a) {
+    var className = _a.className;
+    var state = React.useContext(reactAriaComponents.TimeFieldStateContext);
+    if (state) {
+        var decrement_1 = state.decrement, increment_1 = state.increment, incrementToMax_1 = state.incrementToMax;
+        var cycleMinute_1 = function (amount) {
+            var _a, _b;
+            var minute = state.segments.find(function (segment) { return segment.type === 'minute'; });
+            if (!minute) {
+                return;
+            }
+            if (minute.isPlaceholder) {
+                state.setSegment('minute', (_a = minute.value) !== null && _a !== void 0 ? _a : 0);
+                return;
+            }
+            state.setSegment('minute', new date.Time(0, (_b = minute.value) !== null && _b !== void 0 ? _b : 0).cycle('minute', amount, { round: true })
+                .minute);
+        };
+        state.decrement = function (type) {
+            return type === 'minute' ? cycleMinute_1(-STEP_MINUTES) : decrement_1(type);
+        };
+        state.increment = function (type) {
+            return type === 'minute' ? cycleMinute_1(STEP_MINUTES) : increment_1(type);
+        };
+        state.incrementToMax = function (type) {
+            return type === 'minute'
+                ? state.setSegment('minute', 60 - STEP_MINUTES)
+                : incrementToMax_1(type);
+        };
+    }
+    return (React__default['default'].createElement(reactAriaComponents.DateInput, { className: "flex items-center flex-1 min-w-0 px-1" }, function (segment) { return React__default['default'].createElement(reactAriaComponents.DateSegment, { className: className, segment: segment }); }));
+}
+function TimeInput(_a) {
+    var defaultValue = _a.defaultValue, _b = _a.disabled, disabled = _b === void 0 ? false : _b, _c = _a.error, error = _c === void 0 ? false : _c, errorMessage = _a.errorMessage, helperText = _a.helperText, hourCycle = _a.hourCycle, label = _a.label, name = _a.name, onChange = _a.onChange, _d = _a.required, required = _d === void 0 ? false : _d, _e = _a.size, size = _e === void 0 ? 'medium' : _e, _f = _a.validationBehavior, validationBehavior = _f === void 0 ? 'aria' : _f, value = _a.value, _g = _a.variant, variant = _g === void 0 ? 'outlined' : _g;
+    var intl = reactIntl.useIntl();
+    var status = disabled
+        ? 'disabled'
+        : error
+            ? 'error'
+            : 'default';
+    var styles = useFieldStyles(size, status, variant);
+    var fieldRef = React.useRef(null);
+    // A press that lands on a segment selects that segment, so leave it be
+    var focusHour = function (event) {
+        var _a, _b, _c;
+        if (event.target.closest('[role="spinbutton"]')) {
+            return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        // If the user already has the input focused and say, misses a segment, we do not want to shift their focus
+        if ((_a = fieldRef.current) === null || _a === void 0 ? void 0 : _a.contains(document.activeElement)) {
+            return;
+        }
+        (_c = (_b = fieldRef.current) === null || _b === void 0 ? void 0 : _b.querySelector('[data-type="hour"]')) === null || _c === void 0 ? void 0 : _c.focus();
+    };
+    return (React__default['default'].createElement(reactAriaComponents.I18nProvider, { locale: intl.locale },
+        React__default['default'].createElement(reactAriaComponents.TimeField, __assign({ className: baseClasses.container, granularity: "minute", isDisabled: disabled, isInvalid: error || undefined, isRequired: required, onChange: function (time) { return onChange === null || onChange === void 0 ? void 0 : onChange(toTimeString(time)); }, validationBehavior: validationBehavior }, (hourCycle && { hourCycle: hourCycle }), (name && { name: name }), (defaultValue !== undefined && {
+            defaultValue: toTime(defaultValue),
+        }), (value !== undefined && { value: toTime(value) })),
+            React__default['default'].createElement("div", { className: styles.group, onPointerDownCapture: focusHour, ref: fieldRef },
+                React__default['default'].createElement(reactAriaComponents.Label, { className: styles.label }, label),
+                React__default['default'].createElement("span", { className: styles.icon },
+                    React__default['default'].createElement(Schedule, null)),
+                React__default['default'].createElement(SteppedDateInput, { className: styles.segment })),
+            helperText ? (React__default['default'].createElement(reactAriaComponents.Text, { className: styles.help, slot: "description" }, helperText)) : null,
+            errorMessage ? (React__default['default'].createElement(reactAriaComponents.FieldError, { className: styles.error }, errorMessage)) : null)));
+}
+
 function useIsMounted() {
     var isMounted = React.useRef(true);
     React.useEffect(function () {
@@ -14040,6 +14181,7 @@ exports.Tab = Tab;
 exports.Table = Table;
 exports.Tag = Tag;
 exports.TextInput = TextInput;
+exports.TimeInput = TimeInput;
 exports.Tooltip = Tooltip;
 exports.Typography = Typography;
 exports.UiProvider = UiProvider;
