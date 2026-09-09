@@ -4893,7 +4893,7 @@ var modes = {
     color: 'none',
 };
 var TextInput = React.forwardRef(function (_a, ref) {
-    var _b = _a.appearFocused, appearFocused = _b === void 0 ? false : _b, _c = _a.autoFocus, autoFocus = _c === void 0 ? false : _c, _d = _a.color, color = _d === void 0 ? 'default' : _d, containerRef = _a.containerRef, dataSet = _a.dataSet, _e = _a.defaultValue, defaultValue = _e === void 0 ? '' : _e, _f = _a.disabled, disabled = _f === void 0 ? false : _f, EndAdornment = _a.endAdornment, enterKeyHint = _a.enterKeyHint, _g = _a.error, error = _g === void 0 ? false : _g, helperText = _a.helperText, inputMode = _a.inputMode, inputRef = _a.inputRef, label = _a.label, _h = _a.lines, lines = _h === void 0 ? 0 : _h, max = _a.max, _j = _a.maxLines, maxLines = _j === void 0 ? 0 : _j, min = _a.min, _k = _a.multiline, multiline = _k === void 0 ? false : _k, name = _a.name, onBlur = _a.onBlur, onChange = _a.onChange, onClick = _a.onClick, onClear = _a.onClear, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, _l = _a.readOnly, readOnly = _l === void 0 ? false : _l, _m = _a.required, required = _m === void 0 ? false : _m, _o = _a.selectable, selectable = _o === void 0 ? false : _o, _p = _a.size, size = _p === void 0 ? 'medium' : _p, StartAdornment = _a.startAdornment, tabIndex = _a.tabIndex, _q = _a.type, type = _q === void 0 ? 'text' : _q, _r = _a.variant, variant = _r === void 0 ? 'outlined' : _r, rest = __rest(_a, ["appearFocused", "autoFocus", "color", "containerRef", "dataSet", "defaultValue", "disabled", "endAdornment", "enterKeyHint", "error", "helperText", "inputMode", "inputRef", "label", "lines", "max", "maxLines", "min", "multiline", "name", "onBlur", "onChange", "onClick", "onClear", "onFocus", "onKeyDown", "readOnly", "required", "selectable", "size", "startAdornment", "tabIndex", "type", "variant"]);
+    var _b = _a.appearFocused, appearFocused = _b === void 0 ? false : _b, _c = _a.autoFocus, autoFocus = _c === void 0 ? false : _c, _d = _a.color, color = _d === void 0 ? 'default' : _d, containerRef = _a.containerRef, dataSet = _a.dataSet, _e = _a.defaultValue, defaultValue = _e === void 0 ? '' : _e, _f = _a.disabled, disabled = _f === void 0 ? false : _f, EndAdornment = _a.endAdornment, enterKeyHint = _a.enterKeyHint, _g = _a.error, error = _g === void 0 ? false : _g, helperText = _a.helperText, inputMode = _a.inputMode, inputRef = _a.inputRef, label = _a.label, _h = _a.lines, lines = _h === void 0 ? 0 : _h, max = _a.max, _j = _a.maxLines, maxLines = _j === void 0 ? 0 : _j, min = _a.min, _k = _a.multiline, multiline = _k === void 0 ? false : _k, name = _a.name, onBlur = _a.onBlur, onChange = _a.onChange, onClick = _a.onClick, onClear = _a.onClear, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, _l = _a.readOnly, readOnly = _l === void 0 ? false : _l, _m = _a.required, required = _m === void 0 ? false : _m, _o = _a.selectable, selectable = _o === void 0 ? false : _o, _p = _a.size, size = _p === void 0 ? 'medium' : _p, StartAdornment = _a.startAdornment, step = _a.step, tabIndex = _a.tabIndex, _q = _a.type, type = _q === void 0 ? 'text' : _q, _r = _a.variant, variant = _r === void 0 ? 'outlined' : _r, rest = __rest(_a, ["appearFocused", "autoFocus", "color", "containerRef", "dataSet", "defaultValue", "disabled", "endAdornment", "enterKeyHint", "error", "helperText", "inputMode", "inputRef", "label", "lines", "max", "maxLines", "min", "multiline", "name", "onBlur", "onChange", "onClick", "onClear", "onFocus", "onKeyDown", "readOnly", "required", "selectable", "size", "startAdornment", "step", "tabIndex", "type", "variant"]);
     var id = "coconut-text-input-".concat(useId());
     var intl = reactIntl.useIntl();
     var labelRef = React.useRef(null);
@@ -5013,6 +5013,7 @@ var TextInput = React.forwardRef(function (_a, ref) {
                 'overflow-x-hidden break-words no-scrollbar resize-none',
             ]
             : [sizes$4[variant][size], 'truncate'], selectable ? 'cursor-pointer' : ''),
+        defaultValue: defaultValue,
         disabled: disabled,
         id: extraProps === null || extraProps === void 0 ? void 0 : extraProps.id,
         inputMode: inputMode || modes[type],
@@ -5026,9 +5027,9 @@ var TextInput = React.forwardRef(function (_a, ref) {
         readOnly: readOnly,
         required: required,
         role: extraProps === null || extraProps === void 0 ? void 0 : extraProps.role,
+        step: step,
         tabIndex: tabIndex,
         type: type,
-        defaultValue: defaultValue,
     };
     return (React__default['default'].createElement("div", { className: baseClasses.container },
         React__default['default'].createElement("label", { className: "relative", ref: containerRef },
@@ -13951,16 +13952,6 @@ function TimeInput(_a) {
             errorMessage ? (React__default['default'].createElement(reactAriaComponents.FieldError, { className: styles.error }, errorMessage)) : null)));
 }
 
-function useIsMounted() {
-    var isMounted = React.useRef(true);
-    React.useEffect(function () {
-        return function () {
-            isMounted.current = false;
-        };
-    }, []);
-    return isMounted;
-}
-
 var INTERACTIVE_NODE_NAMES = {
     a: 'ANCHOR',
     audio: 'AUDIO',
@@ -14020,143 +14011,146 @@ function getInteractiveChild(element) {
     return;
 }
 
+var CLOSE_DELAY = 75;
+var EXIT_DURATION$1 = 100;
+// The arrow points back at the target, so it sits on the tooltip's opposite side
+var oppositeSide = {
+    top: 'bottom',
+    bottom: 'top',
+    left: 'right',
+    right: 'left',
+};
+var ARROW_OFFSET = '-11px';
 var styles = {
     class: {
-        top: 'top-0 -mt-3 -translate-y-full',
-        bottom: 'bottom-0 -mb-3 translate-y-full',
-        left: 'left-0 -ml-3 -mb-1 -translate-x-full',
-        right: 'right-0 -mr-3 -mb-1 translate-x-full',
+        top: 'top-0 -translate-y-full',
+        bottom: 'bottom-0 translate-y-full',
+        left: 'left-0 -mb-1 -translate-x-full',
+        right: 'right-0 -mb-1 translate-x-full',
     },
     style: {
         top: {
             borderLeftColor: 'transparent',
             borderRightColor: 'transparent',
             borderTopColor: 'transparent',
+            marginTop: ARROW_OFFSET,
         },
         bottom: {
             borderLeftColor: 'transparent',
             borderRightColor: 'transparent',
             borderBottomColor: 'transparent',
+            marginBottom: ARROW_OFFSET,
         },
         right: {
             borderRightColor: 'transparent',
             borderBottomColor: 'transparent',
             borderTopColor: 'transparent',
+            marginRight: ARROW_OFFSET,
         },
         left: {
             borderBottomColor: 'transparent',
             borderLeftColor: 'transparent',
             borderTopColor: 'transparent',
+            marginLeft: ARROW_OFFSET,
         },
     },
 };
 function Tooltip(_a) {
     var title = _a.title, children = _a.children, _b = _a.arrow, arrow = _b === void 0 ? false : _b, _c = _a.placement, placement = _c === void 0 ? 'bottom' : _c;
-    var isMounted = useIsMounted();
-    var _d = React.useState(null), popper = _d[0], setPopper = _d[1];
-    var _e = React.useState(null), timeoutId = _e[0], setTimeoutId = _e[1];
-    var _f = React.useState('top'), arrowDirection = _f[0], setArrowDirection = _f[1];
-    var _g = React.useState(false), show = _g[0], setShow = _g[1];
+    var _d = React.useState('top'), arrowDirection = _d[0], setArrowDirection = _d[1];
+    var _e = React.useState(false), isOpen = _e[0], setIsOpen = _e[1];
+    var _f = React.useState(false), displayed = _f[0], setDisplayed = _f[1];
+    var _g = React.useState(false), entering = _g[0], setEntering = _g[1];
     var _h = React.useState(), interactive = _h[0], setInteractive = _h[1];
     var isTouch = window.matchMedia('(any-hover: none) and (any-pointer: coarse)').matches;
     var tooltipRef = React.useRef(null);
     var arrowRef = React.useRef(null);
     var hoverableRef = React.useRef(null);
     var id = "coconut-tooltip-".concat(useId());
+    var open = React.useCallback(function () { return setIsOpen(true); }, []);
+    var close = React.useCallback(function () { return setIsOpen(false); }, []);
     React.useEffect(function () {
         if (!children) {
             return;
         }
         setInteractive(getInteractiveChild(hoverableRef.current));
     }, [children]);
-    var open = function () {
-        var _a;
-        if (timeoutId) {
-            window.clearTimeout(timeoutId);
+    React.useLayoutEffect(function () {
+        var disposables = createDisposables();
+        if (isOpen) {
+            setDisplayed(true);
+            setEntering(true);
         }
-        (_a = hoverableRef.current) === null || _a === void 0 ? void 0 : _a.addEventListener('keydown', closeOnEscape);
-        if (hoverableRef.current && tooltipRef.current && !popper) {
-            var instance = createPopper(hoverableRef.current, tooltipRef.current, {
-                placement: placement,
-                modifiers: [
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [0, 8],
-                        },
-                    },
-                    {
-                        name: 'flip',
-                        options: {
-                            padding: 10,
-                        },
-                    },
-                    {
-                        name: 'arrow',
-                        enabled: arrow,
-                        options: {
-                            element: arrowRef.current,
-                            padding: 10,
-                        },
-                    },
-                    {
-                        name: 'flipArrow',
-                        enabled: arrow,
-                        phase: 'write',
-                        fn: function (_a) {
-                            var state = _a.state;
-                            var popperPlacement = state.placement;
-                            switch (popperPlacement) {
-                                case 'top':
-                                case 'top-start':
-                                case 'top-end':
-                                    setArrowDirection('bottom');
-                                    break;
-                                case 'right':
-                                case 'right-start':
-                                case 'right-end':
-                                    setArrowDirection('left');
-                                    break;
-                                case 'left':
-                                case 'left-start':
-                                case 'left-end':
-                                    setArrowDirection('right');
-                                    break;
-                                default:
-                                    setArrowDirection('top');
-                            }
-                        },
-                    },
-                    maxSize$1,
-                    applyMaxSize,
-                ],
-            });
-            setPopper(instance);
+        else {
+            disposables.setTimeout(function () { return setEntering(false); }, CLOSE_DELAY);
+            disposables.setTimeout(function () { return setDisplayed(false); }, CLOSE_DELAY + EXIT_DURATION$1);
         }
-        setShow(true);
-    };
-    var close = React.useCallback(function () {
-        var id = window.setTimeout(function () {
-            if (isMounted.current) {
-                setShow(false);
-                popper === null || popper === void 0 ? void 0 : popper.destroy();
-                setPopper(null);
-            }
-        }, 125);
-        setTimeoutId(id);
-    }, [isMounted, popper]);
-    var closeOnEscape = React.useCallback(function (e) {
-        if (e.key === Keys.Escape) {
-            return close();
+        return function () { return disposables.dispose(); };
+    }, [isOpen]);
+    React.useLayoutEffect(function () {
+        var hoverable = hoverableRef.current;
+        var tooltip = tooltipRef.current;
+        if (!displayed || !hoverable || !tooltip) {
+            return;
         }
-    }, [close]);
-    var onKeyDown = React.useCallback(function (e) {
-        closeOnEscape(e);
-    }, [closeOnEscape]);
+        var instance = createPopper(hoverable, tooltip, {
+            placement: placement,
+            modifiers: [
+                {
+                    name: 'offset',
+                    options: {
+                        offset: [0, 8],
+                    },
+                },
+                {
+                    name: 'flip',
+                    options: {
+                        padding: 10,
+                    },
+                },
+                {
+                    name: 'arrow',
+                    enabled: arrow,
+                    options: {
+                        element: arrowRef.current,
+                        padding: 10,
+                    },
+                },
+                {
+                    name: 'flipArrow',
+                    enabled: arrow,
+                    phase: 'write',
+                    fn: function (_a) {
+                        var _b;
+                        var state = _a.state;
+                        var side = state.placement.split('-')[0];
+                        setArrowDirection((_b = oppositeSide[side]) !== null && _b !== void 0 ? _b : 'top');
+                    },
+                },
+                maxSize$1,
+                applyMaxSize,
+            ],
+        });
+        // Popper's first update is async, so position now - otherwise the enter
+        // animation opens on an unpositioned frame, before data-popper-placement
+        // has picked its direction.
+        instance.forceUpdate();
+        return function () { return instance.destroy(); };
+    }, [arrow, displayed, placement]);
+    // Only listen while open, so a page full of tooltips doesn't hold a document
+    // listener each for as long as it lives
     React.useEffect(function () {
+        if (!isOpen) {
+            return;
+        }
+        var onKeyDown = function (e) {
+            if (e.key === Keys.Escape) {
+                close();
+            }
+        };
         document.addEventListener('keydown', onKeyDown);
         return function () { return document.removeEventListener('keydown', onKeyDown); };
-    }, [onKeyDown]);
+    }, [close, isOpen]);
     if (title.length === 0) {
         return children;
     }
@@ -14169,9 +14163,9 @@ function Tooltip(_a) {
             }
             return child;
         })),
-        isTouch ? null : (React__default['default'].createElement("div", { className: clsx__default['default']('px-2.5 py-2 rounded text-white-100 bg-black-60 z-50', show ? null : 'hidden'), id: id, onBlur: close, onFocus: open, onMouseOut: close, onMouseOver: open, ref: tooltipRef, role: "tooltip" },
+        isTouch ? null : (React__default['default'].createElement("div", { className: clsx__default['default']('coconut-tooltip px-2.5 py-2 rounded text-white-100 bg-dark-grey-main z-50', displayed ? null : 'hidden'), "data-entering": (displayed && entering) || undefined, "data-exiting": (displayed && !entering) || undefined, id: id, onBlur: close, onFocus: open, onMouseOut: close, onMouseOver: open, ref: tooltipRef, role: "tooltip" },
             React__default['default'].createElement("div", { className: "max-w-xs font-sans text-sm leading-tight" }, title),
-            arrow ? (React__default['default'].createElement("div", { className: clsx__default['default']('border-6 border-black-60 w-0 h-0', styles.class[arrowDirection]), ref: arrowRef, style: styles.style[arrowDirection] })) : null))));
+            arrow ? (React__default['default'].createElement("div", { className: clsx__default['default']('border-6 border-dark-grey-main w-0 h-0', styles.class[arrowDirection]), ref: arrowRef, style: styles.style[arrowDirection] })) : null))));
 }
 
 exports.Alert = Alert;

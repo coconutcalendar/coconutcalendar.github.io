@@ -153,6 +153,10 @@ export interface TextInputProps {
      */
     startAdornment?: SvgIconComponent | string | ReactNode;
     /**
+     * The step attribute of the number input. Specifies the granularity that the value must adhere to.
+     */
+    step?: 'any' | number;
+    /**
      * Tab order index for keyboard navigation
      */
     tabIndex?: number;
