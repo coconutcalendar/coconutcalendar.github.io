@@ -11,6 +11,10 @@ export interface ListProps {
      */
     children?: ReactNode | ReactNode[];
     /**
+     * Custom data attributes to be added to the list element
+     */
+    dataSet?: Record<string, string | undefined>;
+    /**
      * If true, reduces vertical padding for a more compact appearance
      * @default false
      */
@@ -26,7 +30,7 @@ export interface ListProps {
      */
     subheader?: ReactNode;
 }
-declare function List({ 'aria-label': label, children, dense, nested, subheader, }: PropsWithChildren<ListProps>): JSX.Element | null;
+declare function List({ 'aria-label': label, children, dataSet, dense, nested, subheader, }: PropsWithChildren<ListProps>): JSX.Element | null;
 declare namespace List {
     var Item: typeof import("./Item").default;
 }

@@ -11519,8 +11519,8 @@ function Header$1(_a) {
         };
     }, [dispatch, state.parentRef]);
     return (React.createElement("div", { className: clsx('flex items-center justify-between', state.dismissable ? 'px-6 py-4' : 'p-6') },
-        React.createElement("h2", { className: "flex truncate", id: id, title: nodeToString(children) },
-            React.createElement(Typography, { truncate: true, variant: "h5" }, children)),
+        React.createElement("h2", { className: "flex", id: id, title: nodeToString(children) },
+            React.createElement(Typography, { variant: "h5" }, children)),
         state.dismissable ? (React.createElement("div", { className: "ml-2" },
             React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'Ui.close' }), onClick: onDismiss, size: "medium" },
                 React.createElement(Close, null)))) : null));
@@ -11663,7 +11663,7 @@ var useItem = function () {
     return useContext(ItemContext);
 };
 function Item$1(_a) {
-    var _b = _a.children, children = _b === void 0 ? undefined : _b, _c = _a.defaultOpen, defaultOpen = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, endAdornment = _a.endAdornment, _e = _a.endAdornmentType, endAdornmentType = _e === void 0 ? 'icon' : _e, inset = _a.inset, _f = _a.inverse, inverse = _f === void 0 ? false : _f, onBlur = _a.onBlur, onClick = _a.onClick, onFocus = _a.onFocus, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave, primary = _a.primary, secondary = _a.secondary, _g = _a.selected, selected = _g === void 0 ? false : _g, startAdornment = _a.startAdornment, _h = _a.startAdornmentType, startAdornmentType = _h === void 0 ? 'icon' : _h;
+    var _b = _a.children, children = _b === void 0 ? undefined : _b, dataSet = _a.dataSet, _c = _a.defaultOpen, defaultOpen = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, endAdornment = _a.endAdornment, _e = _a.endAdornmentType, endAdornmentType = _e === void 0 ? 'icon' : _e, inset = _a.inset, _f = _a.inverse, inverse = _f === void 0 ? false : _f, onBlur = _a.onBlur, onClick = _a.onClick, onFocus = _a.onFocus, onMouseEnter = _a.onMouseEnter, onMouseLeave = _a.onMouseLeave, primary = _a.primary, secondary = _a.secondary, _g = _a.selected, selected = _g === void 0 ? false : _g, startAdornment = _a.startAdornment, _h = _a.startAdornmentType, startAdornmentType = _h === void 0 ? 'icon' : _h;
     var id = "coconut-list-item-text-".concat(useId());
     var _j = useList(), dense = _j.dense, nested = _j.nested;
     var _k = useReducer(runReducer$5, {
@@ -11791,7 +11791,7 @@ function Item$1(_a) {
         return nested > ListNestedLevel.None ? 'pl-8' : 'pl-4';
     };
     return (React.createElement(ItemContext.Provider, { value: [state, dispatch] },
-        React.createElement("li", __assign({}, (listItemClasses.className && listItemClasses)), components.nestedList ? (React.createElement(React.Fragment, null,
+        React.createElement("li", __assign({}, toDataSet(dataSet), (listItemClasses.className && listItemClasses)), components.nestedList ? (React.createElement(React.Fragment, null,
             React.createElement("span", { className: clsx('flex items-center', !disabled && button && 'hover:bg-black-5 active:bg-black-10', indents[nested], selected ? 'bg-primary-10' : '') },
                 React.createElement("button", __assign({ className: clsx('flex w-full truncate items-center', vertPadding, textStyle[state.itemState].primary, button ? buttonStyles[state.itemState] : '', getLeftPadding()) }, toggleButtonProps),
                     startAdornment ? (React.createElement(StartAdornment$2, { disabled: disabled, type: startAdornmentType }, startAdornment)) : null,
@@ -11841,7 +11841,7 @@ function List(_a) {
     // Label on list item not usually necessary. Only use if further context
     // is needed (and/or subheader is not present)
     // https://www.scottohara.me/blog/2020/05/02/labelled-lists.html
-    label = _a["aria-label"], children = _a.children, _c = _a.dense, dense = _c === void 0 ? false : _c, _d = _a.nested, nested = _d === void 0 ? 0 : _d, subheader = _a.subheader;
+    label = _a["aria-label"], children = _a.children, dataSet = _a.dataSet, _c = _a.dense, dense = _c === void 0 ? false : _c, _d = _a.nested, nested = _d === void 0 ? 0 : _d, subheader = _a.subheader;
     var subheaderId = "coconut-list-subheader-".concat(useId());
     var itemDispatch = (_b = useItem()) === null || _b === void 0 ? void 0 : _b[1];
     var _e = useState({
@@ -11873,9 +11873,9 @@ function List(_a) {
             : {};
         return labels;
     }, [label]);
-    return (React.createElement(ListContext.Provider, { value: state }, nested ? (React.createElement("ul", __assign({ className: "flex overflow-hidden flex-col" }, accessibleProps, { id: state.id }), children)) : (React.createElement("div", { className: "flex flex-col h-full py-2" },
+    return (React.createElement(ListContext.Provider, { value: state }, nested ? (React.createElement("ul", __assign({ className: "flex overflow-hidden flex-col" }, toDataSet(dataSet), accessibleProps, { id: state.id }), children)) : (React.createElement("div", { className: "flex flex-col h-full py-2" },
         subheader ? (React.createElement("div", { className: "px-4 font-sans text-sm font-medium tracking-wide leading-12 text-black-60", id: subheaderId }, subheader)) : null,
-        React.createElement("ul", __assign({}, accessibleProps), children)))));
+        React.createElement("ul", __assign({}, toDataSet(dataSet), accessibleProps), children)))));
 }
 List.Item = Item$1;
 

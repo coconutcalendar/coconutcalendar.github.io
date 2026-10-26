@@ -17,6 +17,10 @@ export interface ItemProps {
      */
     children?: ReactElement;
     /**
+     * Custom data attributes to be added to the list item element
+     */
+    dataSet?: Record<string, string | undefined>;
+    /**
      * If true, the nested list will be open by default.
      * Only applies if the item has a nested list
      * @default false
@@ -94,5 +98,5 @@ export type ItemReducers = {
 export declare const reducers: ItemReducers;
 type UseItemValues = [ItemState, Dispatch<NestedListActions> | null];
 export declare const useItem: () => UseItemValues;
-declare function Item({ children, defaultOpen, disabled, endAdornment, endAdornmentType, inset, inverse, onBlur, onClick, onFocus, onMouseEnter, onMouseLeave, primary, secondary, selected, startAdornment, startAdornmentType, }: ItemProps): JSX.Element;
+declare function Item({ children, dataSet, defaultOpen, disabled, endAdornment, endAdornmentType, inset, inverse, onBlur, onClick, onFocus, onMouseEnter, onMouseLeave, primary, secondary, selected, startAdornment, startAdornmentType, }: ItemProps): JSX.Element;
 export default Item;

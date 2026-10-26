@@ -1,7 +1,5 @@
 /// <reference types="react" />
-export interface DrawerContextValue {
+declare const DrawerContext: import("react").Context<{
     dismissable: boolean;
-    onOpenChange?: (open: boolean) => void;
-}
-export declare const DrawerContext: import("react").Context<DrawerContextValue | null>;
-export declare const useDrawer: () => DrawerContextValue;
+}>;
+export default DrawerContext;
