@@ -15,7 +15,7 @@ export interface FieldStyles {
 /**
  * Maps React Aria's field parts (Group, Label, Text, FieldError, DateSegment)
  * onto TextInput's tokens, so a segmented field reads as one of the family
- * rather than a lookalike. Shared by BetterDatePicker and TimeInput.
+ * rather than a lookalike. Shared by DatePicker and TimeInput.
  *
  * `appearFocused` keeps the field looking focused while DOM focus sits
  * elsewhere — a picker's popover, say — mirroring TextInput's prop of the same

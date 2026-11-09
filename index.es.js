@@ -3,8 +3,8 @@ import React, { forwardRef, useState, createContext, useContext, useEffect, useC
 import { useIntl, FormattedMessage } from 'react-intl';
 import { createPortal } from 'react-dom';
 import { startOfWeek, isWeekend, isToday, toCalendarDate as toCalendarDate$1, fromDate, Time, today, endOfWeek, toCalendarDateTime, parseTime } from '@internationalized/date';
-import { Popover as Popover$1, CalendarGrid, CalendarGridHeader, CalendarHeaderCell, CalendarGridBody, CalendarStateContext, RangeCalendarStateContext, CalendarCell, I18nProvider, RangeCalendar, Calendar as Calendar$1, Text as Text$4, FieldError, DateRangePicker, Group as Group$6, Label as Label$2, DateInput, DateSegment, Button as Button$3, DatePicker as DatePicker$1, Dialog as Dialog$1, DialogTrigger, useSlottedContext, ModalContext, Heading, ModalOverlay, Modal, TimeField, TimeFieldStateContext } from 'react-aria-components';
-import { format as format$1, parse as parse$1, setDate, startOfWeek as startOfWeek$1, endOfWeek as endOfWeek$1, isValid, isAfter, isSameWeek, isSameDay, isSameMonth, isToday as isToday$1, isWeekend as isWeekend$1, startOfMonth, addDays, endOfMonth, differenceInCalendarDays, addMonths, subDays, subMonths, isWithinInterval, fromUnixTime } from 'date-fns';
+import { CalendarGrid, CalendarGridHeader, CalendarHeaderCell, CalendarGridBody, CalendarStateContext, RangeCalendarStateContext, CalendarCell, I18nProvider, RangeCalendar, Calendar as Calendar$1, Popover as Popover$1, Text as Text$4, FieldError, DateRangePicker, Group as Group$6, Label as Label$2, DateInput, DateSegment, Button as Button$3, DatePicker as DatePicker$1, Dialog as Dialog$1, DialogTrigger, useSlottedContext, ModalContext, Heading, ModalOverlay, Modal, TimeField, TimeFieldStateContext } from 'react-aria-components';
+import { format as format$1, isValid, fromUnixTime } from 'date-fns';
 import { enUS, es, fr, ko, pl, ptBR, ru, zhCN } from 'date-fns/locale';
 
 /******************************************************************************
@@ -3787,7 +3787,7 @@ createSvgIcon(React.createElement("path", { d: "M20 0H4v2h16V0zM4 24h16v-2H4v2zM
 
 createSvgIcon(React.createElement("path", { d: "M12 21C9.48333 21 7.35 20.6167 5.6 19.85C3.86667 19.0667 3 18.1167 3 17V7C3 5.9 3.875 4.95833 5.625 4.175C7.39167 3.39167 9.51667 3 12 3C14.4833 3 16.6 3.39167 18.35 4.175C20.1167 4.95833 21 5.9 21 7V17C21 18.1167 20.125 19.0667 18.375 19.85C16.6417 20.6167 14.5167 21 12 21ZM12 9.025C13.4833 9.025 14.975 8.81667 16.475 8.4C17.975 7.96667 18.8167 7.50833 19 7.025C18.8167 6.54167 17.975 6.08333 16.475 5.65C14.9917 5.21667 13.5 5 12 5C10.4833 5 8.99167 5.21667 7.525 5.65C6.075 6.06667 5.23333 6.525 5 7.025C5.23333 7.525 6.075 7.98333 7.525 8.4C8.99167 8.81667 10.4833 9.025 12 9.025ZM12 14C12.7 14 13.375 13.9667 14.025 13.9C14.675 13.8333 15.2917 13.7417 15.875 13.625C16.475 13.4917 17.0333 13.3333 17.55 13.15C18.0833 12.9667 18.5667 12.7583 19 12.525V9.525C18.5667 9.75833 18.0833 9.96667 17.55 10.15C17.0333 10.3333 16.475 10.4917 15.875 10.625C15.2917 10.7417 14.675 10.8333 14.025 10.9C13.375 10.9667 12.7 11 12 11C11.3 11 10.6167 10.9667 9.95 10.9C9.28333 10.8333 8.65 10.7417 8.05 10.625C7.46667 10.4917 6.91667 10.3333 6.4 10.15C5.88333 9.96667 5.41667 9.75833 5 9.525V12.525C5.41667 12.7583 5.88333 12.9667 6.4 13.15C6.91667 13.3333 7.46667 13.4917 8.05 13.625C8.65 13.7417 9.28333 13.8333 9.95 13.9C10.6167 13.9667 11.3 14 12 14ZM12 19C12.7667 19 13.5417 18.9417 14.325 18.825C15.125 18.7083 15.8583 18.5583 16.525 18.375C17.1917 18.175 17.75 17.9583 18.2 17.725C18.65 17.475 18.9167 17.225 19 16.975V14.525C18.5667 14.7583 18.0833 14.9667 17.55 15.15C17.0333 15.3333 16.475 15.4917 15.875 15.625C15.2917 15.7417 14.675 15.8333 14.025 15.9C13.375 15.9667 12.7 16 12 16C11.3 16 10.6167 15.9667 9.95 15.9C9.28333 15.8333 8.65 15.7417 8.05 15.625C7.46667 15.4917 6.91667 15.3333 6.4 15.15C5.88333 14.9667 5.41667 14.7583 5 14.525V17C5.08333 17.25 5.34167 17.4917 5.775 17.725C6.225 17.9583 6.78333 18.175 7.45 18.375C8.11667 18.5583 8.85 18.7083 9.65 18.825C10.45 18.9417 11.2333 19 12 19Z" }), 'Database');
 
-var DateRange = createSvgIcon(React.createElement("path", { d: "M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" }), 'DateRange');
+var DateRangeIcon = createSvgIcon(React.createElement("path", { d: "M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" }), 'DateRange');
 
 createSvgIcon(React.createElement("path", { d: "M3 20v-2h18v2ZM3 6V4h18v2Zm2 10q-.825 0-1.413-.588Q3 14.825 3 14v-4q0-.825.587-1.413Q4.175 8 5 8h14q.825 0 1.413.587Q21 9.175 21 10v4q0 .825-.587 1.412Q19.825 16 19 16Z" }), 'DayView');
 
@@ -5542,6 +5542,441 @@ Banner.Description.displayName = 'Banner.Description';
 // @ts-ignore
 Banner.StartAdornment.displayName = 'Banner.StartAdornment';
 
+function ButtonGroup(_a) {
+    var children = _a.children, _b = _a.color, groupColor = _b === void 0 ? 'default' : _b, _c = _a.disabled, groupDisabled = _c === void 0 ? false : _c, _d = _a.size, groupSize = _d === void 0 ? 'medium' : _d, _e = _a.variant, groupVariant = _e === void 0 ? 'contained' : _e;
+    var elements = Children.toArray(children);
+    var number = Children.count(elements);
+    return (React.createElement("div", { className: "flex", role: "group" }, elements.map(function (child, index) {
+        if (child) {
+            var color = child.props.color || groupColor;
+            var disabled = child.props.disabled || groupDisabled;
+            var size = child.props.size || groupSize;
+            var variant = child.props.variant || groupVariant;
+            var position = index === 0 ? 'left' : index === number - 1 ? 'right' : 'middle';
+            if (isValidElement(child)) {
+                return cloneElement(child, {
+                    color: color,
+                    disabled: disabled,
+                    position: position,
+                    size: size,
+                    variant: variant,
+                });
+            }
+        }
+    })));
+}
+
+function Collapse(_a) {
+    var children = _a.children, _b = _a.dir, dir = _b === void 0 ? 'col' : _b, id = _a.id, _c = _a.open, open = _c === void 0 ? false : _c;
+    return (React.createElement("div", { className: clsx(open
+            ? ['flex overflow-hidden', dir === 'col' ? 'flex-col' : 'flex-row']
+            : 'hidden'), id: id }, children));
+}
+
+function useElementOverflow(ref) {
+    var dependencies = [];
+    for (var _i = 1; _i < arguments.length; _i++) {
+        dependencies[_i - 1] = arguments[_i];
+    }
+    var _a = useState(function () { return false; }), overflowing = _a[0], setOverflowing = _a[1];
+    var windowSize = useWindowSize(ref);
+    useEffect(function () {
+        var el = ref.current;
+        if (el) {
+            setOverflowing(el.clientWidth < el.scrollWidth || el.clientHeight < el.scrollHeight);
+        }
+    }, [ref, windowSize.height, windowSize.width, dependencies]);
+    return overflowing;
+}
+
+var ActionTypes$3;
+(function (ActionTypes) {
+    ActionTypes[ActionTypes["SetCollapsable"] = 0] = "SetCollapsable";
+    ActionTypes[ActionTypes["SetHasActions"] = 1] = "SetHasActions";
+    ActionTypes[ActionTypes["UnsetCollapsable"] = 2] = "UnsetCollapsable";
+    ActionTypes[ActionTypes["UnsetHasActions"] = 3] = "UnsetHasActions";
+    ActionTypes[ActionTypes["ToggleOpen"] = 4] = "ToggleOpen";
+})(ActionTypes$3 || (ActionTypes$3 = {}));
+
+var _a$3;
+var CardContext = createContext(null);
+var useCard = function () { return useContext(CardContext); };
+function createInitialState() {
+    return {
+        collapsable: false,
+        collapseId: undefined,
+        hasActions: false,
+        open: false,
+    };
+}
+var reducers$3 = (_a$3 = {},
+    _a$3[ActionTypes$3.SetCollapsable] = function (state, action) {
+        return __assign(__assign({}, state), { collapsable: true, collapseId: action.collapseId });
+    },
+    _a$3[ActionTypes$3.SetHasActions] = function (state) {
+        return __assign(__assign({}, state), { hasActions: true });
+    },
+    _a$3[ActionTypes$3.UnsetCollapsable] = function (state) {
+        return __assign(__assign({}, state), { collapsable: false, collapseId: undefined });
+    },
+    _a$3[ActionTypes$3.UnsetHasActions] = function (state) {
+        return __assign(__assign({}, state), { hasActions: false });
+    },
+    _a$3[ActionTypes$3.ToggleOpen] = function (state) {
+        return __assign(__assign({}, state), { open: !state.open });
+    },
+    _a$3);
+var runReducer$3 = function (state, action) {
+    return reducers$3[action.type](state, action);
+};
+function Action(_a) {
+    var children = _a.children;
+    return children;
+}
+function CardActions(_a) {
+    var children = _a.children;
+    var _b = useCard(), dispatch = _b[1];
+    useEffect(function () {
+        dispatch({ type: ActionTypes$3.SetHasActions });
+        return function () { return dispatch({ type: ActionTypes$3.UnsetHasActions }); };
+    }, [dispatch]);
+    return React.createElement("div", { className: "shrink-0 p-2 space-x-2" }, children);
+}
+function Card(_a) {
+    var children = _a.children, _b = _a.outlined, outlined = _b === void 0 ? false : _b;
+    var _c = useReducer(runReducer$3, null, createInitialState), state = _c[0], dispatch = _c[1];
+    return (React.createElement("div", { className: clsx('flex flex-col w-full h-full font-sans bg-white-100 rounded max-h-inherit', outlined ? 'border border-black-15' : 'shadow-1') },
+        React.createElement(CardContext.Provider, { value: [state, dispatch] }, children)));
+}
+function CollapseButton() {
+    var intl = useIntl();
+    var _a = useCard(), _b = _a[0], open = _b.open, collapseId = _b.collapseId, dispatch = _a[1];
+    var onClick = function () {
+        dispatch({ type: ActionTypes$3.ToggleOpen });
+    };
+    return (React.createElement(IconButton, { "aria-controls": collapseId, "aria-expanded": open, "aria-label": intl.formatMessage({ id: 'Card.toggle_content' }), onClick: onClick, size: "medium" }, open ? React.createElement(ExpandLess, null) : React.createElement(ExpandMore, null)));
+}
+function CollapseContent(_a) {
+    var children = _a.children;
+    var _b = useCard(), open = _b[0].open, dispatch = _b[1];
+    var collapseId = "coconut-collapsable-card-content-".concat(useId());
+    useEffect(function () {
+        dispatch({ type: ActionTypes$3.SetCollapsable, collapseId: collapseId });
+        return function () { return dispatch({ type: ActionTypes$3.UnsetCollapsable }); };
+    }, [dispatch, collapseId]);
+    return (React.createElement(Collapse, { id: collapseId, open: open }, children));
+}
+function Content$2(_a) {
+    var children = _a.children;
+    var _b = useCard()[0], hasActions = _b.hasActions, open = _b.open;
+    var ref = useRef(null);
+    var _c = useState(false), rendering = _c[0], setRendering = _c[1];
+    var overflowing = useElementOverflow(ref, rendering);
+    useEffect(function () {
+        setRendering(true);
+    }, [children, open]);
+    useLayoutEffect(function () {
+        setRendering(false);
+    }, [children, open, ref]);
+    return (React.createElement("div", { className: clsx('py-4 overflow-hidden overflow-y-auto', overflowing ? 'border-t border-black-10' : null, overflowing && hasActions ? 'border-b' : null), ref: ref },
+        React.createElement("div", { className: "px-4" }, children)));
+}
+function Header(_a) {
+    var children = _a.children;
+    var collapsable = useCard()[0].collapsable;
+    var components = {
+        action: null,
+        subtitle: null,
+        title: null,
+    };
+    // TODO: This is written like this because Typescript complains when trying to access `child.type.name`. We need to figure out a way to type the child appropriately.
+    Children.forEach(children, function (child) {
+        switch (child.type) {
+            case Action:
+                components.action = child;
+                break;
+            case Subtitle:
+                components.subtitle = child;
+                break;
+            case Title$1:
+                components.title = child;
+                break;
+        }
+    });
+    return (React.createElement("div", { className: "flex flex-row items-center justify-between shrink-0 p-4" },
+        components.title || components.subtitle ? (React.createElement("div", { className: "flex flex-col" },
+            components.title,
+            components.subtitle)) : null,
+        React.createElement("div", { className: "flex flex-row" },
+            collapsable ? React.createElement(CollapseButton, null) : null,
+            components.action)));
+}
+function Subtitle(_a) {
+    var children = _a.children;
+    return (React.createElement("span", { className: "text-sm font-normal leading-5 text-black-60" }, children));
+}
+function Title$1(_a) {
+    var children = _a.children;
+    return (React.createElement("span", { className: "text-sm font-normal leading-5 text-black-90" }, children));
+}
+Card.Actions = CardActions;
+Card.Action = Action;
+Card.Collapse = CollapseContent;
+Card.Content = Content$2;
+Card.Header = Header;
+Card.Subtitle = Subtitle;
+Card.Title = Title$1;
+
+var variants$7 = {
+    default: {
+        contained: {
+            default: "border border-transparent bg-black-5 text-black-90",
+            primary: "border border-transparent bg-primary-main text-white-100",
+            secondary: "border border-transparent bg-secondary-main text-white-100",
+            error: "border border-transparent bg-error-main text-white-100",
+            disabled: "border border-transparent bg-black-15 text-black-30",
+        },
+        outlined: {
+            default: "border border-black-25 text-black-90 ",
+            primary: "border border-primary-main text-primary-main",
+            secondary: "border border-secondary-main text-secondary-main",
+            error: "border border-error-main text-error-main",
+            disabled: "border border-black-15 text-black-30",
+        },
+    },
+    button: {
+        contained: {
+            default: "border border-transparent bg-black-5 text-black-90 disabled:bg-black-15 disabled:text-black-30 active:bg-black-25 focus:bg-black-15 hover:bg-black-15",
+            primary: "border border-transparent bg-primary-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-primary-darker focus:bg-primary-dark hover:bg-primary-dark",
+            secondary: "border border-transparent bg-secondary-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-secondary-darker focus:bg-secondary-dark hover:bg-secondary-dark",
+            error: "border border-transparent bg-error-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-error-darker focus:bg-error-dark hover:bg-error-dark",
+            disabled: "border border-transparent bg-black-15 text-black-30 cursor-not-allowed",
+        },
+        outlined: {
+            default: "border border-black-25 text-black-90 disabled:bg-black-15 disabled:text-black-30 active:bg-black-25 focus:bg-black-15 hover:bg-black-15",
+            primary: "border border-primary-main text-primary-main disabled:bg-black-15 disabled:text-black-30 active:bg-primary-20 focus:bg-primary-10 hover:bg-primary-10",
+            secondary: "border border-secondary-main text-secondary-main disabled:bg-black-15 disabled:text-black-30 active:bg-secondary-20 focus:bg-secondary-10 hover:bg-secondary-10",
+            error: "border border-error-main text-error-main disabled:bg-black-15 disabled:text-black-30 active:bg-error-20 focus:bg-error-10 hover:bg-error-10",
+            disabled: "border border-black-15 text-black-30 cursor-not-allowed",
+        },
+    },
+    focusable: {
+        contained: {
+            default: "border border-transparent bg-black-5 text-black-90 active:bg-black-15 focus:bg-black-15",
+            primary: "border border-transparent bg-primary-main text-white-100 active:bg-primary-dark focus:bg-primary-dark",
+            secondary: "border border-transparent bg-secondary-main text-white-100 active:bg-secondary-dark focus:bg-secondary-dark",
+            error: "border border-transparent bg-error-main text-white-100 active:bg-error-dark focus:bg-error-dark",
+            disabled: "border border-transparent bg-black-15 text-black-30",
+        },
+        outlined: {
+            default: "border border-black-25 text-black-90 active:bg-black-15 focus:bg-black-15",
+            primary: "border border-primary-main text-primary-main active:bg-primary-10 focus:bg-primary-10",
+            secondary: "border border-secondary-main text-secondary-main active:bg-secondary-10 focus:bg-secondary-10",
+            error: "border border-error-main text-error-main active:bg-error-10 focus:bg-error-10",
+            disabled: "border border-black-15 text-black-30",
+        },
+    },
+};
+var iconColors = {
+    letter: {
+        default: "text-black-90 bg-black-15",
+        primary: "text-white-100 bg-primary-dark",
+        secondary: "text-white-100 bg-secondary-dark",
+        error: "text-white-100 bg-error-dark",
+        disabled: 'text-black-30 bg-black-15',
+    },
+    cancel: {
+        default: "text-black-45 active:text-black-90 hover:text-black-60 focused:text-black-60 disabled:text-black-30 disabled:cursor-not-allowed",
+        primary: "text-primary-main hover:text-primary-dark focused:text-primary-dark active:text-primary-darker  disabled:text-black-30 disabled:cursor-not-allowed",
+        secondary: "text-secondary-main hover:text-secondary-dark focused:text-secondary-dark active:text-secondary-darker disabled:text-black-30 disabled:cursor-not-allowed",
+        error: "text-error-main hover:text-error-dark focused:text-error-dark active:text-error-darker disabled:text-black-30 disabled:cursor-not-allowed",
+    },
+};
+var sizes$6 = {
+    medium: {
+        root: 'px-3 py-1',
+        rootWithAdornment: 'px-3 py-1',
+        icon: 'w-6 h-6',
+        cancel: 'w-6 h-6',
+        iconPadding: '-ml-2 mr-2',
+        cancelPadding: 'ml-2 -mr-2',
+        text: 'font-sans text-sm font-normal',
+        letter: 'font-sans text-sm font-normal leading-6 text-center',
+    },
+    small: {
+        root: 'px-2 py-0.5',
+        rootWithAdornment: 'px-2 py-1',
+        icon: 'w-4.5 h-4.5',
+        cancel: 'w-4 h-4',
+        iconPadding: '-ml-1 mr-1',
+        cancelPadding: 'ml-1 -mr-1',
+        text: 'font-sans text-xs font-normal',
+        letter: 'font-sans text-xs leading-4.5 text-center',
+    },
+};
+function Chip(_a) {
+    var _b = _a.color, color = _b === void 0 ? 'default' : _b, _c = _a.disabled, disabled = _c === void 0 ? false : _c, label = _a.label, onClick = _a.onClick, onDelete = _a.onDelete, _d = _a.size, size = _d === void 0 ? 'medium' : _d, startAdornment = _a.startAdornment, _e = _a.variant, variant = _e === void 0 ? 'contained' : _e;
+    var intl = useIntl();
+    var chipType = onClick ? 'button' : onDelete ? 'focusable' : 'default';
+    var handleDelete = function (event) {
+        event.stopPropagation();
+        if (!disabled && onDelete) {
+            onDelete(event);
+        }
+    };
+    var onKeyDown = function (event) {
+        if (event.key === Keys.Delete || event.key === Keys.Backspace) {
+            handleDelete(event);
+        }
+        if (event.key === Keys.Escape) {
+            var button = event.target;
+            button.blur();
+        }
+    };
+    var isButton = onClick || onDelete;
+    var Component = isButton ? 'button' : 'div';
+    var buttonProps = isButton
+        ? {
+            'aria-label': label,
+            disabled: disabled,
+            onClick: onClick,
+            onKeyDown: onKeyDown,
+        }
+        : {};
+    return (React.createElement(Component, __assign({ className: clsx('rounded-full inline-flex items-center select-none focus:outline-none', startAdornment ? sizes$6[size].rootWithAdornment : sizes$6[size].root, disabled
+            ? variants$7[chipType][variant].disabled
+            : variants$7[chipType][variant][color], !onClick && 'cursor-default') }, buttonProps),
+        React.createElement("label", { className: clsx('flex items-center', onClick ? (disabled ? 'cursor-not-allowed' : 'cursor-pointer') : null) },
+            startAdornment ? (React.createElement(StartAdornment$1, { color: color, disabled: disabled, size: size, variant: variant }, startAdornment)) : null,
+            React.createElement("span", { className: clsx('flex', sizes$6[size].text) }, label)),
+        onDelete ? (React.createElement("div", __assign({ "aria-label": intl.formatMessage({ id: 'Chip.remove' }), className: clsx('focus:outline-none', sizes$6[size].cancel, sizes$6[size].cancelPadding, disabled
+                ? 'cursor-not-allowed'
+                : variant === 'contained'
+                    ? color === 'default'
+                        ? iconColors.cancel.default
+                        : 'text-white-100 hover:text-white-90 active:text-white-90'
+                    : iconColors.cancel[color]), role: "button", tabIndex: -1 }, (disabled
+            ? {}
+            : {
+                onClick: handleDelete,
+            })),
+            React.createElement(Cancel, null))) : null));
+}
+function StartAdornment$1(_a) {
+    var children = _a.children, color = _a.color, disabled = _a.disabled, size = _a.size, variant = _a.variant;
+    var startAdornmentString = typeof children === 'string';
+    return (React.createElement("div", { className: clsx('flex relative', sizes$6[size].icon, sizes$6[size].iconPadding, startAdornmentString &&
+            clsx('rounded-full', disabled
+                ? iconColors.letter.disabled
+                : variant === 'contained'
+                    ? 'bg-black-30'
+                    : iconColors.letter[color])) },
+        React.createElement("div", { className: clsx('absolute inset-x-0', startAdornmentString
+                ? sizes$6[size].letter
+                : 'overflow-hidden rounded-full', sizes$6[size].icon) }, children)));
+}
+
+var LocaleContext = createContext(null);
+var useLocale = function () {
+    return useContext(LocaleContext);
+};
+function LocaleProvider(_a) {
+    var children = _a.children, _b = _a.locale, locale = _b === void 0 ? 'en' : _b;
+    var _c = useState(locale), language = _c[0], setLanguage = _c[1];
+    return (React.createElement(LocaleContext.Provider, { value: [language, setLanguage] }, children));
+}
+
+function hexToHSL(H) {
+    var red = 0;
+    var green = 0;
+    var blue = 0;
+    if (H.length == 4) {
+        red = Number('0x' + H[1] + H[1]);
+        green = Number('0x' + H[2] + H[2]);
+        blue = Number('0x' + H[3] + H[3]);
+    }
+    else if (H.length == 7) {
+        red = Number('0x' + H[1] + H[2]);
+        green = Number('0x' + H[3] + H[4]);
+        blue = Number('0x' + H[5] + H[6]);
+    }
+    red /= 255;
+    green /= 255;
+    blue /= 255;
+    var minimum = Math.min(red, green, blue);
+    var maximum = Math.max(red, green, blue);
+    var delta = maximum - minimum;
+    var hue = 0;
+    var saturation = 0;
+    var light = 0;
+    if (delta == 0) {
+        hue = 0;
+    }
+    else if (maximum == red) {
+        hue = ((green - blue) / delta) % 6;
+    }
+    else if (maximum == green) {
+        hue = (blue - red) / delta + 2;
+    }
+    else {
+        hue = (red - green) / delta + 4;
+    }
+    hue = Math.round(hue * 60);
+    if (hue < 0) {
+        hue += 360;
+    }
+    light = (maximum + minimum) / 2;
+    saturation = delta == 0 ? 0 : delta / (1 - Math.abs(2 * light - 1));
+    saturation = +(saturation * 100).toFixed(1);
+    light = +(light * 100).toFixed(1);
+    return { hue: hue, saturation: saturation, light: light };
+}
+function generateVariants(color) {
+    var prefix = "hsla(".concat(color.hue, ", ").concat(color.saturation, "%,");
+    return {
+        main: "".concat(prefix, " ").concat(color.light, "%, 1)"),
+        darker: "".concat(prefix, " ").concat(Math.round(color.light * 0.75), "%, 1)"),
+        dark: "".concat(prefix, " ").concat(Math.round(color.light * 0.875), "%, 1)"),
+        light: "".concat(prefix, " ").concat(Math.round(color.light * 1.125), "%, 1)"),
+        lighter: "".concat(prefix, " ").concat(Math.round(color.light * 1.25), "%, 1)"),
+        '20': "".concat(prefix, " ").concat(color.light, "%, 0.2)"),
+        '15': "".concat(prefix, " ").concat(color.light, "%, 0.15)"),
+        '10': "".concat(prefix, " ").concat(color.light, "%, 0.1)"),
+    };
+}
+function setStyleVariables(_a) {
+    var primary = _a.primary, secondary = _a.secondary;
+    var root = document.documentElement;
+    if (primary) {
+        var values = generateVariants(hexToHSL(primary));
+        root.style.setProperty('--color-primary-main', values.main);
+        root.style.setProperty('--color-primary-darker', values.darker);
+        root.style.setProperty('--color-primary-dark', values.dark);
+        root.style.setProperty('--color-primary-light', values.light);
+        root.style.setProperty('--color-primary-lighter', values.lighter);
+        root.style.setProperty('--color-primary-20', values['20']);
+        root.style.setProperty('--color-primary-15', values['15']);
+        root.style.setProperty('--color-primary-10', values['10']);
+    }
+    if (secondary) {
+        var values = generateVariants(hexToHSL(secondary));
+        root.style.setProperty('--color-secondary-main', values.main);
+        root.style.setProperty('--color-secondary-darker', values.darker);
+        root.style.setProperty('--color-secondary-dark', values.dark);
+        root.style.setProperty('--color-secondary-light', values.light);
+        root.style.setProperty('--color-secondary-lighter', values.lighter);
+        root.style.setProperty('--color-secondary-20', values['20']);
+        root.style.setProperty('--color-secondary-15', values['15']);
+        root.style.setProperty('--color-secondary-10', values['10']);
+    }
+}
+
+function UiProvider(_a) {
+    var children = _a.children, primary = _a.primary, secondary = _a.secondary;
+    setStyleVariables({ primary: primary, secondary: secondary });
+    return React.createElement(LocaleProvider, null, children);
+}
+
 var locales = {
     en: enUS,
     es: es,
@@ -5570,143 +6005,6 @@ function useDateFormatters() {
         formatWeekOfYear: function (date) { return format(date, 'w'); },
         formatYearAndMonth: function (date) { return format(date, 'yyyy-MM'); },
     }); }, [format]);
-}
-
-var CENTER_PLACEMENT_EDGE_THRESHOLD = 20; // pixels from the edge of the viewport
-var Popover = React.forwardRef(function Popover(_a, forwardedRef) {
-    var ariaLabel = _a["aria-label"], ariaLabelledby = _a["aria-labelledby"], ariaDescribedby = _a["aria-describedby"], children = _a.children, _b = _a.contextDriven, contextDriven = _b === void 0 ? false : _b, isNonModal = _a.isNonModal, isOpen = _a.isOpen, _c = _a.offset, offset = _c === void 0 ? 8 : _c, onOpenChange = _a.onOpenChange, _d = _a.placement, placement = _d === void 0 ? 'bottom' : _d, triggerRef = _a.triggerRef;
-    var popoverRef = React.useRef(null);
-    // A standalone popover defaults to closed so it never inherits an unrelated
-    // overlay context (e.g. a Drawer's) and renders with no triggerRef; a
-    // context-driven popover forwards nothing and defers to that context
-    var resolvedIsOpen = contextDriven ? undefined : isOpen !== null && isOpen !== void 0 ? isOpen : false;
-    // Stable across renders so React does not detach and reattach the popover
-    // node every time the parent re-renders
-    var setRefs = useCallback(function (node) {
-        popoverRef.current = node;
-        if (typeof forwardedRef === 'function') {
-            forwardedRef(node);
-        }
-        else if (forwardedRef) {
-            forwardedRef.current = node;
-        }
-    }, [forwardedRef]);
-    var _e = useState(false), isNearEdge = _e[0], setIsNearEdge = _e[1];
-    var isCenterPlacement = placement === 'center';
-    useEffect(function useCenterPlacementOffset() {
-        var popover = popoverRef.current;
-        if (!popover || !isCenterPlacement)
-            return;
-        var updateCenterOffset = function () {
-            var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
-            var popoverStyles = getComputedStyle(popover);
-            var popoverHeight = popoverStyles
-                .getPropertyValue('--trigger-anchor-point')
-                .replace(/px/g, '')
-                .split(' ')[1];
-            if (trigger && popoverHeight) {
-                var triggerStyles = getComputedStyle(trigger);
-                var borderWidth = parseFloat(triggerStyles.borderWidth) || 0;
-                var totalHeight = trigger.clientHeight + borderWidth * 2;
-                popover.style.setProperty('--center-offset', Number(popoverHeight) / 2 + totalHeight / 2 + offset + 'px');
-            }
-        };
-        if (isOpen) {
-            requestAnimationFrame(updateCenterOffset);
-        }
-    }, [isCenterPlacement, isOpen, offset, triggerRef]);
-    useEffect(function useEdgeProximityDetection() {
-        var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
-        if (!trigger || !isCenterPlacement || !isOpen) {
-            return;
-        }
-        var checkEdgeProximity = function () {
-            var rect = trigger.getBoundingClientRect();
-            var threshold = CENTER_PLACEMENT_EDGE_THRESHOLD;
-            var nearTop = rect.top < threshold;
-            var nearBottom = window.innerHeight - rect.bottom < threshold;
-            var nearLeft = rect.left < threshold;
-            var nearRight = window.innerWidth - rect.right < threshold;
-            var isNear = nearTop || nearBottom || nearLeft || nearRight;
-            setIsNearEdge(isNear);
-        };
-        requestAnimationFrame(function () {
-            requestAnimationFrame(checkEdgeProximity);
-        });
-        var resizeTimeout;
-        var debouncedCheckEdgeProximity = function () {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(checkEdgeProximity, 100);
-        };
-        window.addEventListener('resize', debouncedCheckEdgeProximity);
-        return function () {
-            window.removeEventListener('resize', debouncedCheckEdgeProximity);
-            clearTimeout(resizeTimeout);
-            // reset after animation completes
-            setTimeout(function () {
-                setIsNearEdge(false);
-            }, 300);
-        };
-    }, [isCenterPlacement, isOpen, triggerRef]);
-    // Open state, trigger, and modality props are only forwarded when provided
-    // so a surrounding React Aria trigger context stays in control otherwise
-    return (React.createElement(Popover$1, __assign({ "aria-describedby": ariaDescribedby, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledby, className: clsx('react-aria-Popover focus-visible:ring', isCenterPlacement && !isNearEdge && 'center-placement'), offset: offset, placement: isCenterPlacement ? 'top' : placement, ref: setRefs }, (isNonModal !== undefined && { isNonModal: isNonModal }), (resolvedIsOpen !== undefined && { isOpen: resolvedIsOpen }), (onOpenChange && { onOpenChange: onOpenChange }), (triggerRef && { triggerRef: triggerRef })), children));
-});
-
-/**
- * Maps React Aria's field parts (Group, Label, Text, FieldError, DateSegment)
- * onto TextInput's tokens, so a segmented field reads as one of the family
- * rather than a lookalike. Shared by BetterDatePicker and TimeInput.
- *
- * `appearFocused` keeps the field looking focused while DOM focus sits
- * elsewhere — a picker's popover, say — mirroring TextInput's prop of the same
- * name. Fields without a popover can leave it off.
- */
-function useFieldStyles(size, status, variant, appearFocused) {
-    if (appearFocused === void 0) { appearFocused = false; }
-    // Memoized so the styles object keeps a stable identity across renders that
-    // don't change size/status/variant/appearFocused, avoiding needless child
-    // re-renders
-    return useMemo(function () {
-        return {
-            button: 'flex items-center justify-center shrink-0 w-6 h-6 mr-2 rounded-full outline-none text-black-60 hover:bg-black-10 focus-visible:ring disabled:text-black-30',
-            error: clsx(baseClasses.help, 'text-error-main'),
-            group: clsx('group items-center', variant === 'filled' ? 'pt-3' : null, baseClasses.inputWrapper, parentSizes[variant][size], 
-            // While a popover is open the field keeps its focused look even though
-            // DOM focus may be inside it, matching the legacy DatePickerInput
-            // (TextInput's appearFocused)
-            appearFocused
-                ? appearFocusedStyles[variant][status].default
-                : variants$4[variant][status].default, focusedStyles[variant][status].default),
-            // Description text stays neutral (dimmed when disabled); error text is
-            // carried by `error` (styled red) so a description is never mistaken
-            // for an error
-            help: clsx(baseClasses.help, status === 'disabled' ? 'text-black-30' : 'text-black-60'),
-            icon: clsx('shrink-0 flex items-center ml-3 w-5', status === 'disabled' ? 'text-black-30' : 'text-black-60'),
-            // Reuse TextInput's base label classes so the max-width (and therefore
-            // truncation) and transition match the rest of the field family
-            label: clsx(baseClasses.label, labels.value[variant], 
-            // The label matches the field: focused color while a popover is open,
-            // value color otherwise
-            appearFocused
-                ? labelColors.focused[variant][status].default
-                : labelColors.value[variant][status].default, labelSpacing.focused[variant][size], status === 'error'
-                ? 'group-focus-within:text-error-main'
-                : 'group-focus-within:text-primary-main'),
-            segment: function (_a) {
-                var isDisabled = _a.isDisabled, isPlaceholder = _a.isPlaceholder, type = _a.type;
-                return clsx(
-                // py-0.5 lifts the ~20px line box to a 24px tap target (WCAG 2.5.8)
-                'px-0.5 py-0.5 text-sm leading-5 tabular-nums rounded-sm outline-none focus:bg-primary-main focus:text-white-100 caret-transparent', isDisabled
-                    ? 'text-black-30'
-                    : // Literal separators (e.g. ":") and placeholders share the muted
-                        // tone so a separator never reads darker than the value it sits by
-                        type === 'literal' || isPlaceholder
-                            ? 'text-black-60'
-                            : 'text-black-90');
-            },
-        };
-    }, [appearFocused, size, status, variant]);
 }
 
 function getStartOfWeek(locale) {
@@ -6225,6 +6523,143 @@ function Calendar(props) {
             React.createElement(CalendarCells, { condensed: condensed, mode: "day", timezone: resolvedTimezone }))));
 }
 
+var CENTER_PLACEMENT_EDGE_THRESHOLD = 20; // pixels from the edge of the viewport
+var Popover = React.forwardRef(function Popover(_a, forwardedRef) {
+    var ariaLabel = _a["aria-label"], ariaLabelledby = _a["aria-labelledby"], ariaDescribedby = _a["aria-describedby"], children = _a.children, _b = _a.contextDriven, contextDriven = _b === void 0 ? false : _b, isNonModal = _a.isNonModal, isOpen = _a.isOpen, _c = _a.offset, offset = _c === void 0 ? 8 : _c, onOpenChange = _a.onOpenChange, _d = _a.placement, placement = _d === void 0 ? 'bottom' : _d, triggerRef = _a.triggerRef;
+    var popoverRef = React.useRef(null);
+    // A standalone popover defaults to closed so it never inherits an unrelated
+    // overlay context (e.g. a Drawer's) and renders with no triggerRef; a
+    // context-driven popover forwards nothing and defers to that context
+    var resolvedIsOpen = contextDriven ? undefined : isOpen !== null && isOpen !== void 0 ? isOpen : false;
+    // Stable across renders so React does not detach and reattach the popover
+    // node every time the parent re-renders
+    var setRefs = useCallback(function (node) {
+        popoverRef.current = node;
+        if (typeof forwardedRef === 'function') {
+            forwardedRef(node);
+        }
+        else if (forwardedRef) {
+            forwardedRef.current = node;
+        }
+    }, [forwardedRef]);
+    var _e = useState(false), isNearEdge = _e[0], setIsNearEdge = _e[1];
+    var isCenterPlacement = placement === 'center';
+    useEffect(function useCenterPlacementOffset() {
+        var popover = popoverRef.current;
+        if (!popover || !isCenterPlacement)
+            return;
+        var updateCenterOffset = function () {
+            var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
+            var popoverStyles = getComputedStyle(popover);
+            var popoverHeight = popoverStyles
+                .getPropertyValue('--trigger-anchor-point')
+                .replace(/px/g, '')
+                .split(' ')[1];
+            if (trigger && popoverHeight) {
+                var triggerStyles = getComputedStyle(trigger);
+                var borderWidth = parseFloat(triggerStyles.borderWidth) || 0;
+                var totalHeight = trigger.clientHeight + borderWidth * 2;
+                popover.style.setProperty('--center-offset', Number(popoverHeight) / 2 + totalHeight / 2 + offset + 'px');
+            }
+        };
+        if (isOpen) {
+            requestAnimationFrame(updateCenterOffset);
+        }
+    }, [isCenterPlacement, isOpen, offset, triggerRef]);
+    useEffect(function useEdgeProximityDetection() {
+        var trigger = triggerRef === null || triggerRef === void 0 ? void 0 : triggerRef.current;
+        if (!trigger || !isCenterPlacement || !isOpen) {
+            return;
+        }
+        var checkEdgeProximity = function () {
+            var rect = trigger.getBoundingClientRect();
+            var threshold = CENTER_PLACEMENT_EDGE_THRESHOLD;
+            var nearTop = rect.top < threshold;
+            var nearBottom = window.innerHeight - rect.bottom < threshold;
+            var nearLeft = rect.left < threshold;
+            var nearRight = window.innerWidth - rect.right < threshold;
+            var isNear = nearTop || nearBottom || nearLeft || nearRight;
+            setIsNearEdge(isNear);
+        };
+        requestAnimationFrame(function () {
+            requestAnimationFrame(checkEdgeProximity);
+        });
+        var resizeTimeout;
+        var debouncedCheckEdgeProximity = function () {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(checkEdgeProximity, 100);
+        };
+        window.addEventListener('resize', debouncedCheckEdgeProximity);
+        return function () {
+            window.removeEventListener('resize', debouncedCheckEdgeProximity);
+            clearTimeout(resizeTimeout);
+            // reset after animation completes
+            setTimeout(function () {
+                setIsNearEdge(false);
+            }, 300);
+        };
+    }, [isCenterPlacement, isOpen, triggerRef]);
+    // Open state, trigger, and modality props are only forwarded when provided
+    // so a surrounding React Aria trigger context stays in control otherwise
+    return (React.createElement(Popover$1, __assign({ "aria-describedby": ariaDescribedby, "aria-label": ariaLabel, "aria-labelledby": ariaLabelledby, className: clsx('react-aria-Popover focus-visible:ring', isCenterPlacement && !isNearEdge && 'center-placement'), offset: offset, placement: isCenterPlacement ? 'top' : placement, ref: setRefs }, (isNonModal !== undefined && { isNonModal: isNonModal }), (resolvedIsOpen !== undefined && { isOpen: resolvedIsOpen }), (onOpenChange && { onOpenChange: onOpenChange }), (triggerRef && { triggerRef: triggerRef })), children));
+});
+
+/**
+ * Maps React Aria's field parts (Group, Label, Text, FieldError, DateSegment)
+ * onto TextInput's tokens, so a segmented field reads as one of the family
+ * rather than a lookalike. Shared by DatePicker and TimeInput.
+ *
+ * `appearFocused` keeps the field looking focused while DOM focus sits
+ * elsewhere — a picker's popover, say — mirroring TextInput's prop of the same
+ * name. Fields without a popover can leave it off.
+ */
+function useFieldStyles(size, status, variant, appearFocused) {
+    if (appearFocused === void 0) { appearFocused = false; }
+    // Memoized so the styles object keeps a stable identity across renders that
+    // don't change size/status/variant/appearFocused, avoiding needless child
+    // re-renders
+    return useMemo(function () {
+        return {
+            button: 'flex items-center justify-center shrink-0 w-6 h-6 mr-2 rounded-full outline-none text-black-60 hover:bg-black-10 focus-visible:ring disabled:text-black-30',
+            error: clsx(baseClasses.help, 'text-error-main'),
+            group: clsx('group items-center', variant === 'filled' ? 'pt-3' : null, baseClasses.inputWrapper, parentSizes[variant][size], 
+            // While a popover is open the field keeps its focused look even though
+            // DOM focus may be inside it, matching the legacy DatePickerInput
+            // (TextInput's appearFocused)
+            appearFocused
+                ? appearFocusedStyles[variant][status].default
+                : variants$4[variant][status].default, focusedStyles[variant][status].default),
+            // Description text stays neutral (dimmed when disabled); error text is
+            // carried by `error` (styled red) so a description is never mistaken
+            // for an error
+            help: clsx(baseClasses.help, status === 'disabled' ? 'text-black-30' : 'text-black-60'),
+            icon: clsx('shrink-0 flex items-center ml-3 w-5', status === 'disabled' ? 'text-black-30' : 'text-black-60'),
+            // Reuse TextInput's base label classes so the max-width (and therefore
+            // truncation) and transition match the rest of the field family
+            label: clsx(baseClasses.label, labels.value[variant], 
+            // The label matches the field: focused color while a popover is open,
+            // value color otherwise
+            appearFocused
+                ? labelColors.focused[variant][status].default
+                : labelColors.value[variant][status].default, labelSpacing.focused[variant][size], status === 'error'
+                ? 'group-focus-within:text-error-main'
+                : 'group-focus-within:text-primary-main'),
+            segment: function (_a) {
+                var isDisabled = _a.isDisabled, isPlaceholder = _a.isPlaceholder, type = _a.type;
+                return clsx(
+                // py-0.5 lifts the ~20px line box to a 24px tap target (WCAG 2.5.8)
+                'px-0.5 py-0.5 text-sm leading-5 tabular-nums rounded-sm outline-none focus:bg-primary-main focus:text-white-100 caret-transparent', isDisabled
+                    ? 'text-black-30'
+                    : // Literal separators (e.g. ":") and placeholders share the muted
+                        // tone so a separator never reads darker than the value it sits by
+                        type === 'literal' || isPlaceholder
+                            ? 'text-black-60'
+                            : 'text-black-90');
+            },
+        };
+    }, [appearFocused, size, status, variant]);
+}
+
 /**
  * The calendar inside the popover, wrapped in a Dialog only when the popover
  * is modal (button and keyboard opens), for its focus trap and accessible
@@ -6233,10 +6668,38 @@ function Calendar(props) {
  * which would pull focus out of the segments the user just clicked
  */
 function CalendarPopoverContent(_a) {
-    var children = _a.children, modal = _a.modal;
-    return modal ? React.createElement(Dialog$1, { className: "outline-none" }, children) : children;
+    var children = _a.children, modal = _a.modal, onFocus = _a.onFocus;
+    return modal ? (React.createElement(Dialog$1, { className: "outline-none" }, children)) : (React.createElement("div", { onFocus: onFocus }, children));
 }
-function BetterDatePicker(props) {
+/**
+ * A ref for the calendar popover that also reports whether it is mounted. The
+ * popover stays mounted through its exit animation after the open state has
+ * flipped to false, and React Aria only returns focus to the field once it
+ * unmounts, so the field keeps its focused look until then rather than
+ * flashing unfocused for the length of the animation
+ */
+function usePopoverMountedRef() {
+    var ref = useRef(null);
+    var _a = useState(false), isMounted = _a[0], setIsMounted = _a[1];
+    var unmountFrame = useRef(0);
+    // Stable so the popover does not detach and reattach it every render
+    var setRef = useCallback(function (node) {
+        ref.current = node;
+        cancelAnimationFrame(unmountFrame.current);
+        if (node) {
+            setIsMounted(true);
+        }
+        else {
+            // React Aria restores focus to the field in an animation frame
+            // requested as the popover unmounts, just before this ref detaches.
+            // Waiting a frame too means focus is back before the look is dropped
+            unmountFrame.current = requestAnimationFrame(function () { return setIsMounted(false); });
+        }
+    }, []);
+    useEffect(function () { return function () { return cancelAnimationFrame(unmountFrame.current); }; }, []);
+    return { isMounted: isMounted, ref: ref, setRef: setRef };
+}
+function DatePicker(props) {
     var _a = props.condensed, condensed = _a === void 0 ? false : _a, _b = props.disabled, disabled = _b === void 0 ? false : _b, _c = props.error, error = _c === void 0 ? false : _c, errorMessage = props.errorMessage, firstDayOfWeekProp = props.firstDayOfWeek, helperText = props.helperText, isDateUnavailable = props.isDateUnavailable, label = props.label, maxDate = props.maxDate, minDate = props.minDate, _d = props.mode, mode = _d === void 0 ? 'day' : _d, name = props.name, _e = props.required, required = _e === void 0 ? false : _e, _f = props.size, size = _f === void 0 ? 'medium' : _f, timezone = props.timezone, _g = props.trigger, trigger = _g === void 0 ? 'field' : _g, _h = props.validationBehavior, validationBehavior = _h === void 0 ? 'aria' : _h, _j = props.variant, variant = _j === void 0 ? 'outlined' : _j;
     // displayFormat only exists for day and range; week always renders as text
     var _k = props.displayFormat, displayFormat = _k === void 0 ? 'segments' : _k;
@@ -6255,13 +6718,13 @@ function BetterDatePicker(props) {
     // button and keyboard paths keep the default modal popover, which moves
     // focus into the calendar grid
     var _l = useState(false), open = _l[0], setOpen = _l[1];
-    var styles = useFieldStyles(size, status, variant, open);
-    var _m = useState(false), openedFromSegments = _m[0], setOpenedFromSegments = _m[1];
+    var _m = usePopoverMountedRef(), popoverMounted = _m.isMounted, popoverRef = _m.ref, setPopoverRef = _m.setRef;
+    var styles = useFieldStyles(size, status, variant, open || popoverMounted);
+    var _o = useState(false), openedFromSegments = _o[0], setOpenedFromSegments = _o[1];
     // Remounts the calendar while the non-modal popover is open so its visible
     // month follows the date being typed into the segments
-    var _o = useState(0), calendarKey = _o[0], setCalendarKey = _o[1];
+    var _p = useState(0), calendarKey = _p[0], setCalendarKey = _p[1];
     var groupRef = useRef(null);
-    var popoverRef = useRef(null);
     // Tracks deferred state updates so they can be cancelled on unmount,
     // avoiding setState-on-an-unmounted-component warnings
     var deferredTimeouts = useRef([]);
@@ -6287,20 +6750,33 @@ function BetterDatePicker(props) {
     };
     var handleOpenChange = function (isOpen) {
         setOpen(isOpen);
-        if (!isOpen) {
+        // React Aria only reports opens from the calendar button and the
+        // keyboard shortcut, which use the modal popover. The flag is otherwise
+        // left alone on close: clearing it would swap the closing popover to its
+        // modal form, remounting the calendar inside a Dialog that pulls focus
+        // out of the segments while it fades out
+        if (isOpen) {
             setOpenedFromSegments(false);
         }
     };
-    var closeFromSegments = function () {
-        setOpen(false);
-        setOpenedFromSegments(false);
+    // Picking a date focuses its cell (React Aria moves focus through calendar
+    // state, not the click itself) just as the popover starts closing, and
+    // focus is only restored to the field once the popover unmounts after its
+    // exit animation. Bouncing it straight back to the segment it came from
+    // keeps the segment from flashing unfocused while the popover fades out
+    var handleCalendarFocus = function (event) {
+        var _a;
+        var segment = event.relatedTarget;
+        if (!open && segment && ((_a = groupRef.current) === null || _a === void 0 ? void 0 : _a.contains(segment))) {
+            segment.focus();
+        }
     };
     // The non-modal popover keeps focus in the segments, which means the
     // popover's own Escape and outside interaction handling never engage, so
     // both are reimplemented here for the segment opened state
     var handleFieldKeyDown = function (event) {
         if (event.key === 'Escape' && open && openedFromSegments) {
-            closeFromSegments();
+            setOpen(false);
         }
     };
     useEffect(function () {
@@ -6314,13 +6790,13 @@ function BetterDatePicker(props) {
                 ((_b = popoverRef.current) === null || _b === void 0 ? void 0 : _b.contains(target))) {
                 return;
             }
-            closeFromSegments();
+            setOpen(false);
         };
         document.addEventListener('pointerdown', handlePointerDown, true);
         return function () {
             return document.removeEventListener('pointerdown', handlePointerDown, true);
         };
-    }, [open, openedFromSegments]);
+    }, [open, openedFromSegments, popoverRef]);
     var syncCalendarToTypedValue = function () {
         if (open && openedFromSegments) {
             // Deferred so the remount samples the picker state after the segment
@@ -6341,7 +6817,7 @@ function BetterDatePicker(props) {
         return (React.createElement(TextTriggerField, __assign({}, props, { condensed: condensed, firstDayOfWeek: firstDayOfWeek, mode: mode, timezone: resolvedTimezone, trigger: trigger })));
     }
     if (mode === 'range') {
-        var _p = props, allowsNonContiguousRanges = _p.allowsNonContiguousRanges, defaultValue_1 = _p.defaultValue, onChange_1 = _p.onChange, value_1 = _p.value;
+        var _q = props, allowsNonContiguousRanges = _q.allowsNonContiguousRanges, defaultValue_1 = _q.defaultValue, onChange_1 = _q.onChange, value_1 = _q.value;
         var handleRangeChange = function (range) {
             syncCalendarToTypedValue();
             onChange_1 === null || onChange_1 === void 0 ? void 0 : onChange_1(range && [
@@ -6364,7 +6840,7 @@ function BetterDatePicker(props) {
                 React.createElement(Group$6, { className: styles.group, onKeyDown: handleFieldKeyDown, ref: groupRef },
                     React.createElement(Label$2, { className: styles.label }, label),
                     React.createElement("span", { className: styles.icon },
-                        React.createElement(DateRange, null)),
+                        React.createElement(DateRangeIcon, null)),
                     React.createElement("div", { className: "flex items-center flex-1 min-w-0 px-3 overflow-x-auto", onPointerUp: openFromSegments },
                         React.createElement(DateInput, { className: "flex", slot: "start" }, function (segment) { return (React.createElement(DateSegment, { className: styles.segment, segment: segment })); }),
                         React.createElement("span", { "aria-hidden": "true", className: "px-1 text-sm text-black-60" }, "\u2014"),
@@ -6374,13 +6850,13 @@ function BetterDatePicker(props) {
                             React.createElement(ExpandMore, null)))),
                 helperTextElement,
                 errorElement,
-                React.createElement(Popover, { contextDriven: true, isNonModal: openedFromSegments, ref: popoverRef },
-                    React.createElement(CalendarPopoverContent, { modal: !openedFromSegments },
+                React.createElement(Popover, { contextDriven: true, isNonModal: openedFromSegments, ref: setPopoverRef },
+                    React.createElement(CalendarPopoverContent, { modal: !openedFromSegments, onFocus: handleCalendarFocus },
                         React.createElement(RangeCalendar, __assign({ className: calendarContainerClasses, key: calendarKey }, (openedFromSegments && { autoFocus: false })),
                             React.createElement(CalendarHeader, { condensed: condensed }),
                             React.createElement(CalendarCells, { condensed: condensed, mode: "range", timezone: resolvedTimezone })))))));
     }
-    var _q = props, defaultValue = _q.defaultValue, onChange = _q.onChange, value = _q.value;
+    var _r = props, defaultValue = _r.defaultValue, onChange = _r.onChange, value = _r.value;
     var handleDayChange = function (date) {
         syncCalendarToTypedValue();
         onChange === null || onChange === void 0 ? void 0 : onChange(date && toNativeDate(date, resolvedTimezone));
@@ -6402,8 +6878,8 @@ function BetterDatePicker(props) {
                         React.createElement(ExpandMore, null)))),
             helperTextElement,
             errorElement,
-            React.createElement(Popover, { contextDriven: true, isNonModal: openedFromSegments, ref: popoverRef },
-                React.createElement(CalendarPopoverContent, { modal: !openedFromSegments },
+            React.createElement(Popover, { contextDriven: true, isNonModal: openedFromSegments, ref: setPopoverRef },
+                React.createElement(CalendarPopoverContent, { modal: !openedFromSegments, onFocus: handleCalendarFocus },
                     React.createElement(Calendar$1, __assign({ className: calendarContainerClasses, key: calendarKey }, (openedFromSegments && { autoFocus: false })),
                         React.createElement(CalendarHeader, { condensed: condensed }),
                         React.createElement(CalendarCells, { condensed: condensed, mode: "day", timezone: resolvedTimezone })))))));
@@ -6451,15 +6927,16 @@ function TextTriggerField(_a) {
     }, []);
     var _g = useState(false), open = _g[0], setOpen = _g[1];
     var wasOpen = useRef(false);
+    var _h = usePopoverMountedRef(), popoverMounted = _h.isMounted, setPopoverRef = _h.setRef;
     var status = disabled
         ? 'disabled'
         : error
             ? 'error'
             : 'default';
     // Computed here rather than passed from the parent so the field keeps its
-    // focused look while this trigger's own popover is open
-    var styles = useFieldStyles(size, status, variant, open);
-    var _h = useState(defaultValue !== null && defaultValue !== void 0 ? defaultValue : null), internalValue = _h[0], setInternalValue = _h[1];
+    // focused look while this trigger's own popover is open (or animating out)
+    var styles = useFieldStyles(size, status, variant, open || popoverMounted);
+    var _j = useState(defaultValue !== null && defaultValue !== void 0 ? defaultValue : null), internalValue = _j[0], setInternalValue = _j[1];
     var controlled = value !== undefined;
     var selectedValue = controlled
         ? value !== null && value !== void 0 ? value : null
@@ -6602,7 +7079,7 @@ function TextTriggerField(_a) {
                             ? 'inline-flex items-center gap-1 self-start min-h-8 px-2 text-base font-semibold rounded outline-none text-black-90 active:bg-black-10 focus:bg-black-5 focus-visible:ring hover:bg-black-5 disabled:bg-transparent disabled:text-black-30'
                             : clsx(styles.group, 'w-full text-left outline-none'), isDisabled: disabled }, (describedBy && { 'aria-describedby': describedBy })),
                     React.createElement("span", { className: anchor ? 'sr-only' : styles.label, id: labelId }, label),
-                    anchor ? null : (React.createElement("span", { className: styles.icon }, mode === 'day' ? React.createElement(EventIcon, null) : React.createElement(DateRange, null))),
+                    anchor ? null : (React.createElement("span", { className: styles.icon }, mode === 'day' ? React.createElement(EventIcon, null) : React.createElement(DateRangeIcon, null))),
                     React.createElement("span", { className: anchor === 'icon'
                             ? 'sr-only'
                             : anchor === 'text'
@@ -6617,1345 +7094,8 @@ function TextTriggerField(_a) {
                     anchor ? null : (React.createElement("span", { className: clsx(styles.button, 'pointer-events-none'), role: "presentation" },
                         React.createElement("span", { className: "w-5" },
                             React.createElement(ExpandMore, null))))),
-                React.createElement(Popover, { contextDriven: true, placement: "bottom start" }, calendar)),
+                React.createElement(Popover, { contextDriven: true, placement: "bottom start", ref: setPopoverRef }, calendar)),
             footer)));
-}
-
-function ButtonGroup(_a) {
-    var children = _a.children, _b = _a.color, groupColor = _b === void 0 ? 'default' : _b, _c = _a.disabled, groupDisabled = _c === void 0 ? false : _c, _d = _a.size, groupSize = _d === void 0 ? 'medium' : _d, _e = _a.variant, groupVariant = _e === void 0 ? 'contained' : _e;
-    var elements = Children.toArray(children);
-    var number = Children.count(elements);
-    return (React.createElement("div", { className: "flex", role: "group" }, elements.map(function (child, index) {
-        if (child) {
-            var color = child.props.color || groupColor;
-            var disabled = child.props.disabled || groupDisabled;
-            var size = child.props.size || groupSize;
-            var variant = child.props.variant || groupVariant;
-            var position = index === 0 ? 'left' : index === number - 1 ? 'right' : 'middle';
-            if (isValidElement(child)) {
-                return cloneElement(child, {
-                    color: color,
-                    disabled: disabled,
-                    position: position,
-                    size: size,
-                    variant: variant,
-                });
-            }
-        }
-    })));
-}
-
-function Collapse(_a) {
-    var children = _a.children, _b = _a.dir, dir = _b === void 0 ? 'col' : _b, id = _a.id, _c = _a.open, open = _c === void 0 ? false : _c;
-    return (React.createElement("div", { className: clsx(open
-            ? ['flex overflow-hidden', dir === 'col' ? 'flex-col' : 'flex-row']
-            : 'hidden'), id: id }, children));
-}
-
-function useElementOverflow(ref) {
-    var dependencies = [];
-    for (var _i = 1; _i < arguments.length; _i++) {
-        dependencies[_i - 1] = arguments[_i];
-    }
-    var _a = useState(function () { return false; }), overflowing = _a[0], setOverflowing = _a[1];
-    var windowSize = useWindowSize(ref);
-    useEffect(function () {
-        var el = ref.current;
-        if (el) {
-            setOverflowing(el.clientWidth < el.scrollWidth || el.clientHeight < el.scrollHeight);
-        }
-    }, [ref, windowSize.height, windowSize.width, dependencies]);
-    return overflowing;
-}
-
-var ActionTypes$3;
-(function (ActionTypes) {
-    ActionTypes[ActionTypes["SetCollapsable"] = 0] = "SetCollapsable";
-    ActionTypes[ActionTypes["SetHasActions"] = 1] = "SetHasActions";
-    ActionTypes[ActionTypes["UnsetCollapsable"] = 2] = "UnsetCollapsable";
-    ActionTypes[ActionTypes["UnsetHasActions"] = 3] = "UnsetHasActions";
-    ActionTypes[ActionTypes["ToggleOpen"] = 4] = "ToggleOpen";
-})(ActionTypes$3 || (ActionTypes$3 = {}));
-
-var _a$3;
-var CardContext = createContext(null);
-var useCard = function () { return useContext(CardContext); };
-function createInitialState() {
-    return {
-        collapsable: false,
-        collapseId: undefined,
-        hasActions: false,
-        open: false,
-    };
-}
-var reducers$3 = (_a$3 = {},
-    _a$3[ActionTypes$3.SetCollapsable] = function (state, action) {
-        return __assign(__assign({}, state), { collapsable: true, collapseId: action.collapseId });
-    },
-    _a$3[ActionTypes$3.SetHasActions] = function (state) {
-        return __assign(__assign({}, state), { hasActions: true });
-    },
-    _a$3[ActionTypes$3.UnsetCollapsable] = function (state) {
-        return __assign(__assign({}, state), { collapsable: false, collapseId: undefined });
-    },
-    _a$3[ActionTypes$3.UnsetHasActions] = function (state) {
-        return __assign(__assign({}, state), { hasActions: false });
-    },
-    _a$3[ActionTypes$3.ToggleOpen] = function (state) {
-        return __assign(__assign({}, state), { open: !state.open });
-    },
-    _a$3);
-var runReducer$3 = function (state, action) {
-    return reducers$3[action.type](state, action);
-};
-function Action(_a) {
-    var children = _a.children;
-    return children;
-}
-function CardActions(_a) {
-    var children = _a.children;
-    var _b = useCard(), dispatch = _b[1];
-    useEffect(function () {
-        dispatch({ type: ActionTypes$3.SetHasActions });
-        return function () { return dispatch({ type: ActionTypes$3.UnsetHasActions }); };
-    }, [dispatch]);
-    return React.createElement("div", { className: "shrink-0 p-2 space-x-2" }, children);
-}
-function Card(_a) {
-    var children = _a.children, _b = _a.outlined, outlined = _b === void 0 ? false : _b;
-    var _c = useReducer(runReducer$3, null, createInitialState), state = _c[0], dispatch = _c[1];
-    return (React.createElement("div", { className: clsx('flex flex-col w-full h-full font-sans bg-white-100 rounded max-h-inherit', outlined ? 'border border-black-15' : 'shadow-1') },
-        React.createElement(CardContext.Provider, { value: [state, dispatch] }, children)));
-}
-function CollapseButton() {
-    var intl = useIntl();
-    var _a = useCard(), _b = _a[0], open = _b.open, collapseId = _b.collapseId, dispatch = _a[1];
-    var onClick = function () {
-        dispatch({ type: ActionTypes$3.ToggleOpen });
-    };
-    return (React.createElement(IconButton, { "aria-controls": collapseId, "aria-expanded": open, "aria-label": intl.formatMessage({ id: 'Card.toggle_content' }), onClick: onClick, size: "medium" }, open ? React.createElement(ExpandLess, null) : React.createElement(ExpandMore, null)));
-}
-function CollapseContent(_a) {
-    var children = _a.children;
-    var _b = useCard(), open = _b[0].open, dispatch = _b[1];
-    var collapseId = "coconut-collapsable-card-content-".concat(useId());
-    useEffect(function () {
-        dispatch({ type: ActionTypes$3.SetCollapsable, collapseId: collapseId });
-        return function () { return dispatch({ type: ActionTypes$3.UnsetCollapsable }); };
-    }, [dispatch, collapseId]);
-    return (React.createElement(Collapse, { id: collapseId, open: open }, children));
-}
-function Content$2(_a) {
-    var children = _a.children;
-    var _b = useCard()[0], hasActions = _b.hasActions, open = _b.open;
-    var ref = useRef(null);
-    var _c = useState(false), rendering = _c[0], setRendering = _c[1];
-    var overflowing = useElementOverflow(ref, rendering);
-    useEffect(function () {
-        setRendering(true);
-    }, [children, open]);
-    useLayoutEffect(function () {
-        setRendering(false);
-    }, [children, open, ref]);
-    return (React.createElement("div", { className: clsx('py-4 overflow-hidden overflow-y-auto', overflowing ? 'border-t border-black-10' : null, overflowing && hasActions ? 'border-b' : null), ref: ref },
-        React.createElement("div", { className: "px-4" }, children)));
-}
-function Header(_a) {
-    var children = _a.children;
-    var collapsable = useCard()[0].collapsable;
-    var components = {
-        action: null,
-        subtitle: null,
-        title: null,
-    };
-    // TODO: This is written like this because Typescript complains when trying to access `child.type.name`. We need to figure out a way to type the child appropriately.
-    Children.forEach(children, function (child) {
-        switch (child.type) {
-            case Action:
-                components.action = child;
-                break;
-            case Subtitle:
-                components.subtitle = child;
-                break;
-            case Title$1:
-                components.title = child;
-                break;
-        }
-    });
-    return (React.createElement("div", { className: "flex flex-row items-center justify-between shrink-0 p-4" },
-        components.title || components.subtitle ? (React.createElement("div", { className: "flex flex-col" },
-            components.title,
-            components.subtitle)) : null,
-        React.createElement("div", { className: "flex flex-row" },
-            collapsable ? React.createElement(CollapseButton, null) : null,
-            components.action)));
-}
-function Subtitle(_a) {
-    var children = _a.children;
-    return (React.createElement("span", { className: "text-sm font-normal leading-5 text-black-60" }, children));
-}
-function Title$1(_a) {
-    var children = _a.children;
-    return (React.createElement("span", { className: "text-sm font-normal leading-5 text-black-90" }, children));
-}
-Card.Actions = CardActions;
-Card.Action = Action;
-Card.Collapse = CollapseContent;
-Card.Content = Content$2;
-Card.Header = Header;
-Card.Subtitle = Subtitle;
-Card.Title = Title$1;
-
-var variants$7 = {
-    default: {
-        contained: {
-            default: "border border-transparent bg-black-5 text-black-90",
-            primary: "border border-transparent bg-primary-main text-white-100",
-            secondary: "border border-transparent bg-secondary-main text-white-100",
-            error: "border border-transparent bg-error-main text-white-100",
-            disabled: "border border-transparent bg-black-15 text-black-30",
-        },
-        outlined: {
-            default: "border border-black-25 text-black-90 ",
-            primary: "border border-primary-main text-primary-main",
-            secondary: "border border-secondary-main text-secondary-main",
-            error: "border border-error-main text-error-main",
-            disabled: "border border-black-15 text-black-30",
-        },
-    },
-    button: {
-        contained: {
-            default: "border border-transparent bg-black-5 text-black-90 disabled:bg-black-15 disabled:text-black-30 active:bg-black-25 focus:bg-black-15 hover:bg-black-15",
-            primary: "border border-transparent bg-primary-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-primary-darker focus:bg-primary-dark hover:bg-primary-dark",
-            secondary: "border border-transparent bg-secondary-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-secondary-darker focus:bg-secondary-dark hover:bg-secondary-dark",
-            error: "border border-transparent bg-error-main text-white-100 disabled:bg-black-15 disabled:text-black-30 active:bg-error-darker focus:bg-error-dark hover:bg-error-dark",
-            disabled: "border border-transparent bg-black-15 text-black-30 cursor-not-allowed",
-        },
-        outlined: {
-            default: "border border-black-25 text-black-90 disabled:bg-black-15 disabled:text-black-30 active:bg-black-25 focus:bg-black-15 hover:bg-black-15",
-            primary: "border border-primary-main text-primary-main disabled:bg-black-15 disabled:text-black-30 active:bg-primary-20 focus:bg-primary-10 hover:bg-primary-10",
-            secondary: "border border-secondary-main text-secondary-main disabled:bg-black-15 disabled:text-black-30 active:bg-secondary-20 focus:bg-secondary-10 hover:bg-secondary-10",
-            error: "border border-error-main text-error-main disabled:bg-black-15 disabled:text-black-30 active:bg-error-20 focus:bg-error-10 hover:bg-error-10",
-            disabled: "border border-black-15 text-black-30 cursor-not-allowed",
-        },
-    },
-    focusable: {
-        contained: {
-            default: "border border-transparent bg-black-5 text-black-90 active:bg-black-15 focus:bg-black-15",
-            primary: "border border-transparent bg-primary-main text-white-100 active:bg-primary-dark focus:bg-primary-dark",
-            secondary: "border border-transparent bg-secondary-main text-white-100 active:bg-secondary-dark focus:bg-secondary-dark",
-            error: "border border-transparent bg-error-main text-white-100 active:bg-error-dark focus:bg-error-dark",
-            disabled: "border border-transparent bg-black-15 text-black-30",
-        },
-        outlined: {
-            default: "border border-black-25 text-black-90 active:bg-black-15 focus:bg-black-15",
-            primary: "border border-primary-main text-primary-main active:bg-primary-10 focus:bg-primary-10",
-            secondary: "border border-secondary-main text-secondary-main active:bg-secondary-10 focus:bg-secondary-10",
-            error: "border border-error-main text-error-main active:bg-error-10 focus:bg-error-10",
-            disabled: "border border-black-15 text-black-30",
-        },
-    },
-};
-var iconColors = {
-    letter: {
-        default: "text-black-90 bg-black-15",
-        primary: "text-white-100 bg-primary-dark",
-        secondary: "text-white-100 bg-secondary-dark",
-        error: "text-white-100 bg-error-dark",
-        disabled: 'text-black-30 bg-black-15',
-    },
-    cancel: {
-        default: "text-black-45 active:text-black-90 hover:text-black-60 focused:text-black-60 disabled:text-black-30 disabled:cursor-not-allowed",
-        primary: "text-primary-main hover:text-primary-dark focused:text-primary-dark active:text-primary-darker  disabled:text-black-30 disabled:cursor-not-allowed",
-        secondary: "text-secondary-main hover:text-secondary-dark focused:text-secondary-dark active:text-secondary-darker disabled:text-black-30 disabled:cursor-not-allowed",
-        error: "text-error-main hover:text-error-dark focused:text-error-dark active:text-error-darker disabled:text-black-30 disabled:cursor-not-allowed",
-    },
-};
-var sizes$6 = {
-    medium: {
-        root: 'px-3 py-1',
-        rootWithAdornment: 'px-3 py-1',
-        icon: 'w-6 h-6',
-        cancel: 'w-6 h-6',
-        iconPadding: '-ml-2 mr-2',
-        cancelPadding: 'ml-2 -mr-2',
-        text: 'font-sans text-sm font-normal',
-        letter: 'font-sans text-sm font-normal leading-6 text-center',
-    },
-    small: {
-        root: 'px-2 py-0.5',
-        rootWithAdornment: 'px-2 py-1',
-        icon: 'w-4.5 h-4.5',
-        cancel: 'w-4 h-4',
-        iconPadding: '-ml-1 mr-1',
-        cancelPadding: 'ml-1 -mr-1',
-        text: 'font-sans text-xs font-normal',
-        letter: 'font-sans text-xs leading-4.5 text-center',
-    },
-};
-function Chip(_a) {
-    var _b = _a.color, color = _b === void 0 ? 'default' : _b, _c = _a.disabled, disabled = _c === void 0 ? false : _c, label = _a.label, onClick = _a.onClick, onDelete = _a.onDelete, _d = _a.size, size = _d === void 0 ? 'medium' : _d, startAdornment = _a.startAdornment, _e = _a.variant, variant = _e === void 0 ? 'contained' : _e;
-    var intl = useIntl();
-    var chipType = onClick ? 'button' : onDelete ? 'focusable' : 'default';
-    var handleDelete = function (event) {
-        event.stopPropagation();
-        if (!disabled && onDelete) {
-            onDelete(event);
-        }
-    };
-    var onKeyDown = function (event) {
-        if (event.key === Keys.Delete || event.key === Keys.Backspace) {
-            handleDelete(event);
-        }
-        if (event.key === Keys.Escape) {
-            var button = event.target;
-            button.blur();
-        }
-    };
-    var isButton = onClick || onDelete;
-    var Component = isButton ? 'button' : 'div';
-    var buttonProps = isButton
-        ? {
-            'aria-label': label,
-            disabled: disabled,
-            onClick: onClick,
-            onKeyDown: onKeyDown,
-        }
-        : {};
-    return (React.createElement(Component, __assign({ className: clsx('rounded-full inline-flex items-center select-none focus:outline-none', startAdornment ? sizes$6[size].rootWithAdornment : sizes$6[size].root, disabled
-            ? variants$7[chipType][variant].disabled
-            : variants$7[chipType][variant][color], !onClick && 'cursor-default') }, buttonProps),
-        React.createElement("label", { className: clsx('flex items-center', onClick ? (disabled ? 'cursor-not-allowed' : 'cursor-pointer') : null) },
-            startAdornment ? (React.createElement(StartAdornment$1, { color: color, disabled: disabled, size: size, variant: variant }, startAdornment)) : null,
-            React.createElement("span", { className: clsx('flex', sizes$6[size].text) }, label)),
-        onDelete ? (React.createElement("div", __assign({ "aria-label": intl.formatMessage({ id: 'Chip.remove' }), className: clsx('focus:outline-none', sizes$6[size].cancel, sizes$6[size].cancelPadding, disabled
-                ? 'cursor-not-allowed'
-                : variant === 'contained'
-                    ? color === 'default'
-                        ? iconColors.cancel.default
-                        : 'text-white-100 hover:text-white-90 active:text-white-90'
-                    : iconColors.cancel[color]), role: "button", tabIndex: -1 }, (disabled
-            ? {}
-            : {
-                onClick: handleDelete,
-            })),
-            React.createElement(Cancel, null))) : null));
-}
-function StartAdornment$1(_a) {
-    var children = _a.children, color = _a.color, disabled = _a.disabled, size = _a.size, variant = _a.variant;
-    var startAdornmentString = typeof children === 'string';
-    return (React.createElement("div", { className: clsx('flex relative', sizes$6[size].icon, sizes$6[size].iconPadding, startAdornmentString &&
-            clsx('rounded-full', disabled
-                ? iconColors.letter.disabled
-                : variant === 'contained'
-                    ? 'bg-black-30'
-                    : iconColors.letter[color])) },
-        React.createElement("div", { className: clsx('absolute inset-x-0', startAdornmentString
-                ? sizes$6[size].letter
-                : 'overflow-hidden rounded-full', sizes$6[size].icon) }, children)));
-}
-
-var LocaleContext = createContext(null);
-var useLocale = function () {
-    return useContext(LocaleContext);
-};
-function LocaleProvider(_a) {
-    var children = _a.children, _b = _a.locale, locale = _b === void 0 ? 'en' : _b;
-    var _c = useState(locale), language = _c[0], setLanguage = _c[1];
-    return (React.createElement(LocaleContext.Provider, { value: [language, setLanguage] }, children));
-}
-
-function hexToHSL(H) {
-    var red = 0;
-    var green = 0;
-    var blue = 0;
-    if (H.length == 4) {
-        red = Number('0x' + H[1] + H[1]);
-        green = Number('0x' + H[2] + H[2]);
-        blue = Number('0x' + H[3] + H[3]);
-    }
-    else if (H.length == 7) {
-        red = Number('0x' + H[1] + H[2]);
-        green = Number('0x' + H[3] + H[4]);
-        blue = Number('0x' + H[5] + H[6]);
-    }
-    red /= 255;
-    green /= 255;
-    blue /= 255;
-    var minimum = Math.min(red, green, blue);
-    var maximum = Math.max(red, green, blue);
-    var delta = maximum - minimum;
-    var hue = 0;
-    var saturation = 0;
-    var light = 0;
-    if (delta == 0) {
-        hue = 0;
-    }
-    else if (maximum == red) {
-        hue = ((green - blue) / delta) % 6;
-    }
-    else if (maximum == green) {
-        hue = (blue - red) / delta + 2;
-    }
-    else {
-        hue = (red - green) / delta + 4;
-    }
-    hue = Math.round(hue * 60);
-    if (hue < 0) {
-        hue += 360;
-    }
-    light = (maximum + minimum) / 2;
-    saturation = delta == 0 ? 0 : delta / (1 - Math.abs(2 * light - 1));
-    saturation = +(saturation * 100).toFixed(1);
-    light = +(light * 100).toFixed(1);
-    return { hue: hue, saturation: saturation, light: light };
-}
-function generateVariants(color) {
-    var prefix = "hsla(".concat(color.hue, ", ").concat(color.saturation, "%,");
-    return {
-        main: "".concat(prefix, " ").concat(color.light, "%, 1)"),
-        darker: "".concat(prefix, " ").concat(Math.round(color.light * 0.75), "%, 1)"),
-        dark: "".concat(prefix, " ").concat(Math.round(color.light * 0.875), "%, 1)"),
-        light: "".concat(prefix, " ").concat(Math.round(color.light * 1.125), "%, 1)"),
-        lighter: "".concat(prefix, " ").concat(Math.round(color.light * 1.25), "%, 1)"),
-        '20': "".concat(prefix, " ").concat(color.light, "%, 0.2)"),
-        '15': "".concat(prefix, " ").concat(color.light, "%, 0.15)"),
-        '10': "".concat(prefix, " ").concat(color.light, "%, 0.1)"),
-    };
-}
-function setStyleVariables(_a) {
-    var primary = _a.primary, secondary = _a.secondary;
-    var root = document.documentElement;
-    if (primary) {
-        var values = generateVariants(hexToHSL(primary));
-        root.style.setProperty('--color-primary-main', values.main);
-        root.style.setProperty('--color-primary-darker', values.darker);
-        root.style.setProperty('--color-primary-dark', values.dark);
-        root.style.setProperty('--color-primary-light', values.light);
-        root.style.setProperty('--color-primary-lighter', values.lighter);
-        root.style.setProperty('--color-primary-20', values['20']);
-        root.style.setProperty('--color-primary-15', values['15']);
-        root.style.setProperty('--color-primary-10', values['10']);
-    }
-    if (secondary) {
-        var values = generateVariants(hexToHSL(secondary));
-        root.style.setProperty('--color-secondary-main', values.main);
-        root.style.setProperty('--color-secondary-darker', values.darker);
-        root.style.setProperty('--color-secondary-dark', values.dark);
-        root.style.setProperty('--color-secondary-light', values.light);
-        root.style.setProperty('--color-secondary-lighter', values.lighter);
-        root.style.setProperty('--color-secondary-20', values['20']);
-        root.style.setProperty('--color-secondary-15', values['15']);
-        root.style.setProperty('--color-secondary-10', values['10']);
-    }
-}
-
-function UiProvider(_a) {
-    var children = _a.children, primary = _a.primary, secondary = _a.secondary;
-    setStyleVariables({ primary: primary, secondary: secondary });
-    return React.createElement(LocaleProvider, null, children);
-}
-
-const offsetFormatCache = {};
-const offsetCache = {};
-
-/**
- * The function extracts UTC offset in minutes from the given date in specified
- * time zone.
- *
- * Unlike `Date.prototype.getTimezoneOffset`, this function returns the value
- * mirrored to the sign of the offset in the time zone. For Asia/Singapore
- * (UTC+8), `tzOffset` returns 480, while `getTimezoneOffset` returns -480.
- *
- * @param timeZone - Time zone name (IANA or UTC offset)
- * @param date - Date to check the offset for
- *
- * @returns UTC offset in minutes
- */
-function tzOffset(timeZone, date) {
-  try {
-    const format = offsetFormatCache[timeZone] ||= new Intl.DateTimeFormat("en-GB", {
-      timeZone,
-      hour: "numeric",
-      timeZoneName: "longOffset"
-    }).format;
-    const offsetStr = format(date).split('GMT')[1] || '';
-    if (offsetStr in offsetCache) return offsetCache[offsetStr];
-    return calcOffset(offsetStr, offsetStr.split(":"));
-  } catch {
-    // Fallback to manual parsing if the runtime doesn't support ±HH:MM/±HHMM/±HH
-    // See: https://github.com/nodejs/node/issues/53419
-    if (timeZone in offsetCache) return offsetCache[timeZone];
-    const captures = timeZone?.match(offsetRe);
-    if (captures) return calcOffset(timeZone, captures.slice(1));
-    return NaN;
-  }
-}
-const offsetRe = /([+-]\d\d):?(\d\d)?/;
-function calcOffset(cacheStr, values) {
-  const hours = +values[0];
-  const minutes = +(values[1] || 0);
-  return offsetCache[cacheStr] = hours > 0 ? hours * 60 + minutes : hours * 60 - minutes;
-}
-
-class TZDateMini extends Date {
-  //#region static
-
-  constructor(...args) {
-    super();
-    if (args.length > 1 && typeof args[args.length - 1] === "string") {
-      this.timeZone = args.pop();
-    }
-    this.internal = new Date();
-    if (isNaN(tzOffset(this.timeZone, this))) {
-      this.setTime(NaN);
-    } else {
-      if (!args.length) {
-        this.setTime(Date.now());
-      } else if (typeof args[0] === "number" && (args.length === 1 || args.length === 2 && typeof args[1] !== "number")) {
-        this.setTime(args[0]);
-      } else if (typeof args[0] === "string") {
-        this.setTime(+new Date(args[0]));
-      } else if (args[0] instanceof Date) {
-        this.setTime(+args[0]);
-      } else {
-        this.setTime(+new Date(...args));
-        adjustToSystemTZ(this);
-        syncToInternal(this);
-      }
-    }
-  }
-  static tz(tz, ...args) {
-    return args.length ? new TZDateMini(...args, tz) : new TZDateMini(Date.now(), tz);
-  }
-
-  //#endregion
-
-  //#region time zone
-
-  withTimeZone(timeZone) {
-    return new TZDateMini(+this, timeZone);
-  }
-  getTimezoneOffset() {
-    return -tzOffset(this.timeZone, this);
-  }
-
-  //#endregion
-
-  //#region time
-
-  setTime(time) {
-    Date.prototype.setTime.apply(this, arguments);
-    syncToInternal(this);
-    return +this;
-  }
-
-  //#endregion
-
-  //#region date-fns integration
-
-  [Symbol.for("constructDateFrom")](date) {
-    return new TZDateMini(+new Date(date), this.timeZone);
-  }
-
-  //#endregion
-}
-
-// Assign getters and setters
-const re = /^(get|set)(?!UTC)/;
-Object.getOwnPropertyNames(Date.prototype).forEach(method => {
-  if (!re.test(method)) return;
-  const utcMethod = method.replace(re, "$1UTC");
-  // Filter out methods without UTC counterparts
-  if (!TZDateMini.prototype[utcMethod]) return;
-  if (method.startsWith("get")) {
-    // Delegate to internal date's UTC method
-    TZDateMini.prototype[method] = function () {
-      return this.internal[utcMethod]();
-    };
-  } else {
-    // Assign regular setter
-    TZDateMini.prototype[method] = function () {
-      Date.prototype[utcMethod].apply(this.internal, arguments);
-      syncFromInternal(this);
-      return +this;
-    };
-
-    // Assign UTC setter
-    TZDateMini.prototype[utcMethod] = function () {
-      Date.prototype[utcMethod].apply(this, arguments);
-      syncToInternal(this);
-      return +this;
-    };
-  }
-});
-
-/**
- * Function syncs time to internal date, applying the time zone offset.
- *
- * @param {Date} date - Date to sync
- */
-function syncToInternal(date) {
-  date.internal.setTime(+date);
-  date.internal.setUTCMinutes(date.internal.getUTCMinutes() - date.getTimezoneOffset());
-}
-
-/**
- * Function syncs the internal date UTC values to the date. It allows to get
- * accurate timestamp value.
- *
- * @param {Date} date - The date to sync
- */
-function syncFromInternal(date) {
-  // First we transpose the internal values
-  Date.prototype.setFullYear.call(date, date.internal.getUTCFullYear(), date.internal.getUTCMonth(), date.internal.getUTCDate());
-  Date.prototype.setHours.call(date, date.internal.getUTCHours(), date.internal.getUTCMinutes(), date.internal.getUTCSeconds(), date.internal.getUTCMilliseconds());
-
-  // Now we have to adjust the date to the system time zone
-  adjustToSystemTZ(date);
-}
-
-/**
- * Function adjusts the date to the system time zone. It uses the time zone
- * differences to calculate the offset and adjust the date.
- *
- * @param {Date} date - Date to adjust
- */
-function adjustToSystemTZ(date) {
-  // Save the time zone offset before all the adjustments
-  const offset = tzOffset(date.timeZone, date);
-
-  //#region System DST adjustment
-
-  // The biggest problem with using the system time zone is that when we create
-  // a date from internal values stored in UTC, the system time zone might end
-  // up on the DST hour:
-  //
-  //   $ TZ=America/New_York node
-  //   > new Date(2020, 2, 8, 1).toString()
-  //   'Sun Mar 08 2020 01:00:00 GMT-0500 (Eastern Standard Time)'
-  //   > new Date(2020, 2, 8, 2).toString()
-  //   'Sun Mar 08 2020 03:00:00 GMT-0400 (Eastern Daylight Time)'
-  //   > new Date(2020, 2, 8, 3).toString()
-  //   'Sun Mar 08 2020 03:00:00 GMT-0400 (Eastern Daylight Time)'
-  //   > new Date(2020, 2, 8, 4).toString()
-  //   'Sun Mar 08 2020 04:00:00 GMT-0400 (Eastern Daylight Time)'
-  //
-  // Here we get the same hour for both 2 and 3, because the system time zone
-  // has DST beginning at 8 March 2020, 2 a.m. and jumps to 3 a.m. So we have
-  // to adjust the internal date to reflect that.
-  //
-  // However we want to adjust only if that's the DST hour the change happenes,
-  // not the hour where DST moves to.
-
-  // We calculate the previous hour to see if the time zone offset has changed
-  // and we have landed on the DST hour.
-  const prevHour = new Date(+date);
-  // We use UTC methods here as we don't want to land on the same hour again
-  // in case of DST.
-  prevHour.setUTCHours(prevHour.getUTCHours() - 1);
-
-  // Calculate if we are on the system DST hour.
-  const systemOffset = -new Date(+date).getTimezoneOffset();
-  const prevHourSystemOffset = -new Date(+prevHour).getTimezoneOffset();
-  const systemDSTChange = systemOffset - prevHourSystemOffset;
-  // Detect the DST shift. System DST change will occur both on
-  const dstShift = Date.prototype.getHours.apply(date) !== date.internal.getUTCHours();
-
-  // Move the internal date when we are on the system DST hour.
-  if (systemDSTChange && dstShift) date.internal.setUTCMinutes(date.internal.getUTCMinutes() + systemDSTChange);
-
-  //#endregion
-
-  //#region System diff adjustment
-
-  // Now we need to adjust the date, since we just applied internal values.
-  // We need to calculate the difference between the system and date time zones
-  // and apply it to the date.
-
-  const offsetDiff = systemOffset - offset;
-  if (offsetDiff) Date.prototype.setUTCMinutes.call(date, Date.prototype.getUTCMinutes.call(date) + offsetDiff);
-
-  //#endregion
-
-  //#region Post-adjustment DST fix
-
-  const postOffset = tzOffset(date.timeZone, date);
-  const postSystemOffset = -new Date(+date).getTimezoneOffset();
-  const postOffsetDiff = postSystemOffset - postOffset;
-  const offsetChanged = postOffset !== offset;
-  const postDiff = postOffsetDiff - offsetDiff;
-  if (offsetChanged && postDiff) {
-    Date.prototype.setUTCMinutes.call(date, Date.prototype.getUTCMinutes.call(date) + postDiff);
-
-    // Now we need to check if got offset change during the post-adjustment.
-    // If so, we also need both dates to reflect that.
-
-    const newOffset = tzOffset(date.timeZone, date);
-    const offsetChange = postOffset - newOffset;
-    if (offsetChange) {
-      date.internal.setUTCMinutes(date.internal.getUTCMinutes() + offsetChange);
-      Date.prototype.setUTCMinutes.call(date, Date.prototype.getUTCMinutes.call(date) + offsetChange);
-    }
-  }
-
-  //#endregion
-}
-
-/**
- * UTC date class. It maps getters and setters to corresponding UTC methods,
- * forcing all calculations in the UTC time zone.
- *
- * Combined with date-fns, it allows using the class the same way as
- * the original date class.
- *
- * This complete version provides not only getters, setters,
- * and `getTimezoneOffset`, but also the formatter functions, mirroring
- * all original `Date` functionality. Use this version when you need to format
- * a string or in an environment you don't fully control (a library).
- * For a minimal version, see `UTCDateMini`.
- */
-class TZDate extends TZDateMini {
-  //#region static
-
-  static tz(tz, ...args) {
-    return args.length ? new TZDate(...args, tz) : new TZDate(Date.now(), tz);
-  }
-
-  //#endregion
-
-  //#region representation
-
-  toISOString() {
-    const [sign, hours, minutes] = this.tzComponents();
-    const tz = `${sign}${hours}:${minutes}`;
-    return this.internal.toISOString().slice(0, -1) + tz;
-  }
-  toString() {
-    // "Tue Aug 13 2024 07:50:19 GMT+0800 (Singapore Standard Time)";
-    return `${this.toDateString()} ${this.toTimeString()}`;
-  }
-  toDateString() {
-    // toUTCString returns RFC 7231 ("Mon, 12 Aug 2024 23:36:08 GMT")
-    const [day, date, month, year] = this.internal.toUTCString().split(" ");
-    // "Tue Aug 13 2024"
-    return `${day?.slice(0, -1) /* Remove "," */} ${month} ${date} ${year}`;
-  }
-  toTimeString() {
-    // toUTCString returns RFC 7231 ("Mon, 12 Aug 2024 23:36:08 GMT")
-    const time = this.internal.toUTCString().split(" ")[4];
-    const [sign, hours, minutes] = this.tzComponents();
-    // "07:42:23 GMT+0800 (Singapore Standard Time)"
-    return `${time} GMT${sign}${hours}${minutes} (${tzName(this.timeZone, this)})`;
-  }
-  toLocaleString(locales, options) {
-    return Date.prototype.toLocaleString.call(this, locales, {
-      ...options,
-      timeZone: options?.timeZone || this.timeZone
-    });
-  }
-  toLocaleDateString(locales, options) {
-    return Date.prototype.toLocaleDateString.call(this, locales, {
-      ...options,
-      timeZone: options?.timeZone || this.timeZone
-    });
-  }
-  toLocaleTimeString(locales, options) {
-    return Date.prototype.toLocaleTimeString.call(this, locales, {
-      ...options,
-      timeZone: options?.timeZone || this.timeZone
-    });
-  }
-
-  //#endregion
-
-  //#region private
-
-  tzComponents() {
-    const offset = this.getTimezoneOffset();
-    const sign = offset > 0 ? "-" : "+";
-    const hours = String(Math.floor(Math.abs(offset) / 60)).padStart(2, "0");
-    const minutes = String(Math.abs(offset) % 60).padStart(2, "0");
-    return [sign, hours, minutes];
-  }
-
-  //#endregion
-
-  withTimeZone(timeZone) {
-    return new TZDate(+this, timeZone);
-  }
-
-  //#region date-fns integration
-
-  [Symbol.for("constructDateFrom")](date) {
-    return new TZDate(+new Date(date), this.timeZone);
-  }
-
-  //#endregion
-}
-function tzName(tz, date) {
-  return new Intl.DateTimeFormat("en-GB", {
-    timeZone: tz,
-    timeZoneName: "long"
-  }).format(date).slice(12);
-}
-
-/**
- * The function creates accepts a time zone and returns a function that creates
- * a new `TZDate` instance in the time zone from the provided value. Use it to
- * provide the context for the date-fns functions, via the `in` option.
- *
- * @param timeZone - Time zone name (IANA or UTC offset)
- *
- * @returns Function that creates a new `TZDate` instance in the time zone
- */
-const tz = timeZone => value => TZDate.tz(timeZone, +new Date(value));
-
-var locales$1 = {
-    en: enUS,
-    es: es,
-    fr: fr,
-};
-function useDateParsers() {
-    var locale = useIntl().locale;
-    var parse = useCallback(function (date, format) {
-        return parse$1(date, format, new Date(), {
-            locale: locales$1[locale] || locales$1.en,
-        });
-    }, [locale]);
-    return useMemo(function () { return ({
-        parseDateLocal: function (date) { return parse(date, 'PP'); },
-        validateTimezone: function (tz) {
-            try {
-                Intl.DateTimeFormat(undefined, { timeZone: tz });
-                return true;
-            }
-            catch (e) {
-                return false;
-            }
-        },
-    }); }, [parse]);
-}
-
-var locales$2 = {
-    en: enUS,
-    es: es,
-    fr: fr,
-    ko: ko,
-    pl: pl,
-    pt: ptBR,
-    ru: ru,
-    zh: zhCN,
-};
-function getCurrentLocale(locale) {
-    return locales$2[locale] || locales$2.en;
-}
-
-var Modes;
-(function (Modes) {
-    Modes[Modes["Day"] = 0] = "Day";
-    Modes[Modes["Week"] = 1] = "Week";
-    Modes[Modes["Range"] = 2] = "Range";
-})(Modes || (Modes = {}));
-function calendarize(_a) {
-    var condensed = _a.condensed, date = _a.date, intl = _a.intl, timezone = _a.timezone;
-    var locale = getCurrentLocale(intl.locale);
-    var weekStartsOn = getStartOfWeek(intl.locale);
-    var i = 0;
-    var dates = [];
-    var current = condensed
-        ? startOfWeek$1(date, { locale: locale, weekStartsOn: weekStartsOn, in: tz(timezone) })
-        : startOfWeek$1(startOfMonth(date), {
-            locale: locale,
-            weekStartsOn: weekStartsOn,
-            in: tz(timezone),
-        });
-    var final = condensed
-        ? addDays(endOfWeek$1(date, { locale: locale, weekStartsOn: weekStartsOn }), 1)
-        : addDays(endOfWeek$1(endOfMonth(date), { locale: locale, weekStartsOn: weekStartsOn, in: tz(timezone) }), 1);
-    var difference = differenceInCalendarDays(final, current, { in: tz(timezone) }) / 7;
-    for (i; i < difference; i++) {
-        var o = 0;
-        var week = [];
-        for (o; o < 7; o++) {
-            week = __spreadArray(__spreadArray([], week, true), [current], false);
-            current = addDays(current, 1);
-        }
-        dates = __spreadArray(__spreadArray([], dates, true), [week], false);
-    }
-    return dates;
-}
-/**
- * @deprecated Use `BetterDatePicker` instead. `DatePicker` is deprecated and is
- * planned for complete removal. See the BetterDatePicker docs for the prop
- * mapping (`initialDate` → `defaultValue`/`value`, `initialTimezone` →
- * `timezone`, `Modes.*` → `mode`, and a plain value in `onChange`).
- */
-function DatePicker(_a) {
-    var clearRef = _a.clearRef, _b = _a.condensed, condensed = _b === void 0 ? false : _b, _c = _a.initialDate, initialDate = _c === void 0 ? new Date() : _c, initialTimezone = _a.initialTimezone, inputRef = _a.inputRef, inputValueRef = _a.inputValueRef, _d = _a.mode, mode = _d === void 0 ? Modes.Day : _d, onChange = _a.onChange, open = _a.open;
-    var intl = useIntl();
-    var _e = useDateFormatters(), formatDateLocal = _e.formatDateLocal, formatMonthAndYearLong = _e.formatMonthAndYearLong, formatISODate = _e.formatISODate, formatWeekOfYear = _e.formatWeekOfYear, formatDayOfMonth = _e.formatDayOfMonth, formatYearAndMonth = _e.formatYearAndMonth, formatDayOfWeek = _e.formatDayOfWeek;
-    var _f = useDateParsers(), parseDateLocal = _f.parseDateLocal, validateTimezone = _f.validateTimezone;
-    var timezone = (validateTimezone(initialTimezone) && initialTimezone) ||
-        Intl.DateTimeFormat().resolvedOptions().timeZone;
-    var initializeDate = function (initial) {
-        var date = initial || new Date();
-        return new TZDate(date.getFullYear(), date.getMonth(), date.getDate(), timezone);
-    };
-    var focusRef = useRef(true);
-    var _g = useState(initializeDate(Array.isArray(initialDate) ? initialDate[0] : initialDate)), currentDate = _g[0], setCurrentDate = _g[1];
-    var _h = useState(null), enteredDate = _h[0], setEnteredDate = _h[1];
-    var _j = useState(function () { return ({
-        end: mode === Modes.Range && Array.isArray(initialDate)
-            ? initialDate[1]
-            : null,
-        start: mode === Modes.Range && Array.isArray(initialDate)
-            ? initialDate[0]
-            : null,
-    }); }), rangedDates = _j[0], setRangedDates = _j[1];
-    var _k = useState(initialDate
-        ? initializeDate(Array.isArray(initialDate) ? initialDate[0] : initialDate)
-        : null), selectedDate = _k[0], setSelectedDate = _k[1];
-    var weeks = calendarize({
-        condensed: condensed,
-        date: currentDate,
-        intl: intl,
-        timezone: timezone,
-    });
-    var headers = weeks[0];
-    var month = setDate(currentDate, 15, { in: tz(timezone) });
-    var modes = {
-        day: mode === Modes.Day,
-        week: mode === Modes.Week,
-        range: mode === Modes.Range,
-        dayOrRange: mode === Modes.Day || mode === Modes.Range,
-    };
-    var parseValue = useCallback(function (value) {
-        if (mode === Modes.Range || mode === Modes.Week) {
-            if (!value) {
-                return [null, null];
-            }
-            var dates = value.split(' — ');
-            var locale = getCurrentLocale(intl.locale);
-            var weekStartsOn = getStartOfWeek(intl.locale);
-            var start = mode === Modes.Week
-                ? startOfWeek$1(parseDateLocal(dates[0]), {
-                    locale: locale,
-                    weekStartsOn: weekStartsOn,
-                })
-                : parseDateLocal(dates[0]);
-            var end = mode === Modes.Week ? endOfWeek$1(start) : parseDateLocal(dates[1]);
-            if (!isValid(start) || !isValid(end)) {
-                return [];
-            }
-            return [start, end];
-        }
-        var date = value ? parseDateLocal(value) : null;
-        if (date && !isValid(date)) {
-            return [];
-        }
-        return [date];
-    }, [mode, parseDateLocal]);
-    useEffect(function () {
-        if (mode === Modes.Range) {
-            var event_1 = {
-                target: {
-                    value: [rangedDates.start, rangedDates.end],
-                },
-            };
-            onChange === null || onChange === void 0 ? void 0 : onChange(event_1);
-        }
-        else {
-            var event_2 = {
-                target: {
-                    value: selectedDate,
-                },
-            };
-            onChange === null || onChange === void 0 ? void 0 : onChange(event_2);
-        }
-    }, [mode, rangedDates.end, rangedDates.start, selectedDate, intl.locale]);
-    // TODO: Having the onChange function in the dependency array was causing an maximum update depth error. We've removed it temporarily as we do not want to force developers to have to remember to memoize this callback all the time. We will come back to this and come up with a more foolproof plan later on.
-    useLayoutEffect(function () {
-        // When DatePicker is used with input and the input value changes, adjust selected date(s)
-        if (open && (inputRef === null || inputRef === void 0 ? void 0 : inputRef.current)) {
-            if ((inputValueRef === null || inputValueRef === void 0 ? void 0 : inputValueRef.current) === inputRef.current.value) {
-                return;
-            }
-            var dates = parseValue(inputRef.current.value);
-            if (dates.length) {
-                if (mode === Modes.Range) {
-                    if (isAfter(dates[0], dates[1])) {
-                        dates = [dates[1], dates[0]];
-                    }
-                    setRangedDates({ start: dates[0], end: dates[1] });
-                }
-                else {
-                    setSelectedDate(dates[0]);
-                }
-                // When the range provided didn't align to a week and needed to be adjusted,
-                // updating the input value to the correct string avoids onChange handler being
-                // triggered unnecessarily thus causing the picker to close right after being opened
-                if ((mode === Modes.Week || mode === Modes.Range) &&
-                    dates[0] &&
-                    dates[1]) {
-                    inputRef.current.value =
-                        formatDateLocal(dates[0]) + ' — ' + formatDateLocal(dates[1]);
-                }
-                // Open the calendar on the selected date
-                focusRef.current = true;
-                setCurrentDate(dates[0] || new TZDate(new Date(), timezone));
-            }
-        }
-    }, [mode, open, intl.locale, inputRef, parseValue, inputValueRef]);
-    useLayoutEffect(function () {
-        if (focusRef.current) {
-            focusRef.current = false;
-            return;
-        }
-        var selector = "time[datetime=\"".concat(formatISODate(currentDate), "\"]");
-        var time = document.querySelector(selector);
-        var selectable = time.parentElement;
-        if (modes.week) {
-            selectable = selectable.parentElement;
-        }
-        selectable.focus();
-    }, [currentDate, formatISODate, modes.week]);
-    var next = function () {
-        focusRef.current = true;
-        setCurrentDate(function (date) {
-            return condensed ? addDays(date, 7) : addMonths(date, 1);
-        });
-    };
-    var previous = function () {
-        focusRef.current = true;
-        setCurrentDate(function (date) {
-            return condensed ? subDays(date, 7) : subMonths(date, 1);
-        });
-    };
-    var clearDate = function () {
-        if (modes.range) {
-            setRangedDates({ end: null, start: null });
-        }
-        else {
-            setSelectedDate(null);
-        }
-    };
-    var select = function (e) {
-        var _a;
-        if (['keypress', 'keydown', 'keyup'].includes(e.nativeEvent.type)) {
-            var key_1 = e.key;
-            if (key_1 !== 'Enter' && key_1 !== ' ') {
-                setCurrentDate(function (date) {
-                    switch (key_1) {
-                        case 'ArrowDown':
-                            return startOfWeek$1(addDays(date, 7));
-                        case 'ArrowUp':
-                            return startOfWeek$1(subDays(date, 7));
-                        default:
-                            return date;
-                    }
-                });
-                return;
-            }
-        }
-        var time = e.currentTarget.querySelector('time');
-        var dateTime = ((_a = time.dataset) === null || _a === void 0 ? void 0 : _a.datetime) || formatYearAndMonth(new Date());
-        var _b = dateTime.split('-').map(Number), year = _b[0], month = _b[1], day = _b[2];
-        var date = new TZDate(year, month - 1, day, timezone);
-        if (modes.range) {
-            if ((rangedDates.end === null && rangedDates.start === null) ||
-                (rangedDates.end !== null && rangedDates.start !== null)) {
-                setCurrentDate(date);
-                setRangedDates({ start: date, end: null });
-            }
-            if (rangedDates.end === null && rangedDates.start !== null) {
-                setRangedDates(function (dates) {
-                    var after = isAfter(dates.start, date);
-                    return {
-                        end: after ? dates.start : date,
-                        start: after ? date : dates.start,
-                    };
-                });
-            }
-        }
-        else {
-            setSelectedDate(date);
-            setCurrentDate(date);
-        }
-    };
-    var keydown = function (event) {
-        var key = event.key;
-        setCurrentDate(function (date) {
-            switch (key) {
-                case 'ArrowLeft':
-                    return subDays(date, 1);
-                case 'ArrowRight':
-                    return addDays(date, 1);
-                case 'ArrowDown':
-                    return addDays(date, 7);
-                case 'ArrowUp':
-                    return subDays(date, 7);
-                default:
-                    return date;
-            }
-        });
-    };
-    var blur = function () {
-        if (modes.range) {
-            setEnteredDate(null);
-        }
-    };
-    var enter = function (e) {
-        var _a;
-        var time = e.currentTarget.querySelector('time');
-        var dateTime = ((_a = time.dataset) === null || _a === void 0 ? void 0 : _a.datetime) || formatYearAndMonth(new Date());
-        var _b = dateTime.split('-').map(Number), year = _b[0], month = _b[1], day = _b[2];
-        setEnteredDate(new TZDate(year, month - 1, day, timezone));
-    };
-    var leave = function () {
-        setEnteredDate(null);
-    };
-    var inRange = function (day) {
-        var startDate = rangedDates.start;
-        var endDate = rangedDates.end || enteredDate;
-        if (startDate instanceof Date && endDate instanceof Date) {
-            var after = isAfter(startDate, endDate);
-            var interval = after
-                ? { start: endDate, end: startDate }
-                : { start: startDate, end: endDate };
-            return {
-                end: isSameDay(day, after ? startDate : endDate, { in: tz(timezone) }),
-                inside: isWithinInterval(day, interval, { in: tz(timezone) }) ||
-                    isSameDay(day, startDate, { in: tz(timezone) }),
-                start: isSameDay(day, after ? endDate : startDate, {
-                    in: tz(timezone),
-                }),
-            };
-        }
-        return { end: false, inside: false, start: false };
-    };
-    var isSameRangedDay = function (day) {
-        return (rangedDates.end instanceof Date &&
-            isSameDay(day, rangedDates.end, { in: tz(timezone) })) ||
-            (rangedDates.start instanceof Date &&
-                isSameDay(day, rangedDates.start, { in: tz(timezone) }));
-    };
-    return (React.createElement("div", { className: "max-w-xs p-6 font-sans rounded bg-white-100 shadow-1", onBlur: blur },
-        React.createElement("div", { className: "flex items-center justify-between" },
-            React.createElement("time", { className: "text-sm font-medium leading-4", "data-datetime": formatYearAndMonth(month), dateTime: formatYearAndMonth(month) }, formatMonthAndYearLong(month)),
-            React.createElement("div", { className: "flex items-center justify-between w-16" },
-                clearRef ? (React.createElement("button", { className: "hidden", onClick: clearDate, ref: clearRef })) : null,
-                React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'DatePicker.previous' }), onClick: previous },
-                    React.createElement(ChevronLeft, null)),
-                React.createElement(IconButton, { "aria-label": intl.formatMessage({ id: 'DatePicker.next' }), onClick: next },
-                    React.createElement(ChevronRight, null)))),
-        React.createElement("div", { className: "flex mt-4 text-center" }, headers.map(function (header) { return (React.createElement("div", { className: "text-xs leading-4 w-1/7 text-black-90", key: formatDayOfWeek(header) }, formatDayOfWeek(header))); })),
-        weeks.map(function (days) {
-            var currentWeek = isSameWeek(days[0], currentDate);
-            var sameWeek = selectedDate
-                ? isSameWeek(days[0], selectedDate)
-                : false;
-            return (React.createElement("div", { className: clsx('flex mt-2 text-center', modes.week
-                    ? 'group rounded-full active:bg-primary-20 focus:bg-primary-10 focus:outline-none hover:bg-primary-10'
-                    : 'focus:outline-none', sameWeek && modes.week
-                    ? 'bg-primary-main text-white-100 active:text-black-90 hover:text-black-90 focus:text-black-90'
-                    : null), key: formatWeekOfYear(days[0]), onKeyDown: modes.week ? select : undefined, role: "button", tabIndex: modes.dayOrRange ? -1 : currentWeek ? 0 : -1 }, days.map(function (day) {
-                var currentDay = isSameDay(day, currentDate, {
-                    in: tz(timezone),
-                });
-                var sameMonth = isSameMonth(day, month, { in: tz(timezone) });
-                var sameDay = modes.day
-                    ? selectedDate
-                        ? isSameDay(day, selectedDate, { in: tz(timezone) })
-                        : false
-                    : isSameRangedDay(day);
-                var today = isToday$1(day, { in: tz(timezone) });
-                var weekend = isWeekend$1(day, { in: tz(timezone) });
-                var _a = inRange(day), end = _a.end, inside = _a.inside, start = _a.start;
-                return (React.createElement("button", { className: clsx('flex justify-center w-1/7 focus:outline-none', modes.dayOrRange ? 'group' : null, sameDay && modes.dayOrRange
-                        ? 'text-white-100 hover:text-black-90 focus:text-black-90'
-                        : null, sameMonth && !sameDay && !weekend && modes.dayOrRange
-                        ? 'text-black-90'
-                        : null, !sameMonth && !sameDay && !condensed && modes.dayOrRange
-                        ? 'text-black-45'
-                        : null, weekend && !sameDay && modes.dayOrRange
-                        ? 'text-black-45'
-                        : null, weekend && !sameWeek && modes.week ? 'text-black-45' : null, inside && modes.range
-                        ? 'bg-primary-10 first:rounded-l-full last:rounded-r-full'
-                        : null, inside && end && modes.range ? 'rounded-r-full' : null, inside && start && modes.range ? 'rounded-l-full' : null), key: formatISODate(day), onClick: select, onFocus: modes.range ? enter : undefined, onKeyDown: modes.dayOrRange ? keydown : undefined, onMouseEnter: modes.range ? enter : undefined, onMouseLeave: modes.range ? leave : undefined, tabIndex: modes.week ? -1 : currentDay ? 0 : -1, type: "button" },
-                    React.createElement("time", { className: clsx('flex items-center justify-center w-8 h-8 text-sm leading-4 rounded-full', modes.dayOrRange
-                            ? 'group-active:bg-primary-20 group-focus:bg-primary-10 group-hover:bg-primary-10'
-                            : null, sameDay && modes.dayOrRange ? 'bg-primary-main' : null, today && modes.dayOrRange ? 'bg-black-5' : null, today && !sameWeek && modes.week
-                            ? 'bg-black-5 group-active:bg-primary-20'
-                            : null, today && sameWeek && modes.week
-                            ? 'bg-primary-dark group-active:bg-primary-20 group-focus:bg-primary-15 group-hover:bg-primary-15'
-                            : null), "data-datetime": formatISODate(day), dateTime: formatISODate(day) }, formatDayOfMonth(day))));
-            })));
-        })));
-}
-
-function DatePickerInput(_a) {
-    var clearRef = _a.clearRef, _b = _a.condensed, condensed = _b === void 0 ? false : _b, _c = _a.disabled, disabled = _c === void 0 ? false : _c, _d = _a.error, error = _d === void 0 ? false : _d, helperText = _a.helperText, _e = _a.initialDate, initialDate = _e === void 0 ? new Date() : _e, _f = _a.inputRef, inputRef = _f === void 0 ? null : _f, label = _a.label, _g = _a.mode, mode = _g === void 0 ? Modes.Day : _g, name = _a.name, onChange = _a.onChange, _h = _a.size, size = _h === void 0 ? 'medium' : _h, _j = _a.variant, variant = _j === void 0 ? 'outlined' : _j, initialTimezone = _a.initialTimezone;
-    var intl = useIntl();
-    var containerRef = useRef(null);
-    var instanceRef = useRef(null);
-    var popperRef = useRef(null);
-    var localRef = useRef(null);
-    var inputValueRef = useRef('');
-    var syncRef = useSyncRefs(localRef, inputRef);
-    var _k = useState(false), open = _k[0], setOpen = _k[1];
-    var formatDateLocal = useDateFormatters().formatDateLocal;
-    useEffect(function () {
-        function clickAway(event) {
-            var _a, _b;
-            var target = event.target;
-            if (!open) {
-                return;
-            }
-            if ((_a = popperRef.current) === null || _a === void 0 ? void 0 : _a.contains(target)) {
-                return;
-            }
-            if ((_b = containerRef.current) === null || _b === void 0 ? void 0 : _b.contains(target)) {
-                return;
-            }
-            setOpen(false);
-        }
-        window.addEventListener('mousedown', clickAway);
-        return function () { return window.removeEventListener('mousedown', clickAway); };
-    }, [open]);
-    useLayoutEffect(function () {
-        var _a, _b, _c;
-        if (open) {
-            instanceRef.current = createPopper(containerRef.current, popperRef.current, {
-                modifiers: [
-                    {
-                        name: 'flip',
-                        options: {
-                            fallbackPlacements: ['top', 'bottom'],
-                        },
-                    },
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [0, 8],
-                        },
-                    },
-                ],
-                placement: 'bottom-start',
-            });
-            (_b = (_a = popperRef.current) === null || _a === void 0 ? void 0 : _a.querySelector('button')) === null || _b === void 0 ? void 0 : _b.focus();
-        }
-        else {
-            (_c = instanceRef.current) === null || _c === void 0 ? void 0 : _c.destroy();
-            instanceRef.current = null;
-        }
-    }, [open]);
-    var formatValue = useCallback(function (dates) {
-        if (!dates[0]) {
-            return '';
-        }
-        if (mode === Modes.Range) {
-            if (!dates[0] || !dates[1]) {
-                return '';
-            }
-            return formatDateLocal(dates[0]) + ' — ' + formatDateLocal(dates[1]);
-        }
-        if (mode === Modes.Week) {
-            var locale = getCurrentLocale(intl.locale);
-            var weekStartsOn = getStartOfWeek(intl.locale);
-            var start = startOfWeek$1(dates[0], { locale: locale, weekStartsOn: weekStartsOn });
-            var end = endOfWeek$1(dates[0], { locale: locale, weekStartsOn: weekStartsOn });
-            return formatDateLocal(start) + ' — ' + formatDateLocal(end);
-        }
-        return formatDateLocal(dates[0]);
-    }, [formatDateLocal, intl.locale, mode]);
-    var handleChange = function (event) {
-        var _a;
-        if (localRef.current) {
-            var value = void 0;
-            if (mode === Modes.Range) {
-                var _b = event.target.value, start = _b[0], end = _b[1];
-                value = formatValue([start, end]);
-            }
-            else {
-                value = formatValue([event.target.value]);
-            }
-            // Do not close the picker when selecting the first date in the range
-            if (localRef.current.value !== value &&
-                !(mode === Modes.Range && !value)) {
-                setOpen(false);
-            }
-            inputValueRef.current = value;
-            var descriptor = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value');
-            var inputEvent = new Event('input', { bubbles: true });
-            (_a = descriptor.set) === null || _a === void 0 ? void 0 : _a.call(localRef.current, value);
-            localRef.current.dispatchEvent(inputEvent);
-        }
-        if (mode === Modes.Week) {
-            var date = event.target.value;
-            var locale = getCurrentLocale(intl.locale);
-            var weekStartsOn = getStartOfWeek(intl.locale);
-            var start = startOfWeek$1(date, { locale: locale, weekStartsOn: weekStartsOn });
-            var end = endOfWeek$1(start, { locale: locale, weekStartsOn: weekStartsOn });
-            event.target.value = [start, end];
-        }
-        onChange === null || onChange === void 0 ? void 0 : onChange(event);
-    };
-    var handleFocus = function () {
-        var _a;
-        setOpen(true);
-        // fix the label going up and down when input is empty
-        (_a = localRef.current) === null || _a === void 0 ? void 0 : _a.blur();
-    };
-    var handleKeyDown = function (event) {
-        if (event.key === Keys.Escape) {
-            setOpen(false);
-        }
-    };
-    var defaultValue = useMemo(function () {
-        if (mode === Modes.Range) {
-            return formatValue(Array.isArray(initialDate) ? initialDate : [null]);
-        }
-        return formatValue(Array.isArray(initialDate) ? [initialDate[0]] : [initialDate]);
-    }, [formatValue, initialDate, mode]);
-    return (React.createElement("div", { 
-        /*
-         * We can safely ignore the `no-static-element-interactions` warning here
-         * because our overlay is only designed to capture any outside
-         * clicks, not serve as a clickable element itself.
-         *
-         * https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/master/docs/rules/no-static-element-interactions.md#case-the-event-handler-is-only-being-used-to-capture-bubbled-events
-         */
-        onKeyDown: handleKeyDown, role: "presentation" },
-        React.createElement("div", { ref: containerRef },
-            React.createElement(TextInput, { appearFocused: open, defaultValue: defaultValue, disabled: disabled, endAdornment: ExpandMore, error: error, helperText: helperText, inputRef: syncRef, label: label, name: name, onFocus: handleFocus, readOnly: true, selectable: true, size: size, startAdornment: mode === Modes.Day ? EventIcon : DateRange, variant: variant })),
-        React.createElement(Portal, { discoverable: true, open: open },
-            React.createElement("div", { className: clsx('z-9998', open ? '' : 'hidden'), ref: popperRef },
-                React.createElement(DatePicker, { clearRef: clearRef, condensed: condensed, initialDate: initialDate, initialTimezone: initialTimezone, inputRef: localRef, inputValueRef: inputValueRef, mode: mode, onChange: handleChange, open: open })))));
-}
-/**
- * @deprecated Use `BetterDatePicker` (with `mode="day"`) instead. Deprecated and
- * planned for complete removal. See the BetterDatePicker docs for migration.
- */
-function DayPickerInput(_a) {
-    var _b = _a.clearRef, clearRef = _b === void 0 ? null : _b, _c = _a.condensed, condensed = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, _f = _a.initialDate, initialDate = _f === void 0 ? new Date() : _f, initialTimezone = _a.initialTimezone, inputRef = _a.inputRef, label = _a.label, name = _a.name, onChange = _a.onChange, _g = _a.size, size = _g === void 0 ? 'medium' : _g, _h = _a.variant, variant = _h === void 0 ? 'outlined' : _h;
-    return (React.createElement(DatePickerInput, { clearRef: clearRef, condensed: condensed, disabled: disabled, error: error, helperText: helperText, initialDate: initialDate, initialTimezone: initialTimezone, inputRef: inputRef, label: label, mode: Modes.Day, name: name, onChange: onChange, size: size, variant: variant }));
-}
-/**
- * @deprecated Use `BetterDatePicker` (with `mode="range"`) instead. Deprecated
- * and planned for complete removal. See the BetterDatePicker docs for migration.
- */
-function RangePickerInput(_a) {
-    var _b = _a.clearRef, clearRef = _b === void 0 ? null : _b, _c = _a.condensed, condensed = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, _f = _a.initialDate, initialDate = _f === void 0 ? new Date() : _f, initialTimezone = _a.initialTimezone, inputRef = _a.inputRef, label = _a.label, name = _a.name, onChange = _a.onChange, _g = _a.size, size = _g === void 0 ? 'medium' : _g, _h = _a.variant, variant = _h === void 0 ? 'outlined' : _h;
-    return (React.createElement(DatePickerInput, { clearRef: clearRef, condensed: condensed, disabled: disabled, error: error, helperText: helperText, initialDate: initialDate, initialTimezone: initialTimezone, inputRef: inputRef, label: label, mode: Modes.Range, name: name, onChange: onChange, size: size, variant: variant }));
-}
-/**
- * @deprecated Use `BetterDatePicker` (with `mode="week"`) instead. Deprecated
- * and planned for complete removal. See the BetterDatePicker docs for migration.
- */
-function WeekPickerInput(_a) {
-    var _b = _a.clearRef, clearRef = _b === void 0 ? null : _b, _c = _a.condensed, condensed = _c === void 0 ? false : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, helperText = _a.helperText, _f = _a.initialDate, initialDate = _f === void 0 ? new Date() : _f, initialTimezone = _a.initialTimezone, inputRef = _a.inputRef, label = _a.label, name = _a.name, onChange = _a.onChange, _g = _a.size, size = _g === void 0 ? 'medium' : _g, _h = _a.variant, variant = _h === void 0 ? 'outlined' : _h;
-    return (React.createElement(DatePickerInput, { clearRef: clearRef, condensed: condensed, disabled: disabled, error: error, helperText: helperText, initialDate: initialDate, initialTimezone: initialTimezone, inputRef: inputRef, label: label, mode: Modes.Week, name: name, onChange: onChange, size: size, variant: variant }));
 }
 
 function _objectWithoutPropertiesLoose(source, excluded) {
@@ -14164,5 +13304,5 @@ function Tooltip(_a) {
             arrow ? (React.createElement("div", { className: clsx('border-6 border-dark-grey-main w-0 h-0', styles.class[arrowDirection]), ref: arrowRef, style: styles.style[arrowDirection] })) : null))));
 }
 
-export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, BasicTable, BetterDatePicker, Button, ButtonGroup, Calendar, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, DayPickerInput, Dialog, Directions, DisplayModes, Divider, Drawer, IconButton, Link, List, Menu, MultiSelect, Pagination, Popover, Progress, Radio, RangePickerInput, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, TimeInput, Tooltip, Typography, UiProvider, WeekPickerInput, useLocale };
+export { Alert, AriaLiveRole, Autocomplete, Avatar, Backdrops, Badge, Banner, BasicTable, Button, ButtonGroup, Calendar, Card, Checkbox, Chip, Collapse, Constraints, DatePicker, Dialog, Directions, DisplayModes, Divider, Drawer, IconButton, Link, List, Menu, MultiSelect, Pagination, Popover, Progress, Radio, Select, Skeleton, Snackbar, Switch, Tab, Table, Tag, TextInput, TimeInput, Tooltip, Typography, UiProvider, useLocale };
 //# sourceMappingURL=index.es.js.map
